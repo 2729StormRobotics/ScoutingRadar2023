@@ -3,9 +3,17 @@ package org.stormrobotics.scoutingradar2022.database;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
+//defines the table and the identifier for each row
 @Entity(tableName = "matches", primaryKeys = {"team_num", "match_num"})
 
 public class WhooshMatch {
+    /*
+    defines data for columns in table
+    teamNum - team number
+    matchNum - match number
+    isRed - red/blue alliance
+    autoData, teleopData, endgameData - data that was recorded during that phase
+     */
     @ColumnInfo(name= "team_num")
     private int teamNum;
     @ColumnInfo(name= "match_num")
@@ -18,6 +26,8 @@ public class WhooshMatch {
     private String teleopData;
     @ColumnInfo(name= "endgame_data")
     private String endgameData;
+
+    //getters and setters for member variables
 
     public int getTeamNum() {
         return teamNum;
