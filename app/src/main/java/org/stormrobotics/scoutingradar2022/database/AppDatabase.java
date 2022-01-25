@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 //defines a database that uses the match entity
-@Database(entities = {WhooshMatch.class}, version = 1)
+@Database(entities = {ObjectiveMatchData.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     /* Singleton Pattern
     'volatile' ensures that there is always one instance of the database
