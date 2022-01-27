@@ -8,21 +8,21 @@ import java.util.List;
 
 //adds data to database
 @Dao
-public interface MatchDao {
+public interface PitScoutMatchDao {
     //insert one match
     @Insert
-    void insert (WhooshMatch whooshMatch);
+    void insert (PitScoutMatchData pitScoutMatchData);
 
     //insert a list of matches
     @Insert
-    void insertList (List<WhooshMatch> whooshMatches);
+    void insertList (List<PitScoutMatchData> pitScoutMatchData);
 
     //inserts multiple matches independently
     @Insert
-    void insertAll (WhooshMatch... whooshMatches);
+    void insertAll (PitScoutMatchData... pitScoutMatchData);
 
     //gets all entries in table
-    @Query("SELECT * FROM matches")
-    public WhooshMatch[] getAllMatches();
-}
+    @Query("SELECT * FROM pit_scout_matches")
+    public PitScoutMatchData[] getAllMatches();
 
+}
