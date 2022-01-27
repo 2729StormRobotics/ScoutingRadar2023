@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Charge Colors -->
+    <color name="chargePrimaryColor">#ff9233</color>
+    <color name="chargePrimaryLightColor">#ffc363</color>
+    <color name="chargePrimaryDarkColor">#c66300</color>
+    <color name="chargeSecondaryColor">#784724</color>
+    <color name="chargeSecondaryLightColor">#aa734d</color>
+    <color name="chargeSecondaryDarkColor">#491f00</color>
+    <color name="chargePrimaryTextColor">#000000</color>
+    <color name="chargeSecondaryTextColor">#ffffff</color>
+    <!-- Red Watch Colors -->
+    <color name="redWatchPrimaryColor">#9c0d17</color>
+    <color name="redWatchPrimaryLightColor">#d4493f</color>
+    <color name="redWatchPrimaryDarkColor">#670000</color>
+    <color name="redWatchSecondaryColor">#666666</color>
+    <color name="redWatchSecondaryLightColor">#949494</color>
+    <color name="redWatchSecondaryDarkColor">#3c3c3c</color>
+    <color name="redWatchPrimaryTextColor">#ffffff</color>
+    <color name="redWatchSecondaryTextColor">#ffffff</color>
 </resources>
