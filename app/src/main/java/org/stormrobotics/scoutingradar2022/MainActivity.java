@@ -2,6 +2,7 @@ package org.stormrobotics.scoutingradar2022;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 
 
@@ -13,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BlueTestFragment mainBlueTestFragment = new BlueTestFragment(this);
     }
+
 
 }

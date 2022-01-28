@@ -2,4 +2,11 @@
     <string name="app_name">Scouting Radar 2022</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="location_permission_explanation" >We require location permission in order to access your current WiFi network information and to connect to Bluetooth.</string>
+    <string name="location_permission_explanation_title" >Location Permission</string>
+    <string name="bluetooth_permission_explanation" >We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
+    <string name="bluetooth_permission_explanation_title" >Bluetooth Permission</string>
+    <string name="proceed" >Grant</string>
+    <string name="cancel" >Cancel</string>
+
 </resources>
