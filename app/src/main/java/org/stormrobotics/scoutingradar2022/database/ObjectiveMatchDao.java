@@ -23,6 +23,6 @@ public interface ObjectiveMatchDao {
 
     //gets all entries in table
     @Query("SELECT * FROM objective_matches")
-    public ObjectiveMatchData[] getAllMatches();
+    public List<ObjectiveMatchData> getAllMatches();
 }
 

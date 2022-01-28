@@ -10,4 +10,9 @@
             android:name="org.stormrobotics.scoutingradar2022.BlueTestFragment"
             android:label="fragment_blue_test"
             tools:layout="@layout/fragment_blue_test" />
+    <fragment
+            android:id="@+id/matchRecordFragment"
+            android:name="org.stormrobotics.scoutingradar2022.MatchRecordFragment"
+            android:label="fragment_match_record_list"
+            tools:layout="@layout/fragment_match_record_list" />
 </navigation>

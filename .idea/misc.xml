@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/638722/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/activity_main.xml" value="0.28306159420289856" />
-        <entry key="..\:/Users/638722/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_blue_test.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/600423/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/activity_main.xml" value="0.1661600810536981" />
+        <entry key="..\:/Users/601123/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/601123/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record_list.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
