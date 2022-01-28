@@ -1,11 +1,16 @@
 package org.stormrobotics.scoutingradar2022;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +22,8 @@ import com.welie.blessed.BluetoothPeripheral;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -105,7 +112,7 @@ public class BlueTestFragment extends Fragment {
     }
 
     private void initBluetoothHandler() {
-        BluetoothHandler.getInstance(getApplicationContext());
+        BluetoothHandler.getInstance(mContext.getApplicationContext());
     }
 
     @NotNull
@@ -130,7 +137,8 @@ public class BlueTestFragment extends Fragment {
     };
 
     private BluetoothPeripheral getPeripheral(String peripheralAddress) {
-        BluetoothCentralManager central = BluetoothHandler.getInstance(getApplicationContext()).central;
+        BluetoothCentralManager central = BluetoothHandler.getInstance(
+                mContext.getApplicationContext()).central;
         return central.getPeripheral(peripheralAddress);
     }
 
@@ -182,7 +190,6 @@ public class BlueTestFragment extends Fragment {
     private boolean areLocationServicesEnabled() {
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) {
-            Timber.e("could not get location manager");
             return false;
         }
 
