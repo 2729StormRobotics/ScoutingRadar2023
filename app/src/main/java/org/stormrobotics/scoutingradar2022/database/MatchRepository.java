@@ -2,12 +2,14 @@ package org.stormrobotics.scoutingradar2022.database;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 
 public class MatchRepository {
 
     private final ObjectiveMatchDao mDao;
-    private final List<ObjectiveMatchData> mDataList;
+    private final LiveData<List<ObjectiveMatchData>> mDataList;
 
     public MatchRepository(Application app) {
         AppDatabase db = AppDatabase.getInstance(app);
@@ -15,7 +17,7 @@ public class MatchRepository {
         mDataList = mDao.getAllMatches();
     }
 
-    public List<ObjectiveMatchData> getDataList() {
+    public LiveData<List<ObjectiveMatchData>> getDataList() {
         return mDataList;
     }
 

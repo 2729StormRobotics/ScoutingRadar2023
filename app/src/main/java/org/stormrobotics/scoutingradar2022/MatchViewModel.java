@@ -3,6 +3,7 @@ package org.stormrobotics.scoutingradar2022;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import org.stormrobotics.scoutingradar2022.database.MatchRepository;
 import org.stormrobotics.scoutingradar2022.database.ObjectiveMatchData;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MatchViewModel extends AndroidViewModel {
 
     private MatchRepository mRepository;
-    private final List<ObjectiveMatchData> mDataList;
+    private final LiveData<List<ObjectiveMatchData>> mDataList;
 
     public MatchViewModel (Application app) {
         super(app);
@@ -20,7 +21,7 @@ public class MatchViewModel extends AndroidViewModel {
         mDataList = mRepository.getDataList();
     }
 
-    public List<ObjectiveMatchData> getDataList() {
+    public LiveData<List<ObjectiveMatchData>> getDataList() {
         return mDataList;
     }
 
