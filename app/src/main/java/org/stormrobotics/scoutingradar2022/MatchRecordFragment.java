@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,9 @@ public class MatchRecordFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+
+    private MatchViewModel mMatchViewModel;
+    public static final int NEW_MATCH_ACTIVITY_REQUEST_CODE = 1;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,6 +52,10 @@ public class MatchRecordFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        mMatchViewModel = new ViewModelProvider(this).get(MatchViewModel.class);
+        mMatchViewModel.getDataList();
+
     }
 
     @Override
@@ -65,7 +73,7 @@ public class MatchRecordFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MatchRecordRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            recyclerView.setAdapter(new MatchRecordRecyclerViewAdapter());
         }
         return view;
     }
