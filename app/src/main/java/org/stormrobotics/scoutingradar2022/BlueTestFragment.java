@@ -1,24 +1,23 @@
 package org.stormrobotics.scoutingradar2022;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,14 +29,14 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.welie.blessed.BluetoothCentralManager;
-import com.welie.blessed.BluetoothPeripheral;
+import com.welie.blessed.*;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.UUID;
 
 
 /**
@@ -47,22 +46,25 @@ import java.util.Objects;
  */
 public class BlueTestFragment extends Fragment {
     private Context mContext;
-//    private static final int REQUEST_ENABLE_BT = 1;
-//    private static final int ACCESS_LOCATION_REQUEST = 2;
 
     private static final String[] PERMISSIONS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.BLUETOOTH,
-            Manifest.permission.BLUETOOTH_ADMIN
+            Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_ADVERTISE,
+            Manifest.permission.BLUETOOTH_CONNECT
     };
 
-    private EditText mSsidEditText;
+    String uuidAsString = "d0c2ef48-5f40-4d1d-b113-d726300b5578";
+    UUID uuid = UUID.fromString(uuidAsString);
+
     private final ActivityResultLauncher<String[]> requestLocationPermissionsLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.RequestMultiplePermissions(), (isGranted) -> {
                         if (!isGranted.containsValue(false)) {
-                            fillSsid(mContext);
+                            scan(mContext);
                         }
                     }
             );
@@ -70,12 +72,10 @@ public class BlueTestFragment extends Fragment {
             registerForActivityResult(
                     new ActivityResultContracts.RequestMultiplePermissions(), (isGranted) -> {
                         if (!isGranted.containsValue(false)) {
-                            fillSsid(mContext);
+                            scan(mContext);
                         }
                     }
             );
-
-
 
 
     public BlueTestFragment() {
@@ -92,58 +92,62 @@ public class BlueTestFragment extends Fragment {
         return new BlueTestFragment();
     }
 
-    private void fillSsid(@NonNull Context context) {
-        // Get current WiFi info
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(
-                Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        String ssid = wifiInfo.getSSID();
-        if (ssid != null && !TextUtils.isEmpty(ssid) && !ssid.equalsIgnoreCase("<unknown ssid>")) {
-            mSsidEditText.setText(ssid.substring(1, ssid.length() - 1));
-        }
+
+    public void scanForPeripheralsWithServices(UUID serviceUUID) {
+
     }
+
 
     @Override
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        checkPermsAndFillSsid(mContext);
     }
 
-    private void checkPermsAndFillSsid(@NonNull Context context) {
+    private void checkPerms(@NonNull Context context) {
         boolean areAllPermissionsGranted = true;
-        for (int j = 0; j < Integer.parseInt(String.valueOf(PERMISSIONS.length)); j++){
-            if (ContextCompat.checkSelfPermission(context, PERMISSIONS[j]) != PackageManager.PERMISSION_GRANTED){
+        for (int j = 0; j < Integer.parseInt(String.valueOf(PERMISSIONS.length)); j++) {
+            if (ActivityCompat.checkSelfPermission(context, PERMISSIONS[j]) !=
+                PackageManager.PERMISSION_GRANTED) {
                 areAllPermissionsGranted = false;
             }
         }
 
-        if (areAllPermissionsGranted){
-            fillSsid(context);
-        } else{
+        if (!areAllPermissionsGranted) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) ||
-                     shouldShowRequestPermissionRationale(
-                             Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                shouldShowRequestPermissionRationale(
+                        Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 showLocPermExplanation();
             } else {
-                requestLocationPermissionsLauncher.launch(PERMISSIONS);
+                requestLocationPermissionsLauncher.launch(new String[]
+                        {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION});
             }
-            if (shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH) ||
-                  shouldShowRequestPermissionRationale(
-                          Manifest.permission.BLUETOOTH_ADMIN)) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH)
+                || shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_ADMIN)
+                || shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_SCAN)
+                || shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_ADVERTISE)
+                || shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH_CONNECT)) {
                 showBtPermExplanation();
             } else {
-                requestBluetoothPermissionsLauncher.launch(PERMISSIONS);
+                requestBluetoothPermissionsLauncher.launch(new String[] {Manifest.permission.BLUETOOTH,
+                                                                         Manifest.permission.BLUETOOTH_ADMIN,
+                                                                         Manifest.permission.BLUETOOTH_SCAN,
+                                                                         Manifest.permission.BLUETOOTH_ADVERTISE,
+                                                                         Manifest.permission.BLUETOOTH_CONNECT});
             }
         }
-
-
-        // if all the permissions are granted then fillSsid
-        // else  if we should show location perms show the explanation
-        //       if we should show bluetooth perms show the explanation
-        //otherwise launch location permissions
-
     }
+
+    @SuppressLint("MissingPermission")
+    private void scan(Context context) {
+
+        if (BluetoothAdapter.isDiscovering()) {
+
+        }
+    }
+
+
+
 
     private void showLocPermExplanation() {
         // Build an alert dialog to explain why we need location permission
@@ -158,6 +162,8 @@ public class BlueTestFragment extends Fragment {
         });
         builder.create().show();
     }
+
+
 
     private void showBtPermExplanation() {
         // Build an alert dialog to explain why we need Bluetooth permission
@@ -193,7 +199,7 @@ public class BlueTestFragment extends Fragment {
     }
 
     private void onSendButtonClick(View view){
-
+        scan(mContext);
     }
 
     private void onReceiveButtonClick(View view){
@@ -205,6 +211,7 @@ public class BlueTestFragment extends Fragment {
         if(bluetoothAdapter == null) return false;
         return bluetoothAdapter.isEnabled();
     }
+
 
 
     @NotNull
