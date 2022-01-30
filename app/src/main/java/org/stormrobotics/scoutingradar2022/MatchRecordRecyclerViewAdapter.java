@@ -56,11 +56,12 @@ public class MatchRecordRecyclerViewAdapter extends ListAdapter<ObjectiveMatchDa
 
         public void bind(ObjectiveMatchData item) {
             mItem = item;
-            mMatchNumView.setText(item.getMatchNum());
-            mTeamNumView.setText(item.getTeamNum());
+            mMatchNumView.setText(mMatchNumView.getContext().getResources().getString(R.string.record_text_match, item.getMatchNum()));
+            mTeamNumView.setText(mTeamNumView.getContext().getResources().getString(R.string.record_text_team, item.getTeamNum()));
         }
 
         @Override
+        @NonNull
         public String toString() {
             return super.toString() + " '" + mTeamNumView.getText() + "'";
         }
@@ -70,13 +71,14 @@ public class MatchRecordRecyclerViewAdapter extends ListAdapter<ObjectiveMatchDa
         @Override
         public boolean areItemsTheSame(
                 @NonNull ObjectiveMatchData oldItem, @NonNull ObjectiveMatchData newItem) {
-            return false;
+            return oldItem == newItem;
         }
 
         @Override
         public boolean areContentsTheSame(
                 @NonNull ObjectiveMatchData oldItem, @NonNull ObjectiveMatchData newItem) {
-            return false;
+            return (oldItem.getMatchNum() == newItem.getMatchNum() && oldItem.getTeamNum() ==
+                                                                      newItem.getTeamNum());
         }
     }
 }

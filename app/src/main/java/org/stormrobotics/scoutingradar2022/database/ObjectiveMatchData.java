@@ -27,6 +27,16 @@ public class ObjectiveMatchData {
     @ColumnInfo(name= "endgame_data")
     private String endgameData;
 
+    // Constructors
+
+    public ObjectiveMatchData() {}
+
+    public ObjectiveMatchData(int teamNum, int matchNum) {
+        this.teamNum = teamNum;
+        this.matchNum = matchNum;
+    }
+
+
     //getters and setters for member variables
 
     public int getTeamNum() {
