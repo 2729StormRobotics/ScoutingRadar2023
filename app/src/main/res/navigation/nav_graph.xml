@@ -14,5 +14,30 @@
             android:id="@+id/matchRecordFragment"
             android:name="org.stormrobotics.scoutingradar2022.MatchRecordFragment"
             android:label="fragment_match_record_list"
-            tools:layout="@layout/fragment_match_record_list" />
+            tools:layout="@layout/fragment_match_record_list" >
+        <action
+                android:id="@+id/action_matchRecordFragment_to_pitScoutFragment"
+                app:destination="@id/pitScoutFragment" />
+        <action
+                android:id="@+id/action_matchRecordFragment_to_objectiveMatchFragment"
+                app:destination="@id/objectiveMatchFragment" />
+        <action
+                android:id="@+id/action_matchRecordFragment_to_subjectiveMatchFragment"
+                app:destination="@id/subjectiveMatchFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/objectiveMatchFragment"
+            android:name="org.stormrobotics.scoutingradar2022.ObjectiveMatchFragment"
+            android:label="fragment_objective_match"
+            tools:layout="@layout/fragment_objective_match" />
+    <fragment
+            android:id="@+id/subjectiveMatchFragment"
+            android:name="org.stormrobotics.scoutingradar2022.SubjectiveMatchFragment"
+            android:label="fragment_subjective_match"
+            tools:layout="@layout/fragment_subjective_match" />
+    <fragment
+            android:id="@+id/pitScoutFragment"
+            android:name="org.stormrobotics.scoutingradar2022.PitScoutFragment"
+            android:label="fragment_pit_scout"
+            tools:layout="@layout/fragment_pit_scout" />
 </navigation>
