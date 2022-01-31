@@ -3,6 +3,11 @@ package org.stormrobotics.scoutingradar2022;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothClass;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.le.ScanResult;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,12 +27,10 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
@@ -37,10 +40,10 @@ import com.welie.blessed.*;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
 
 
 /**
@@ -49,6 +52,9 @@ import java.util.UUID;
  * create an instance of this fragment.
  */
 public class BlueTestFragment extends Fragment {
+    private @NotNull
+    static final Handler callbackHandler = null;
+
     private Context mContext;
 
     private static final String[] PERMISSIONS = {
@@ -85,13 +91,49 @@ public class BlueTestFragment extends Fragment {
         public void onDiscoveredPeripheral(
                 @NonNull BluetoothPeripheral peripheral, @NonNull ScanResult scanResult){
             central.stopScan();
-            central.connectPeripheral(peripheral, new peripheralCallback);
+            central.connectPeripheral(peripheral, peripheralCallback);
         }
     };
-    private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {}
+    private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {
+        @Override
+        public void onCharacteristicUpdate(
+                @NonNull BluetoothPeripheral peripheral,
+                @NonNull byte[] value,
+                @NonNull BluetoothGattCharacteristic characteristic, @NonNull GattStatus status) {
+            super.onCharacteristicUpdate(peripheral, value, characteristic, status);
+            // Data transferred to this device can be accessed from here.
+        }
+
+        @Override
+        public void onServicesDiscovered(@NonNull BluetoothPeripheral peripheral) {
+            super.onServicesDiscovered(peripheral);
+            BluetoothGattService scoutingService = peripheral.getServices().get(0);
+
+            BluetoothGattCharacteristic pitCharacteristic = scoutingService.getCharacteristics().get(0);
+            BluetoothGattCharacteristic objectiveMatchCharacteristic = scoutingService.getCharacteristics().get(1);
+            BluetoothGattCharacteristic subjectiveMatchCharacteristic = scoutingService.getCharacteristics().get(2);
+
+            peripheral.readCharacteristic(pitCharacteristic);
+            peripheral.readCharacteristic(objectiveMatchCharacteristic);
+            peripheral.readCharacteristic(subjectiveMatchCharacteristic);
 
 
-    public BlueTestFragment() {
+        }
+    };
+    private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            super.onConnectionStateChange(gatt, status, newState);
+        }
+
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            super.onServicesDiscovered(gatt, status);
+        }
+    };
+
+
+    public BlueTestFragment(@NotNull Handler callbackHandler) {
         // Required empty public constructor
     }
 
@@ -102,7 +144,7 @@ public class BlueTestFragment extends Fragment {
      * @return A new instance of fragment BlueTestFragment.
      */
     public static BlueTestFragment newInstance() {
-        return new BlueTestFragment();
+        return new BlueTestFragment(callbackHandler);
     }
 
 
