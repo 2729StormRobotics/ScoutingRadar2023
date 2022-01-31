@@ -3,6 +3,7 @@ package org.stormrobotics.scoutingradar2022;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.bluetooth.le.ScanResult;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +32,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.welie.blessed.BluetoothCentralManager;
+import com.welie.blessed.BluetoothPeripheralCallback;
 import com.welie.blessed.*;
 
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +62,7 @@ public class BlueTestFragment extends Fragment {
     };
 
     String uuidAsString = "d0c2ef48-5f40-4d1d-b113-d726300b5578";
-    UUID uuid = UUID.fromString(uuidAsString);
+    UUID serviceUuid = UUID.fromString(uuidAsString);
 
     private final ActivityResultLauncher<String[]> requestLocationPermissionsLauncher =
             registerForActivityResult(
@@ -76,6 +80,15 @@ public class BlueTestFragment extends Fragment {
                         }
                     }
             );
+    private final BluetoothCentralManagerCallback bluetoothCentralManagerCallback = new BluetoothCentralManagerCallback() {
+        @Override
+        public void onDiscoveredPeripheral(
+                @NonNull BluetoothPeripheral peripheral, @NonNull ScanResult scanResult){
+            central.stopScan();
+            central.connectPeripheral(peripheral, new peripheralCallback);
+        }
+    };
+    private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {}
 
 
     public BlueTestFragment() {
@@ -93,9 +106,6 @@ public class BlueTestFragment extends Fragment {
     }
 
 
-    public void scanForPeripheralsWithServices(UUID serviceUUID) {
-
-    }
 
 
     @Override
@@ -138,12 +148,12 @@ public class BlueTestFragment extends Fragment {
         }
     }
 
+    BluetoothCentralManager central = new BluetoothCentralManager(mContext.getApplicationContext(),
+            bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
+
     @SuppressLint("MissingPermission")
     private void scan(Context context) {
-
-        if (BluetoothAdapter.isDiscovering()) {
-
-        }
+        central.scanForPeripheralsWithServices(new UUID[] {serviceUuid});
     }
 
 
@@ -229,13 +239,6 @@ public class BlueTestFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
     }
-
-//    private BluetoothPeripheral getPeripheral(String peripheralAddress) {
-//        BluetoothCentralManager central = BluetoothHandler.getInstance(
-//                mContext.getApplicationContext()).central;
-//        return central.getPeripheral(peripheralAddress);
-//    }
-
 
 
     private boolean areLocationServicesEnabled() {
