@@ -6,6 +6,7 @@
     <string name="location_permission_explanation_title" >Location Permission</string>
     <string name="bluetooth_permission_explanation" >We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
     <string name="bluetooth_permission_explanation_title" >Bluetooth Permission</string>
+    <string name="bt_null">Error: Bluetooth object is null. </string>
     <string name="proceed" >Grant</string>
     <string name="cancel" >Cancel</string>
 

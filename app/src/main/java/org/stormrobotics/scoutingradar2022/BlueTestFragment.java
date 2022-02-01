@@ -1,5 +1,7 @@
 package org.stormrobotics.scoutingradar2022;
 
+import static org.stormrobotics.scoutingradar2022.Constants.Service_UUID;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -27,6 +29,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.ParcelUuid;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +70,6 @@ public class BlueTestFragment extends Fragment {
             Manifest.permission.BLUETOOTH_CONNECT
     };
 
-    String uuidAsString = "d0c2ef48-5f40-4d1d-b113-d726300b5578";
-    UUID serviceUuid = UUID.fromString(uuidAsString);
 
     private final ActivityResultLauncher<String[]> requestLocationPermissionsLauncher =
             registerForActivityResult(
@@ -195,7 +196,7 @@ public class BlueTestFragment extends Fragment {
 
     @SuppressLint("MissingPermission")
     private void scan(Context context) {
-        central.scanForPeripheralsWithServices(new UUID[] {serviceUuid});
+        central.scanForPeripheralsWithServices(new UUID[] {Service_UUID.getUuid()});
     }
 
 
@@ -243,10 +244,8 @@ public class BlueTestFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_blue_test, container, false);
-        Button mSendButton = v.findViewById(R.id.blue_btn_send);
-        mSendButton.setOnClickListener(this::onSendButtonClick);
         Button mReceiveButton = v.findViewById(R.id.blue_btn_receive);
-        mSendButton.setOnClickListener(this::onReceiveButtonClick);
+        mReceiveButton.setOnClickListener(this::onReceiveButtonClick);
         return v;
     }
 

@@ -8,22 +8,25 @@
         android:id="@+id/blue_layout_main">
 
     <Button
-            android:text="Send Data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/blue_btn_send"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/blue_btn_receive"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
             android:text="Receive Data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/blue_btn_receive"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/blue_btn_send"
-            app:layout_constraintStart_toStartOf="@+id/blue_btn_send"
-            app:layout_constraintEnd_toEndOf="@+id/blue_btn_send" />
+            android:layout_marginBottom="416dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+            android:text="SEND DATA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/send_data_switch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="564dp"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintBottom_toTopOf="@+id/blue_btn_receive"
+            app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
