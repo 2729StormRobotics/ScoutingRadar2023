@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-android:name="org.stormrobotics.scoutingradar2022.MatchRecordFragment"
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".MatchRecordFragment" >
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:name="org.stormrobotics.scoutingradar2022.MatchRecordFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MatchRecordFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+
+                />
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <TextView
-        android:id="@+id/record_text_title"
+            android:id="@+id/record_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="top|center_horizontal"
             android:textAppearance="?textAppearanceHeadline6"
             android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-            android:text="Previously Scouted Matches (Objective)"
-        />
+            android:text="Previously Scouted Matches (Objective)" />
 
 
-<androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/record_recycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        tools:listitem="@layout/fragment_match_record"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/record_text_title" />
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/record_recycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/fragment_match_record"
+            android:padding="16dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
 
 
     <com.leinardi.android.speeddial.SpeedDialView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:contentDescription="@string/add_word"
             android:id="@+id/record_fab"
-        app:sdMainFabClosedSrc="@drawable/ic_baseline_add_24"/>
+            app:sdMainFabClosedSrc="@drawable/ic_baseline_add_24" />
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

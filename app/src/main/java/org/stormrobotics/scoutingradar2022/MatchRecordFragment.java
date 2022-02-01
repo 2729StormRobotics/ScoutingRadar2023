@@ -3,15 +3,20 @@ package org.stormrobotics.scoutingradar2022;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBindings;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,8 +41,32 @@ public class MatchRecordFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(
+            @NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_top_app_bar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.item_settings) {
+            mNavController.navigate(R.id.action_matchRecordFragment_to_settingsFragment);
+            return true;
+        } else if (itemId == R.id.item_import_data) {
+            mNavController.navigate(R.id.action_matchRecordFragment_to_importDataFragment);
+            return true;
+        } else if (itemId == R.id.item_export_data) {
+            mNavController.navigate(R.id.action_matchRecordFragment_to_exportDataFragment);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -49,7 +78,8 @@ public class MatchRecordFragment extends Fragment {
         // Get the recycler view
         RecyclerView recyclerView = view.findViewById(R.id.record_recycler);
         // Create the adapter
-        final MatchRecordRecyclerViewAdapter adapter = new MatchRecordRecyclerViewAdapter(new MatchRecordRecyclerViewAdapter.RecordDiff());
+        final MatchRecordRecyclerViewAdapter adapter =
+                new MatchRecordRecyclerViewAdapter(new MatchRecordRecyclerViewAdapter.RecordDiff());
         // Set up the recycler view with the adapter
         Context context = view.getContext();
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -67,10 +97,14 @@ public class MatchRecordFragment extends Fragment {
         speedDialView.inflate(R.menu.menu_speed_dial);
         speedDialView.setOnActionSelectedListener(this::onActionSelected);
 
-        mNavController = Navigation.findNavController(view);
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getActivity().getSupportFragmentManager()
+                                               .findFragmentById(R.id.nav_host_fragment);
+        mNavController = navHostFragment.getNavController();
 
         return view;
     }
+
     public boolean onActionSelected(SpeedDialActionItem actionItem) {
 
         if (actionItem.getId() == R.id.item_pitscout) {

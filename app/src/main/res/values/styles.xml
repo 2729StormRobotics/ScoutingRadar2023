@@ -27,7 +27,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Base.Theme.ScoutingRadar2022" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Base.Theme.ScoutingRadar2022" parent="Theme.MaterialComponents.DayNight.NoActionBar">
             
     </style>
 </resources>
