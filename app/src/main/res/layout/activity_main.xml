@@ -6,6 +6,15 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            />
 
 
     <androidx.fragment.app.FragmentContainerView

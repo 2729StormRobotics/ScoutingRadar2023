@@ -2,6 +2,7 @@ package org.stormrobotics.scoutingradar2022.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 //defines the table and the identifier for each row
 @Entity(tableName = "objective_matches", primaryKeys = {"team_num", "match_num"})
@@ -31,6 +32,7 @@ public class ObjectiveMatchData {
 
     public ObjectiveMatchData() {}
 
+    @Ignore
     public ObjectiveMatchData(int teamNum, int matchNum) {
         this.teamNum = teamNum;
         this.matchNum = matchNum;
