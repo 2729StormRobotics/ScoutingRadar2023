@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/matchRecordFragment">
+
+    <fragment
+            android:id="@+id/blueTestFragment"
+            android:name="org.stormrobotics.scoutingradar2022.BlueTestFragment"
+            android:label="fragment_blue_test"
+            tools:layout="@layout/fragment_blue_test" />
+    <fragment
+            android:id="@+id/matchRecordFragment"
+            android:name="org.stormrobotics.scoutingradar2022.MatchRecordFragment"
+            android:label="@string/app_name"
+            tools:layout="@layout/fragment_match_record_list" >
+        <action
+                android:id="@+id/action_matchRecordFragment_to_pitScoutFragment"
+                app:destination="@id/pitScoutFragment" />
+        <action
+                android:id="@+id/action_matchRecordFragment_to_objectiveMatchFragment"
+                app:destination="@id/objectiveMatchFragment" />
+        <action
+                android:id="@+id/action_matchRecordFragment_to_subjectiveMatchFragment"
+                app:destination="@id/subjectiveMatchFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/objectiveMatchFragment"
+            android:name="org.stormrobotics.scoutingradar2022.ObjectiveMatchFragment"
+            android:label="@string/label_fragment_objective"
+            tools:layout="@layout/fragment_objective_match" />
+    <fragment
+            android:id="@+id/subjectiveMatchFragment"
+            android:name="org.stormrobotics.scoutingradar2022.SubjectiveMatchFragment"
+            android:label="@string/label_fragment_subjective"
+            tools:layout="@layout/fragment_subjective_match" />
+    <fragment
+            android:id="@+id/pitScoutFragment"
+            android:name="org.stormrobotics.scoutingradar2022.PitScoutFragment"
+            android:label="@string/label_fragment_pit_scout"
+            tools:layout="@layout/fragment_pit_scout" />
+    <fragment
+            android:id="@+id/importDataFragment"
+            android:name="org.stormrobotics.scoutingradar2022.ImportDataFragment"
+            android:label="fragment_import_data"
+            tools:layout="@layout/fragment_import_data" />
+    <fragment
+            android:id="@+id/exportDataFragment"
+            android:name="org.stormrobotics.scoutingradar2022.ExportDataFragment"
+            android:label="fragment_export_data"
+            tools:layout="@layout/fragment_export_data" />
+    <fragment
+            android:id="@+id/settingsFragment"
+            android:name="org.stormrobotics.scoutingradar2022.SettingsFragment"
+            android:label="SettingsFragment" /><action android:id="@+id/action_global_importDataFragment" app:destination="@id/importDataFragment"/><action android:id="@+id/action_global_exportDataFragment" app:destination="@id/exportDataFragment"/><action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment"/>
+</navigation>

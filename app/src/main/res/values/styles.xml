@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.ScoutingRadar2022.Charge" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+    <style name="Base.Theme.ScoutingRadar2022.Charge" parent="Base.Theme.ScoutingRadar2022">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/chargePrimaryColor</item>
         <item name="colorPrimaryVariant">@color/chargePrimaryDarkColor</item>
@@ -13,7 +14,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Base.Theme.ScoutingRadar2022.RedWatch." parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Base.Theme.ScoutingRadar2022.RedWatch" parent="Base.Theme.ScoutingRadar2022">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/redWatchPrimaryColor</item>
         <item name="colorPrimaryVariant">@color/redWatchPrimaryDarkColor</item>
@@ -25,5 +26,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+    <style name="Base.Theme.ScoutingRadar2022" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+            
     </style>
 </resources>
