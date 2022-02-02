@@ -40,28 +40,9 @@ public class MatchRecordFragment extends Fragment {
         return new MatchRecordFragment();
     }
 
-    @Override
-    public void onCreateOptionsMenu(
-            @NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_top_app_bar, menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.item_settings) {
-            mNavController.navigate(R.id.action_matchRecordFragment_to_settingsFragment);
-            return true;
-        } else if (itemId == R.id.item_import_data) {
-            mNavController.navigate(R.id.action_matchRecordFragment_to_importDataFragment);
-            return true;
-        } else if (itemId == R.id.item_export_data) {
-            mNavController.navigate(R.id.action_matchRecordFragment_to_exportDataFragment);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
 
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

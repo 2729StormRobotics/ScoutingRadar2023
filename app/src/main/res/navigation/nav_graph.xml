@@ -41,17 +41,17 @@
             android:label="@string/label_fragment_pit_scout"
             tools:layout="@layout/fragment_pit_scout" />
     <fragment
-            android:id="@+id/importDataFragment"
+            android:id="@+id/import_data_fragment"
             android:name="org.stormrobotics.scoutingradar2022.ImportDataFragment"
             android:label="fragment_import_data"
             tools:layout="@layout/fragment_import_data" />
     <fragment
-            android:id="@+id/exportDataFragment"
+            android:id="@+id/export_data_fragment"
             android:name="org.stormrobotics.scoutingradar2022.ExportDataFragment"
             android:label="fragment_export_data"
             tools:layout="@layout/fragment_export_data" />
     <fragment
-            android:id="@+id/settingsFragment"
+            android:id="@+id/settings_fragment"
             android:name="org.stormrobotics.scoutingradar2022.SettingsFragment"
-            android:label="SettingsFragment" /><action android:id="@+id/action_global_importDataFragment" app:destination="@id/importDataFragment"/><action android:id="@+id/action_global_exportDataFragment" app:destination="@id/exportDataFragment"/><action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment"/>
+            android:label="SettingsFragment" /><action android:id="@+id/action_global_importDataFragment" app:destination="@id/import_data_fragment"/><action android:id="@+id/action_global_exportDataFragment" app:destination="@id/export_data_fragment"/><action android:id="@+id/action_global_settingsFragment" app:destination="@id/settings_fragment"/>
 </navigation>

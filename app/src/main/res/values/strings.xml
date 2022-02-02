@@ -27,4 +27,8 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="recycler_title">Previously Scouted Matches (Objective)</string>
+    <string name="button_start">Start</string>
+    <string name="abbreviation_start">START</string>
+    <string name="button_end">End</string>
+    <string name="abbreviation_end">END</string>
 </resources>
