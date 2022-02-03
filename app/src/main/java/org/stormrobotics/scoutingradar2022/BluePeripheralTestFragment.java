@@ -1,5 +1,7 @@
 package org.stormrobotics.scoutingradar2022;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.AdvertiseCallback;
@@ -21,7 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.concurrent.TimeUnit;
 
-public class BluePeripheralTestFragment extends Fragment implements View.OnClickListener{
+public class BluePeripheralTestFragment extends PermissionsFragment implements View.OnClickListener {
     private BluetoothLeAdvertiser mBluetoothLeAdvertiser;
     private AdvertiseCallback mAdvertiseCallback;
     private Handler mHandler;
@@ -53,16 +55,18 @@ public class BluePeripheralTestFragment extends Fragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (((Switch) v).isChecked()){
+        if (((Switch) v).isChecked()) {
             startAdvertising();
-        }else{
+        } else {
             stopAdvertising();
         }
     }
 
-    private void startAdvertising(){
+    @SuppressLint("MissingPermission")
+    private void startAdvertising() {
         if (mBluetoothLeAdvertiser == null) {
-            BluetoothManager mBluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+            BluetoothManager mBluetoothManager =
+                    (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
             if (mBluetoothManager != null) {
                 BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
                 if (mBluetoothAdapter != null) {
@@ -76,10 +80,10 @@ public class BluePeripheralTestFragment extends Fragment implements View.OnClick
         }
 
         if (mAdvertiseCallback == null) {
+            checkPermissionsAndAct(mContext);
             AdvertiseSettings settings = buildAdvertiseSettings();
             AdvertiseData data = buildAdvertiseData();
             mAdvertiseCallback = new SampleAdvertiseCallback();
-            //need to check perms here
             if (mBluetoothLeAdvertiser != null) {
                 mBluetoothLeAdvertiser.startAdvertising(settings, data,
                         mAdvertiseCallback);
@@ -88,8 +92,8 @@ public class BluePeripheralTestFragment extends Fragment implements View.OnClick
     }
 
 
+    @SuppressLint("MissingPermission")
     private void stopAdvertising() {
-        //needs permission check
         Toast.makeText(mContext, "Advertising stopping", Toast.LENGTH_LONG).show();
         if (mBluetoothLeAdvertiser != null) {
             mBluetoothLeAdvertiser.stopAdvertising(mAdvertiseCallback);
@@ -129,6 +133,31 @@ public class BluePeripheralTestFragment extends Fragment implements View.OnClick
         return dataBuilder.build();
     }
 
+    @Override
+    protected String[] getPermissionsToRequest() {
+        return new String[]{
+//                Manifest.permission.BLUETOOTH,
+//                Manifest.permission.BLUETOOTH_ADMIN,
+Manifest.permission.BLUETOOTH_ADVERTISE
+        };
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    protected void onPermissionsGranted() {
+        
+    }
+
+    @Override
+    protected String getExplanationDialogTitle() {
+        return getString(R.string.bluetooth_permission_explanation_title);
+    }
+
+    @Override
+    protected String getExplanationDialogMessage() {
+        return getString(R.string.bluetooth_permission_explanation);
+    }
+
     /**
      * Custom callback after Advertising succeeds or fails to start. Broadcasts the error code
      * in an Intent to be picked up by AdvertiserFragment and stops this Service.
@@ -152,12 +181,13 @@ public class BluePeripheralTestFragment extends Fragment implements View.OnClick
      * Starts a delayed Runnable that will cause the BLE Advertising to timeout and stop after a
      * set amount of time.
      */
-    private void setTimeout(){
+    private void setTimeout() {
         mHandler = new Handler();
         timeoutRunnable = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mContext, "Advertising has reached timeout of " + timeoutLength + "ms, stopping advertising.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Advertising has reached timeout of " + timeoutLength +
+                                         "ms, stopping advertising.", Toast.LENGTH_LONG).show();
             }
         };
         mHandler.postDelayed(timeoutRunnable, timeoutLength);
