@@ -31,4 +31,10 @@
     <string name="abbreviation_start">START</string>
     <string name="button_end">End</string>
     <string name="abbreviation_end">END</string>
+    <string name="button_undo">Undo</string>
+    <string name="abbreviation_undo">UNDO</string>
+    <string name="button_submit">Submit</string>
+    <string name="abbreviation_submit">SUBMIT</string>
+    <string name="team_number">Team Number</string>
+    <string name="match_number">Match Number</string>
 </resources>
