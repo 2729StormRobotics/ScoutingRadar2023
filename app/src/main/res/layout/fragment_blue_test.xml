@@ -8,25 +8,37 @@
         android:id="@+id/blue_layout_main">
 
     <Button
-            android:text="Receive Data"
+            android:text="@string/receive_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/blue_btn_receive"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="416dp"
+            android:id="@+id/btn_receive"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.789" />
 
-    <Switch
-            android:text="SEND DATA"
+    <Button
+            android:text="@string/send_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/send_data_switch"
+            android:id="@+id/btn_send"
+            app:layout_constraintBottom_toTopOf="@+id/btn_receive"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="564dp"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintBottom_toTopOf="@+id/blue_btn_receive"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.596" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_advertising_status"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_send"
+            android:textSize="20sp"
+            android:text="Not advertising" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

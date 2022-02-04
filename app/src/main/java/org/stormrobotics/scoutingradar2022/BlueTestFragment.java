@@ -5,7 +5,6 @@ import static org.stormrobotics.scoutingradar2022.Constants.Service_UUID;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -29,7 +28,6 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.ParcelUuid;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +41,6 @@ import com.welie.blessed.*;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -134,7 +131,7 @@ public class BlueTestFragment extends Fragment {
     };
 
 
-    public BlueTestFragment(@NotNull Handler callbackHandler) {
+    public BlueTestFragment() {
         // Required empty public constructor
     }
 
@@ -145,7 +142,7 @@ public class BlueTestFragment extends Fragment {
      * @return A new instance of fragment BlueTestFragment.
      */
     public static BlueTestFragment newInstance() {
-        return new BlueTestFragment(callbackHandler);
+        return new BlueTestFragment();
     }
 
 
@@ -191,8 +188,7 @@ public class BlueTestFragment extends Fragment {
         }
     }
 
-    BluetoothCentralManager central = new BluetoothCentralManager(mContext.getApplicationContext(),
-            bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
+    BluetoothCentralManager central;
 
     @SuppressLint("MissingPermission")
     private void scan(Context context) {
@@ -236,6 +232,8 @@ public class BlueTestFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        central = new BluetoothCentralManager(mContext.getApplicationContext(),
+                bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
     }
 
     @Override
@@ -244,7 +242,7 @@ public class BlueTestFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_blue_test, container, false);
-        Button mReceiveButton = v.findViewById(R.id.blue_btn_receive);
+        Button mReceiveButton = v.findViewById(R.id.btn_receive);
         mReceiveButton.setOnClickListener(this::onReceiveButtonClick);
         return v;
     }

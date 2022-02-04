@@ -3,11 +3,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph"
-        app:startDestination="@id/blueTestFragment">
+        app:startDestination="@id/bluePeripheralTestFragment">
 
     <fragment
-            android:id="@+id/blueTestFragment"
-            android:name="org.stormrobotics.scoutingradar2022.BlueTestFragment"
-            android:label="fragment_blue_test"
+            android:id="@+id/bluePeripheralTestFragment"
+            android:name="org.stormrobotics.scoutingradar2022.BluePeripheralTestFragment"
+            android:label="fragment_peripheral"
             tools:layout="@layout/fragment_blue_test" />
 </navigation>
