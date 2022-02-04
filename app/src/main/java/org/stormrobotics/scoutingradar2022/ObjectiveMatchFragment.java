@@ -20,9 +20,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static org.stormrobotics.scoutingradar2022.database.DataProcessor.Action;
+
+import org.stormrobotics.scoutingradar2022.database.DataProcessor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -137,7 +143,10 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
         mChronometer.start();
         // Add the START action to the actions list
         mActionList.add(new Action(mButtonInfos[0].abbreviation, 0L));
-
+        for (ButtonInfo buttonInfo : mButtonInfos) {
+            buttonInfo.button.setEnabled(true);
+        }
+        mButtonInfos[0].button.setEnabled(false);
         // Update the TextView
         updateActionsListView();
     }
@@ -145,6 +154,13 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
     private void endMatch() {
         // Stop the chronometer
         mChronometer.stop();
+
+        // Add the Spinner Info
+        for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
+            mActionList.add(new Action(spinnerInfo.abbreviation,
+                    spinnerInfo.contents_abbreviations
+                            [spinnerInfo.spinner.getSelectedItemPosition()]));
+        }
 
         // Add the STOP action to the actions list
         mActionList.add(new Action(mButtonInfos[mButtonInfos.length - 1].abbreviation,
@@ -155,20 +171,21 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
 
         StringBuilder sb = new StringBuilder();
         for (Action action : mActionList) {
-            sb.append(action.getTimeString())
+            sb.append(action.getSubAction().equals("N/A") ?
+                      String.valueOf(action.getTimeString()) : action.getSubAction())
               .append(" ")
               .append(action.getAbbreviation())
               .append("\n");
         }
 
+
         // Make pop-up with result
         new AlertDialog.Builder(mContext).setTitle("Result").setMessage(sb.toString()).show();
-
     }
 
     private void undoAction() {
         if (mActionList.size() > 1) {
-            mActionList.remove(mActionList.size()-1);
+            mActionList.remove(mActionList.size() - 1);
         }
         updateActionsListView();
     }
@@ -176,11 +193,11 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
     public void generateUI() {
         ConstraintSet constraintSet = new ConstraintSet();
 
-        Button start = new Button(mContext);
+        Button start = new MaterialButton(mContext);
         int startId = View.generateViewId();
         start.setId(startId);
         mButtonInfos[0] = new ButtonInfo(getString(R.string.button_start),
-                getString(R.string.abbreviation_start), startId);
+                getString(R.string.abbreviation_start), startId, start);
         start.setText(R.string.button_start);
         start.setOnClickListener(this);
         mConstraintLayout.addView(start);
@@ -197,10 +214,12 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
 
 
         for (int i = 1; i < mButtonInfos.length - 2; i++) {
-            Button btn = new Button(mContext);
+            Button btn = new MaterialButton(mContext);
             int buttonId = View.generateViewId();
             btn.setId(buttonId);
-            mButtonInfos[i] = new ButtonInfo(BUTTONS[i - 1], BUTTON_ABBREVIATIONS[i - 1], buttonId);
+            btn.setEnabled(false);
+            mButtonInfos[i] = new ButtonInfo(BUTTONS[i - 1], BUTTON_ABBREVIATIONS[i - 1],
+                    buttonId, btn);
             btn.setText(BUTTONS[i - 1]);
             btn.setOnClickListener(this);
             mConstraintLayout.addView(btn);
@@ -220,18 +239,21 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
 
         }
 
-        Button undo = new Button(mContext);
+        Button undo = new MaterialButton(mContext);
         int undoId = View.generateViewId();
         undo.setId(undoId);
+        undo.setEnabled(false);
         mButtonInfos[mButtonInfos.length - 2] =
-                new ButtonInfo(getString(R.string.button_undo), getString(R.string.abbreviation_undo), undoId);
+                new ButtonInfo(getString(R.string.button_undo),
+                        getString(R.string.abbreviation_undo), undoId, undo);
         undo.setText(getString(R.string.button_undo));
         undo.setOnClickListener(this);
         mConstraintLayout.addView(undo);
         constraintSet.clone(mConstraintLayout);
         constraintSet.connect(undoId, ConstraintSet.TOP, mButtonInfos[mButtonInfos.length - 3].id,
                 ConstraintSet.BOTTOM, 0);
-        constraintSet.connect(mButtonInfos[mButtonInfos.length - 3].id, ConstraintSet.BOTTOM, undoId,
+        constraintSet.connect(mButtonInfos[mButtonInfos.length - 3].id, ConstraintSet.BOTTOM,
+                undoId,
                 ConstraintSet.TOP, 0);
         constraintSet.connect(undo.getId(), ConstraintSet.LEFT, mConstraintLayout.getId(),
                 ConstraintSet.LEFT,
@@ -248,7 +270,7 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
             int spinnerId = View.generateViewId();
             spnr.setId(spinnerId);
             mSpinnerInfos[i] = new SpinnerInfo(SPINNER_NAMES[i], SPINNER_ABBREVIATIONS[i],
-                    SPINNER_CONTENTS[i], SPINNER_CONTENTS_ABBREVIATIONS[i], spinnerId);
+                    SPINNER_CONTENTS[i], SPINNER_CONTENTS_ABBREVIATIONS[i], spinnerId, spnr);
             spnr.setOnItemSelectedListener(this);
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(mContext,
@@ -258,7 +280,7 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
             mConstraintLayout.addView(spnr);
             constraintSet.clone(mConstraintLayout);
             constraintSet.connect(spinnerId, ConstraintSet.TOP,
-                    i == 0 ? undoId : mSpinnerInfos[i-1].id, ConstraintSet.BOTTOM, 0);
+                    i == 0 ? undoId : mSpinnerInfos[i - 1].id, ConstraintSet.BOTTOM, 0);
             constraintSet.connect(spinnerId, ConstraintSet.LEFT, mConstraintLayout.getId(),
                     ConstraintSet.LEFT,
                     0);
@@ -268,11 +290,12 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
             constraintSet.applyTo(mConstraintLayout);
         }
 
-        Button submit = new Button(mContext);
+        Button submit = new MaterialButton(mContext);
         int submitId = View.generateViewId();
         submit.setId(submitId);
+        submit.setEnabled(false);
         mButtonInfos[mButtonInfos.length - 1] = new ButtonInfo(getString(R.string.button_submit),
-                getString(R.string.abbreviation_submit), submitId);
+                getString(R.string.abbreviation_submit), submitId, submit);
         submit.setText(getString(R.string.button_submit));
         submit.setOnClickListener(this);
 
@@ -309,6 +332,7 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
         }
 
         for (ButtonInfo bi : mButtonInfos) {
+
             if (view.getId() == bi.id) {
                 Action a = new Action(bi.abbreviation,
                         SystemClock.elapsedRealtime() - mChronometer.getBase());
@@ -333,12 +357,16 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
         String name;
         String abbreviation;
         int id;
+        Button button;
 
-        public ButtonInfo(String name, String abbreviation, int id) {
+        public ButtonInfo(String name, String abbreviation, int id, Button button) {
             this.name = name;
             this.abbreviation = abbreviation;
             this.id = id;
+            this.button = button;
         }
+
+
     }
 
     private static class SpinnerInfo {
@@ -347,46 +375,18 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
         String[] contents;
         String[] contents_abbreviations;
         int id;
+        Spinner spinner;
 
         public SpinnerInfo(
                 String name, String abbreviation, String[] contents,
-                String[] contents_abbreviations, int id) {
+                String[] contents_abbreviations, int id, Spinner spinner) {
             this.name = name;
             this.abbreviation = abbreviation;
             this.contents = contents;
             this.contents_abbreviations = contents_abbreviations;
             this.id = id;
+            this.spinner = spinner;
         }
-
-    }
-
-    private static class Action {
-        private final String abbreviation;
-        private final long time;
-
-
-        public Action(String action, long time) {
-            this.abbreviation = action;
-            this.time = time;
-        }
-
-        public String getAbbreviation() {
-            return abbreviation;
-        }
-
-        public int getTimeSeconds() {
-            return (int) this.time / 1000;
-        }
-
-        public long getTime() {
-            return time;
-        }
-
-        public String getTimeString() {
-            return String.format(Locale.getDefault(), "%02d:%02d", time / 60000,
-                    (time % 60000) / 1000);
-        }
-
 
     }
 }

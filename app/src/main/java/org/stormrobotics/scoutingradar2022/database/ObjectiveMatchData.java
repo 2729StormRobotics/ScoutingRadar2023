@@ -21,12 +21,8 @@ public class ObjectiveMatchData {
     private int matchNum;
     @ColumnInfo (name= "is_red")
     private boolean isRed;
-    @ColumnInfo(name= "auto_data")
-    private String autoData;
-    @ColumnInfo(name= "teleop_data")
-    private String teleopData;
-    @ColumnInfo(name= "endgame_data")
-    private String endgameData;
+    @ColumnInfo(name= "data")
+    private String data;
 
     // Constructors
 
@@ -38,6 +34,12 @@ public class ObjectiveMatchData {
         this.matchNum = matchNum;
     }
 
+    public ObjectiveMatchData(int teamNum, int matchNum, boolean isRed, String data) {
+        this.teamNum = teamNum;
+        this.matchNum = matchNum;
+        this.isRed = isRed;
+        this.data = data;
+    }
 
     //getters and setters for member variables
 
@@ -65,28 +67,11 @@ public class ObjectiveMatchData {
         isRed = red;
     }
 
-    public String getAutoData() {
-        return autoData;
+    public String getData() {
+        return data;
     }
 
-    public void setAutoData(String autoData) {
-        this.autoData = autoData;
+    public void setData(String data) {
+        this.data = data;
     }
-
-    public String getTeleopData() {
-        return teleopData;
-    }
-
-    public void setTeleopData(String teleopData) {
-        this.teleopData = teleopData;
-    }
-
-    public String getEndgameData() {
-        return endgameData;
-    }
-
-    public void setEndgameData(String endgameData) {
-        this.endgameData = endgameData;
-    }
-
 }
