@@ -5,31 +5,27 @@ import static org.stormrobotics.scoutingradar2022.Constants.*;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
-import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class BluePeripheralTestFragment extends PermissionsFragment{
@@ -58,46 +54,55 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_blue_test, container, false);
+        View view = inflater.inflate(R.layout.fragment_blue_peripheral_test, container, false);
 
         final Button mBtnSend = view.findViewById(R.id.btn_send);
         mBtnSend.setOnClickListener(this::onBtnSendClick);
 
         mAdvertisingStatusTextView = view.findViewById(R.id.textView_advertising_status);
 
+        Button receiveButton = view.findViewById(R.id.peripheral_button_receive);
+        receiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_bluePeripheralTestFragment_to_blueReceiveTestFragment);
+            }
+        });
 
         return view;
     }
 
 
-    @SuppressLint("MissingPermission")
-    private void startAdvertising() {
-        if (mBluetoothLeAdvertiser == null) {
-            BluetoothManager mBluetoothManager =
-                    (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
-            if (mBluetoothManager != null) {
-                BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
-                if (mBluetoothAdapter != null) {
-                    mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
-                } else {
-                    Toast.makeText(mContext, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(mContext, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        if (mAdvertiseCallback == null) {
-//            checkPermissionsAndAct(mContext);
-            AdvertiseSettings settings = buildAdvertiseSettings();
-            AdvertiseData data = buildAdvertiseData();
-            mAdvertiseCallback = new SampleAdvertiseCallback();
-            if (mBluetoothLeAdvertiser != null) {
-                mBluetoothLeAdvertiser.startAdvertising(settings, data,
-                        mAdvertiseCallback);
-            }
-        }
-    }
+ //   @SuppressLint("MissingPermission")
+//    private void startAdvertising() {
+//        if (mBluetoothLeAdvertiser == null) {
+//            BluetoothManager mBluetoothManager =
+//                    (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+//            if (mBluetoothManager != null) {
+//                BluetoothAdapter mBluetoothAdapter = mBluetoothManager.getAdapter();
+//                if (mBluetoothAdapter != null) {
+//                    mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
+//                } else {
+//                    Toast.makeText(mContext, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
+//                }
+//            } else {
+//                Toast.makeText(mContext, getString(R.string.bt_null), Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//
+//        if (mAdvertiseCallback == null) {
+////            checkPermissionsAndAct(mContext);
+//            AdvertiseSettings settings = buildAdvertiseSettings();
+//            AdvertiseData data = buildAdvertiseData();
+//            mAdvertiseCallback = new SampleAdvertiseCallback();
+//            if (mBluetoothLeAdvertiser != null) {
+//                mBluetoothLeAdvertiser.startAdvertising(settings, data,
+//                        mAdvertiseCallback);
+//            }
+//        }
+   // }
 
 
     @SuppressLint("MissingPermission")
@@ -131,7 +136,7 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
          */
 
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
-//        dataBuilder.addServiceUuid(Service_UUID);
+        dataBuilder.addServiceUuid(Service_UUID);
         dataBuilder.setIncludeDeviceName(true);
 
         /* For example - this will cause advertising to fail (exceeds size limit) */
@@ -144,16 +149,17 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
     @Override
     protected String[] getPermissionsToRequest() {
         return new String[]{
-//                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.ACCESS_FINE_LOCATION
 //                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.BLUETOOTH_ADVERTISE
+//                Manifest.permission.BLUETOOTH_ADVERTISE
         };
     }
 
     @SuppressLint("MissingPermission")
     @Override
     protected void onPermissionsGranted() {
-        startAdvertising();
+        BluetoothServer.getInstance(mContext).startAdvertising();
     }
 
     @Override
@@ -168,7 +174,7 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
 
     private void onBtnSendClick(View view) {
         if (isAdvertising){
-            stopAdvertising();
+//            stopAdvertising();
             mAdvertisingStatusTextView.setText("Not advertising");
             isAdvertising = false;
         }else{

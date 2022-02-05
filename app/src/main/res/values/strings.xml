@@ -11,5 +11,6 @@
     <string name="cancel" >Cancel</string>
     <string name="send_data">Send Data</string>
     <string name="receive_data">Receive Data</string>
+    <string name="receive">Receive</string>
 
 </resources>
