@@ -19,16 +19,24 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import static org.stormrobotics.scoutingradar2022.database.DataProcessor.Action;
 
+import org.stormrobotics.scoutingradar2022.database.AppDatabase;
+import org.stormrobotics.scoutingradar2022.database.AppDatabase_Impl;
 import org.stormrobotics.scoutingradar2022.database.DataProcessor;
+import org.stormrobotics.scoutingradar2022.database.ObjectiveMatchData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +84,9 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
     private ConstraintLayout mConstraintLayout;
     // Actions List TextView
     private TextView mActionsListView;
+    private TextInputLayout mTeamNumTextInput;
+    private TextInputLayout mMatchNumTextInput;
+
 
     public ObjectiveMatchFragment() {
         // Required empty public constructor
@@ -125,33 +136,39 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
         mChronometer = v.findViewById(R.id.objective_chronometer);
         mActionsListView = v.findViewById(R.id.objective_text_actions);
 
+        mTeamNumTextInput = v.findViewById(R.id.objective_text_input_team_number);
+        mMatchNumTextInput = v.findViewById(R.id.objective_text_input_match_number);
+
         return v;
     }
 
     private void updateActionsListView() {
         // Clear the TextView
-        mActionsListView.setText("");
+        mActionsListView.setText("START ");
         // Loop through the actions and add them to the TextView
         for (Action action : mActionList) {
             mActionsListView.append(action.getAbbreviation() + " ");
         }
+
     }
 
     private void startMatch() {
         // Start the chronometer
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.start();
-        // Add the START action to the actions list
-        mActionList.add(new Action(mButtonInfos[0].abbreviation, 0L));
         for (ButtonInfo buttonInfo : mButtonInfos) {
             buttonInfo.button.setEnabled(true);
         }
         mButtonInfos[0].button.setEnabled(false);
         // Update the TextView
         updateActionsListView();
+
+       // AppDatabase.getInstance(mContext).exe
+
     }
 
     private void endMatch() {
+        mButtonInfos[mButtonInfos.length-1].button.setEnabled(false);
         // Stop the chronometer
         mChronometer.stop();
 
@@ -161,10 +178,6 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
                     spinnerInfo.contents_abbreviations
                             [spinnerInfo.spinner.getSelectedItemPosition()]));
         }
-
-        // Add the STOP action to the actions list
-        mActionList.add(new Action(mButtonInfos[mButtonInfos.length - 1].abbreviation,
-                SystemClock.elapsedRealtime() - mChronometer.getBase()));
 
         // Update the TextView
         updateActionsListView();
@@ -178,6 +191,9 @@ public class ObjectiveMatchFragment extends Fragment implements View.OnClickList
               .append("\n");
         }
 
+        DataProcessor.processObjectiveMatchData(mContext, mActionList,
+                Integer.parseInt(mTeamNumTextInput.getEditText().getText().toString()),
+                Integer.parseInt(mMatchNumTextInput.getEditText().getText().toString()), true);
 
         // Make pop-up with result
         new AlertDialog.Builder(mContext).setTitle("Result").setMessage(sb.toString()).show();

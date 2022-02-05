@@ -13,7 +13,7 @@ public class ObjectiveMatchData {
     teamNum - team number
     matchNum - match number
     isRed - red/blue alliance
-    autoData, teleopData, endgameData - data that was recorded during that phase
+    data - data that was recorded during that phase
      */
     @ColumnInfo(name= "team_num")
     private int teamNum;

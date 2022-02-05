@@ -31,13 +31,16 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract PitScoutMatchDao pitScoutMatchDao();
 
-    public static synchronized AppDatabase getInstance(Context context) {
+    public static AppDatabase getInstance(final Context context) {
         //returns the single instance of the database
         //if it does not exist, creates one
         if (instance == null) {
-            instance = Room.databaseBuilder(context, AppDatabase.class, "RadarDatabase.db")
-                           .addCallback(CALLBACK_PREPOPULATE)
-                           .build();
+            synchronized (AppDatabase.class) {
+                if (instance == null) {
+                    instance = Room.databaseBuilder(context, AppDatabase.class,
+                            "RadarDatabase.db").addCallback(CALLBACK_PREPOPULATE).build();
+                }
+            }
         }
         return instance;
     }

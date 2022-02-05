@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.core.Completable;
 public interface ObjectiveMatchDao {
     //insert one match
     @Insert
-    Completable insert (ObjectiveMatchData objectiveMatchData);
+    void insert (ObjectiveMatchData objectiveMatchData);
 
 
     //insert a list of matches
@@ -23,7 +23,7 @@ public interface ObjectiveMatchDao {
 
     //inserts multiple matches independently
     @Insert
-    Completable insertAll (ObjectiveMatchData... objectiveMatchData);
+    Completable insertAll (List<ObjectiveMatchData> objectiveMatchData);
 
     //gets all entries in table
     @Query("SELECT * FROM objective_matches")

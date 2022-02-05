@@ -1,6 +1,9 @@
 package org.stormrobotics.scoutingradar2022.database;
 
 import android.content.Context;
+import android.service.autofill.FieldClassification;
+
+import org.stormrobotics.scoutingradar2022.MatchViewModel;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,31 +17,43 @@ public class DataProcessor {
     String data;
 
     public static void processObjectiveMatchData(Context context, List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
-        Collections.sort(actions, (o1, o2) -> o1.getTimeSeconds() - o2.getTimeSeconds());
-        HashMap<String, String> actionMap = new HashMap<>();
-        for (Action action : actions) {
-            String subData = action.subAction.equals("N/A") ?
-                             String.valueOf(action.getTimeSeconds()) : action.subAction;
-            if (actionMap.containsKey(action.abbreviation)) {
-                actionMap.put(action.abbreviation, actionMap.get(action.abbreviation) + "," + subData);
-            } else {
-                actionMap.put(action.abbreviation, subData);
-            }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Collections.sort(actions, (o1, o2) -> o1.getTimeSeconds() - o2.getTimeSeconds());
+                HashMap<String, String> actionMap = new HashMap<>();
+                for (Action action : actions) {
+                    String subData = action.subAction.equals("N/A") ?
+                                     String.valueOf(action.getTimeSeconds()) : action.subAction;
+                    if (actionMap.containsKey(action.abbreviation)) {
+                        actionMap.put(action.abbreviation,
+                                actionMap.get(action.abbreviation) + "," + subData);
+                    } else {
+                        actionMap.put(action.abbreviation, subData);
+                    }
 
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String key : actionMap.keySet()) {
-            stringBuilder.append(key).append(":").append(actionMap.get(key)).append("|");
-        }
-        stringBuilder.deleteCharAt(stringBuilder.length()-1);
-        ObjectiveMatchData objectiveMatchData = new ObjectiveMatchData(teamNumber, matchNumber, isRed, stringBuilder.toString());
-        AppDatabase.getInstance(context).objectiveMatchDao().insert(objectiveMatchData);
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String key : actionMap.keySet()) {
+                    stringBuilder.append(key).append(":").append(actionMap.get(key)).append("|");
+                }
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                String s = stringBuilder.toString();
+                ObjectiveMatchData objectiveMatchData =
+                        new ObjectiveMatchData(teamNumber, matchNumber, isRed,
+                                stringBuilder.toString());
+                AppDatabase.getInstance(context.getApplicationContext())
+                           .objectiveMatchDao()
+                           .insert(objectiveMatchData);
+
+            }
+        }).start();
     }
 
     public static class Action {
-        private final String abbreviation;
-        private final String subAction;
-        private final long time;
+        public final String abbreviation;
+        public final String subAction;
+        public final long time;
 
 
         public Action(String action, long time) {
