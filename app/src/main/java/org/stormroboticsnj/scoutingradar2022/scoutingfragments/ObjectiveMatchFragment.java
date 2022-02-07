@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,8 +30,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataProcessor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -78,9 +77,9 @@ public class ObjectiveMatchFragment extends Fragment implements
             new String[]{"0", "L", "M", "H", "T"}
     };
     private static final int BUTTON_MARGIN = 8;
-    private final List<Action> mActionList = new ArrayList<>();
     ButtonInfo[] mButtonInfos;
     SpinnerInfo[] mSpinnerInfos;
+    private ObjectiveScoutingViewModel mActionsViewModel;
     private Context mContext;
     // Chronometer
     private Chronometer mChronometer;
@@ -119,7 +118,22 @@ public class ObjectiveMatchFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         mButtonInfos = new ButtonInfo[BUTTONS.length];
 
+        mActionsViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
 
+        subscribeToActions();
+    }
+
+    private void subscribeToActions() {
+        mActionsViewModel.getLiveData().observe(getViewLifecycleOwner(), (actions) -> {
+            // Clear the TextView
+            mActionsListView.setText(R.string.action_list_start_prefix);
+            // Loop through the actions and add them to the TextView
+            if (actions != null) {
+                for (Action action : actions) {
+                    mActionsListView.append(action.getAbbreviation() + " ");
+                }
+            }
+        });
     }
 
     @Override
@@ -154,16 +168,6 @@ public class ObjectiveMatchFragment extends Fragment implements
         return v;
     }
 
-    private void updateActionsListView() {
-        // Clear the TextView
-        mActionsListView.setText(R.string.action_list_start_prefix);
-        // Loop through the actions and add them to the TextView
-        for (Action action : mActionList) {
-            mActionsListView.append(action.getAbbreviation() + " ");
-        }
-
-    }
-
     private void startMatch() {
         // Start the chronometer
         mChronometer.setBase(SystemClock.elapsedRealtime());
@@ -172,11 +176,12 @@ public class ObjectiveMatchFragment extends Fragment implements
             buttonInfo.button.setEnabled(true);
         }
         mButtonInfos[0].button.setEnabled(false);
-        // Update the TextView
-        updateActionsListView();
 
-        // AppDatabase.getInstance(mContext).exe
+    }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void endMatch() {
@@ -185,27 +190,26 @@ public class ObjectiveMatchFragment extends Fragment implements
         mChronometer.stop();
 
         // Add the Spinner Info
-        if (HAS_SPINNERS) {
-            for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                mActionList.add(new Action(spinnerInfo.abbreviation,
-                        spinnerInfo.contents_abbreviations
-                                [spinnerInfo.spinner.getSelectedItemPosition()]));
-            }
+        for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
+            mActionsViewModel.addAction(new Action(spinnerInfo.abbreviation,
+                    spinnerInfo.contents_abbreviations
+                            [spinnerInfo.spinner.getSelectedItemPosition()]));
         }
 
-        // Update the TextView
-        updateActionsListView();
 
         StringBuilder sb = new StringBuilder();
-        for (Action action : mActionList) {
-            sb.append(action.getSubAction().equals("N/A") ?
+        for (Action action : Objects.requireNonNull(mActionsViewModel.getLiveData().getValue(),
+                "Action list is null")) {
+            sb.append(action.getSubAction().equals(DataProcessor.Action.SUBACTION_NONE) ?
                       String.valueOf(action.getTimeString()) : action.getSubAction())
               .append(" ")
               .append(action.getAbbreviation())
               .append("\n");
         }
 
-        DataProcessor.processObjectiveMatchData(mContext, mActionList,
+        DataProcessor.processObjectiveMatchData(mContext,
+                Objects.requireNonNull(mActionsViewModel.getLiveData().getValue(),
+                        "Action list is null"),
                 Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                         "NO TEAM NUM EDIT TEXT").getText().toString()),
                 Integer.parseInt(Objects.requireNonNull(mMatchNumTextInput.getEditText(),
@@ -216,37 +220,30 @@ public class ObjectiveMatchFragment extends Fragment implements
     }
 
     private void undoAction() {
-        if (mActionList.size() > 1) {
-            mActionList.remove(mActionList.size() - 1);
-        }
-        updateActionsListView();
+        mActionsViewModel.removeLastAction();
     }
 
     public void generateUI() {
+        // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
 
         if (HAS_BUTTONS) {
-
             // Set up the start button
             mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId());
             // Enable the start button
             mButtonInfos[0].button.setEnabled(true);
-
             for (int i = 1; i < mButtonInfos.length - 1; i++) {
                 // Set up the user-defined buttons
                 mButtonInfos[i] =
                         setupNewButton(i, constraintSet, mButtonInfos[i - 1].id);
             }
-
         }
 
         if (HAS_SPINNERS) {
             // Spinners
             mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
-
             int lastId = HAS_BUTTONS ? mButtonInfos[mButtonInfos.length - 2].id :
                          mChronometer.getId();
-
             // Set up first spinner
             mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
                     lastId);
@@ -362,12 +359,10 @@ public class ObjectiveMatchFragment extends Fragment implements
             }
 
             for (ButtonInfo bi : mButtonInfos) {
-
                 if (view.getId() == bi.id) {
                     Action a = new Action(bi.abbreviation,
                             SystemClock.elapsedRealtime() - mChronometer.getBase());
-                    mActionList.add(a);
-                    updateActionsListView();
+                    mActionsViewModel.addAction(a);
                 }
             }
         } else {
@@ -398,8 +393,6 @@ public class ObjectiveMatchFragment extends Fragment implements
             this.id = id;
             this.button = button;
         }
-
-
     }
 
     private static class SpinnerInfo {

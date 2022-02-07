@@ -51,7 +51,8 @@
             android:label="fragment_export_data"
             tools:layout="@layout/fragment_export_data" />
     <fragment
-            android:id="@+id/settings_fragment"
-            android:name="org.stormroboticsnj.scoutingradar2022.SettingsFragment"
-            android:label="SettingsFragment" /><action android:id="@+id/action_global_importDataFragment" app:destination="@id/import_data_fragment"/><action android:id="@+id/action_global_exportDataFragment" app:destination="@id/export_data_fragment"/><action android:id="@+id/action_global_settingsFragment" app:destination="@id/settings_fragment"/>
+            android:id="@+id/setupFieldsFragment"
+            android:name="org.stormroboticsnj.scoutingradar2022.SetupFieldsFragment"
+            android:label="fragment_setup_fields_list"
+            tools:layout="@layout/fragment_setup_fields_list" />
 </navigation>

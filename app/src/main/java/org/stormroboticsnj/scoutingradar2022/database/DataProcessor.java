@@ -47,11 +47,10 @@ public class DataProcessor {
     }
 
     public static class Action {
+        public static final String SUBACTION_NONE = "N/A";
         public final String abbreviation;
         public final String subAction;
         public final long time;
-
-        private static final String SUBACTION_NONE = "N/A";
 
 
         public Action(String action, long time) {
