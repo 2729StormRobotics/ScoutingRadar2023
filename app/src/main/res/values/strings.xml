@@ -37,4 +37,5 @@
     <string name="abbreviation_submit">SUBMIT</string>
     <string name="team_number">Team Number</string>
     <string name="match_number">Match Number</string>
+    <string name="action_list_start_prefix">\"START \"</string>
 </resources>
