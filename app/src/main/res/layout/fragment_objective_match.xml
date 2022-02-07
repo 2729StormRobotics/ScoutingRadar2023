@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ObjectiveMatchFragment"
+            tools:context=".scoutingfragments.ObjectiveMatchFragment"
             android:id="@+id/layout_obj_main">
 
         <com.google.android.material.textfield.TextInputLayout

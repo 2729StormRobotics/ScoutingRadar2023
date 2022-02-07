@@ -5,7 +5,7 @@
         android:name="org.stormrobotics.scoutingradar2022.MatchRecordFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MatchRecordFragment">
+        tools:context=".homefragment.MatchRecordFragment">
 
 
 
