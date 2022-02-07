@@ -1,5 +1,51 @@
 <resources>
-    <string name="app_name">Scouting Radar 2022</string>
+    <string name="app_name">Scouting Radar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="add_word">Scout new match</string>
+    <string name="record_text_match">Match %1$d</string>
+    <string name="record_text_team">Team %1$d</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_fragment_objective">Objective Match Scouting</string>
+    <string name="label_fragment_subjective">Subjective Match Scouting</string>
+    <string name="label_fragment_pit_scout">Pit Scout</string>
+    <string name="import_data">Import Data</string>
+    <string name="export_data">Export Data</string>
+    <string name="settings">Settings</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="recycler_title">Previously Scouted Matches (Objective)</string>
+    <string name="button_start">Start</string>
+    <string name="abbreviation_start">START</string>
+    <string name="button_end">End</string>
+    <string name="abbreviation_end">END</string>
+    <string name="button_undo">Undo</string>
+    <string name="abbreviation_undo">UNDO</string>
+    <string name="button_submit">Submit</string>
+    <string name="abbreviation_submit">SUBMIT</string>
+    <string name="team_number">Team Number</string>
+    <string name="match_number">Match Number</string>
+    <string name="action_list_start_prefix">\"START \"</string>
+    <string name="error_no_teamnum">Team Number is required</string>
+    <string name="error_toolong_teamnum">Team Number must be 1-4 digits</string>
+    <string name="error_notnumber_teamnum">Team Number must be a number</string>
+    <string name="error_no_matchnum">Match Number is required</string>
+    <string name="error_notnumber_matchnum">Match Number must be a number</string>
+    <string name="error_toolong_matchnum">Match Number must be 1-3 digits</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="error_alliance_missing">Alliance is required.</string>
+    <string name="empty" />
 </resources>
