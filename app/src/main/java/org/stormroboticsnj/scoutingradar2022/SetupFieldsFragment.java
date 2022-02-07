@@ -65,7 +65,7 @@ public class SetupFieldsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyFieldRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            //recyclerView.setAdapter(new MyFieldRecyclerViewAdapter(PlaceholderContent.ITEMS));
         }
         return view;
     }

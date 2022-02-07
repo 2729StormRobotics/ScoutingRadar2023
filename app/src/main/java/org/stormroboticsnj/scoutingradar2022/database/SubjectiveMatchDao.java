@@ -2,6 +2,7 @@ package org.stormroboticsnj.scoutingradar2022.database;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -10,15 +11,15 @@ import java.util.List;
 @Dao
 public interface SubjectiveMatchDao {
     //insert one match
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert (SubjectiveMatchData subjectiveMatchData);
 
     //insert a list of matches
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertList (List<SubjectiveMatchData> subjectiveMatchData);
 
     //inserts multiple matches independently
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll (SubjectiveMatchData... subjectiveMatchData);
 
     //gets all entries in table

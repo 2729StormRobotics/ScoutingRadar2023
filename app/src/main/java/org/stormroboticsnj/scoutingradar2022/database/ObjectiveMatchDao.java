@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022.database;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -13,16 +14,15 @@ import io.reactivex.rxjava3.core.Completable;
 @Dao
 public interface ObjectiveMatchDao {
     //insert one match
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert (ObjectiveMatchData objectiveMatchData);
 
-
     //insert a list of matches
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertList (List<ObjectiveMatchData> objectiveMatchData);
 
     //inserts multiple matches independently
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll (List<ObjectiveMatchData> objectiveMatchData);
 
     //gets all entries in table
