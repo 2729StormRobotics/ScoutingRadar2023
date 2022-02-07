@@ -1,7 +1,7 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
 
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.DataUtils.Action;
+import static org.stormroboticsnj.scoutingradar2022.database.DataUtils.Action;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
