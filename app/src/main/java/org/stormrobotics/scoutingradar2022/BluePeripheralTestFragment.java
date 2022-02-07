@@ -11,6 +11,7 @@ import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -148,12 +149,17 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
 
     @Override
     protected String[] getPermissionsToRequest() {
-        return new String[]{
+        // Permissions to ask for, dependent on version
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
+               new String[]{
+                       Manifest.permission.ACCESS_FINE_LOCATION,
+                       Manifest.permission.BLUETOOTH_CONNECT,
+                       Manifest.permission.BLUETOOTH_ADVERTISE
+               } : new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.BLUETOOTH,
-                Manifest.permission.ACCESS_FINE_LOCATION
-//                Manifest.permission.BLUETOOTH_ADMIN,
-//                Manifest.permission.BLUETOOTH_ADVERTISE
-        };
+                Manifest.permission.BLUETOOTH_ADMIN,
+                };
     }
 
     @SuppressLint("MissingPermission")

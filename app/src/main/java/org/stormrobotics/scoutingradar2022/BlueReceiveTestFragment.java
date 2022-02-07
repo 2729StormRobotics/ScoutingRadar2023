@@ -95,17 +95,15 @@ public class BlueReceiveTestFragment extends PermissionsFragment {
         @Override
         public void onServicesDiscovered(@NonNull BluetoothPeripheral peripheral) {
             super.onServicesDiscovered(peripheral);
-            BluetoothGattService scoutingService = peripheral.getServices();
+            BluetoothGattService scoutingService = peripheral.getServices().get(0);
 
             BluetoothGattCharacteristic pitCharacteristic = scoutingService.getCharacteristics().get(0);
-//            BluetoothGattCharacteristic objectiveMatchCharacteristic = scoutingService.getCharacteristics().get(1);
-//            BluetoothGattCharacteristic subjectiveMatchCharacteristic = scoutingService.getCharacteristics().get(2);
+            BluetoothGattCharacteristic objectiveMatchCharacteristic = scoutingService.getCharacteristics().get(1);
+            BluetoothGattCharacteristic subjectiveMatchCharacteristic = scoutingService.getCharacteristics().get(2);
 
             peripheral.readCharacteristic(pitCharacteristic);
-//            peripheral.readCharacteristic(objectiveMatchCharacteristic);
-//            peripheral.readCharacteristic(subjectiveMatchCharacteristic);
-
-
+            peripheral.readCharacteristic(objectiveMatchCharacteristic);
+            peripheral.readCharacteristic(subjectiveMatchCharacteristic);
         }
 
 
@@ -216,10 +214,16 @@ public class BlueReceiveTestFragment extends PermissionsFragment {
 
     @Override
     protected String[] getPermissionsToRequest() {
-        return new String[] {
+        // Permissions to ask for, dependent on version
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
+               new String[]{
+                       Manifest.permission.ACCESS_FINE_LOCATION,
+                       Manifest.permission.BLUETOOTH_SCAN,
+                       Manifest.permission.BLUETOOTH_CONNECT
+               } : new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN
+                Manifest.permission.BLUETOOTH_ADMIN,
                 };
     }
 

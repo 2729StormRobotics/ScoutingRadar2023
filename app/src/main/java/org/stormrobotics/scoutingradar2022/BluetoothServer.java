@@ -1,7 +1,9 @@
 package org.stormrobotics.scoutingradar2022;
 
 import static org.stormrobotics.scoutingradar2022.Constants.Objective_Data_UUID;
+import static org.stormrobotics.scoutingradar2022.Constants.Pit_Data_UUID;
 import static org.stormrobotics.scoutingradar2022.Constants.Service_UUID;
+import static org.stormrobotics.scoutingradar2022.Constants.Subjective_Data_UUID;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -76,8 +78,14 @@ public class BluetoothServer {
                 peripheralManagerCallback);
 
         BluetoothGattService service = new BluetoothGattService(Service_UUID.getUuid(), BluetoothGattService.SERVICE_TYPE_PRIMARY);
-        BluetoothGattCharacteristic scoutingData = new BluetoothGattCharacteristic(Objective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
-        service.addCharacteristic(scoutingData);
+        BluetoothGattCharacteristic pitData = new BluetoothGattCharacteristic(Pit_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
+        BluetoothGattCharacteristic objectiveData = new BluetoothGattCharacteristic(Objective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
+        BluetoothGattCharacteristic subjectiveData = new BluetoothGattCharacteristic(Subjective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
+
+        service.addCharacteristic(pitData);
+        service.addCharacteristic(objectiveData);
+        service.addCharacteristic(subjectiveData);
+
         peripheralManager.add(service);
     }
 
