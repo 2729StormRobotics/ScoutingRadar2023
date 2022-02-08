@@ -7,13 +7,8 @@ android {
     compileSdk 32
 
     defaultConfig {
-<<<<<<< HEAD
         applicationId "org.stormroboticsnj.scoutingradar2022"
         minSdk 19
-=======
-        applicationId "org.stormrobotics.scoutingradar2022"
-        minSdk 21
->>>>>>> 41a76cfaa905a671082a81baed659c321e23487b
         targetSdk 32
         versionCode 1
         versionName "1.0"
