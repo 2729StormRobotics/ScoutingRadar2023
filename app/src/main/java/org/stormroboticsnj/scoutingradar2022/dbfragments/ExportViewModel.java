@@ -9,43 +9,34 @@ import androidx.lifecycle.Transformations;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
 import org.stormroboticsnj.scoutingradar2022.database.PitRepository;
-import org.stormroboticsnj.scoutingradar2022.database.PitScoutData;
-import org.stormroboticsnj.scoutingradar2022.database.SubjectiveMatchData;
 import org.stormroboticsnj.scoutingradar2022.database.SubjectiveRepository;
-
-import java.util.List;
 
 public class ExportViewModel extends AndroidViewModel {
     public ExportViewModel(@NonNull Application application) {
         super(application);
-        mObjectiveRepository = new ObjectiveRepository(application);
-        mSubjectiveRepository = new SubjectiveRepository(application);
-        mPitRepository = new PitRepository(application);
+        ObjectiveRepository mObjectiveRepository = new ObjectiveRepository(application);
+        SubjectiveRepository mSubjectiveRepository = new SubjectiveRepository(application);
+        PitRepository mPitRepository = new PitRepository(application);
 
-        mSubjectiveLiveData = mSubjectiveRepository.getDataList();
-        mPitScoutData = mPitRepository.getDataList();
+        mObjectiveLiveData = Transformations.map(mObjectiveRepository.getDataList(), DataUtils::compressData);
+        mSubjectiveLiveData = Transformations.map(mSubjectiveRepository.getDataList(), DataUtils::compressData);
+        mPitScoutData = Transformations.map(mPitRepository.getDataList(), DataUtils::compressData);
 
-        mObjectiveLiveData = Transformations.map(mObjectiveRepository.getDataList(), data -> DataUtils.compressObjectiveMatchData(data));
     }
-    private LiveData<List<byte[]>> mObjectiveLiveData;
-    private LiveData<List<SubjectiveMatchData>> mSubjectiveLiveData;
-    private LiveData<List<PitScoutData>> mPitScoutData;
+    private final LiveData<byte[]> mObjectiveLiveData;
+    private final LiveData<byte[]> mSubjectiveLiveData;
+    private final LiveData<byte[]> mPitScoutData;
 
-    private ObjectiveRepository mObjectiveRepository;
-    private SubjectiveRepository mSubjectiveRepository;
-    private PitRepository mPitRepository;
-
-    public LiveData<List<ObjectiveMatchData>> getmObjectiveLiveData() {
+    public LiveData<byte[]> getmObjectiveLiveData() {
         return mObjectiveLiveData;
     }
 
-    public LiveData<List<SubjectiveMatchData>> getmSubjectiveLiveData() {
+    public LiveData<byte[]> getmSubjectiveLiveData() {
         return mSubjectiveLiveData;
     }
 
-    public LiveData<List<PitScoutData>> getmPitScoutData() {
+    public LiveData<byte[]> getmPitScoutData() {
         return mPitScoutData;
     }
 }
