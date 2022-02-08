@@ -6,7 +6,7 @@ import androidx.room.Entity;
 //defines the table and the identifier for each row
 @Entity(tableName = "pit_scout_matches", primaryKeys = {"team_num", "match_num"})
 
-public class PitScoutMatchData {
+public class PitScoutData {
     /*
     defines data for columns in table
     teamNum - team number

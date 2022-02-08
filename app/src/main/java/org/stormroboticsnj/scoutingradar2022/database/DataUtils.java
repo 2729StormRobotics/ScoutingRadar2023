@@ -1,16 +1,31 @@
-package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
+package org.stormroboticsnj.scoutingradar2022.database;
 
 import android.content.Context;
 
 import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.Deflater;
 
 public class DataUtils {
+
+    public static String compressObjectiveMatchData(List<ObjectiveMatchData> dataList){
+        StringBuilder sb = new StringBuilder();
+        for (ObjectiveMatchData data : dataList){
+            sb.append(data).append('!');
+        }
+        try {
+            Deflater compressor = new Deflater();
+            compressor.setInput(sb.toString().getBytes(StandardCharsets.UTF_8));
+            compressor.finish();
+            compressor.deflate
+        }
+    }
 
     public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
         List<Action> actionsCopy = new ArrayList<>(actions);

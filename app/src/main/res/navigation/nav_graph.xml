@@ -3,13 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph"
+<<<<<<< HEAD
         app:startDestination="@id/matchRecordFragment">
-
-    <fragment
-            android:id="@+id/blueTestFragment"
-            android:name="org.stormroboticsnj.scoutingradar2022.BlueTestFragment"
-            android:label="fragment_blue_test"
-            tools:layout="@layout/fragment_blue_test" />
     <fragment
             android:id="@+id/matchRecordFragment"
             android:name="org.stormroboticsnj.scoutingradar2022.homefragment.MatchRecordFragment"
@@ -64,4 +59,40 @@
             android:name="org.stormroboticsnj.scoutingradar2022.SetupFieldsFragment"
             android:label="fragment_setup_fields_list"
             tools:layout="@layout/fragment_setup_fields_list" />
+<<<<<<< Updated upstream
+=======
+    <fragment
+            android:id="@+id/bluePeripheralTestFragment"
+            android:name="org.stormroboticsnj.scoutingradar2022.BluePeripheralTestFragment"
+            android:label="fragment_peripheral"
+            tools:layout="@layout/fragment_blue_peripheral_test" >
+        <action
+                android:id="@+id/action_bluePeripheralTestFragment_to_blueReceiveTestFragment"
+                app:destination="@id/blueReceiveTestFragment" />
+    </fragment>
+
+    <fragment
+=======
+        app:startDestination="@id/bluePeripheralTestFragment">
+
+    <fragment
+            android:id="@+id/bluePeripheralTestFragment"
+            android:name="org.stormrobotics.scoutingradar2022.BluePeripheralTestFragment"
+            android:label="fragment_peripheral"
+            tools:layout="@layout/fragment_blue_peripheral_test" >
+        <action
+                android:id="@+id/action_bluePeripheralTestFragment_to_blueReceiveTestFragment"
+                app:destination="@id/blueReceiveTestFragment" />
+    </fragment>
+
+    <fragment
+>>>>>>> 41a76cfaa905a671082a81baed659c321e23487b
+        android:id="@+id/blueReceiveTestFragment"
+        android:name="org.stormrobotics.scoutingradar2022.BlueReceiveTestFragment"
+        android:label="fragment_receive"
+        tools:layout="@layout/fragment_blue_receive_test" />
+<<<<<<< HEAD
+>>>>>>> Stashed changes
+=======
+>>>>>>> 41a76cfaa905a671082a81baed659c321e23487b
 </navigation>

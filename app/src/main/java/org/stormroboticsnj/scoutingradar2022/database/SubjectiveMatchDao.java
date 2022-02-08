@@ -1,5 +1,6 @@
 package org.stormroboticsnj.scoutingradar2022.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -24,6 +25,6 @@ public interface SubjectiveMatchDao {
 
     //gets all entries in table
     @Query("SELECT * FROM subjective_matches")
-    SubjectiveMatchData[] getAllMatches();
+    LiveData<List<SubjectiveMatchData>> getAllMatches();
 }
 
