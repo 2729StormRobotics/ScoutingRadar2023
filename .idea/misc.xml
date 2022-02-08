@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Users/600423/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/activity_main.xml" value="0.1661600810536981" />
         <entry key="..\:/Users/601123/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/activity_main.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/601123/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_import_data.xml" value="0.18802083333333333" />
@@ -19,10 +20,17 @@
         <entry key="..\:/Users/sidparikh/AndroidStudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_subjective_match.xml" value="0.1" />
         <entry key="..\:/Users/sidparikh/StudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sidparikh/StudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record_list.xml" value="0.36666666666666664" />
+=======
+        <entry key="..\:/Users/638722/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/activity_main.xml" value="0.28306159420289856" />
+        <entry key="..\:/Users/638722/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_blue_test.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/jjwri/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/activity_main.xml" value="0.140625" />
+        <entry key="..\:/Users/jjwri/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_blue_receive_test.xml" value="0.16041666666666668" />
+        <entry key="..\:/Users/jjwri/Documents/GitHub/ScoutingRadar2022/app/src/main/res/layout/fragment_blue_test.xml" value="0.176" />
+>>>>>>> 41a76cfaa905a671082a81baed659c321e23487b
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

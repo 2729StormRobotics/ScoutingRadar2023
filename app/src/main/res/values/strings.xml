@@ -6,6 +6,7 @@
     <string name="record_text_team">Team %1$d</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+<<<<<<< HEAD
     <string name="label_fragment_objective">Objective Match Scouting</string>
     <string name="label_fragment_subjective">Subjective Match Scouting</string>
     <string name="label_fragment_pit_scout">Pit Scout</string>
@@ -48,4 +49,17 @@
     <string name="blue">Blue</string>
     <string name="error_alliance_missing">Alliance is required.</string>
     <string name="empty" />
+=======
+    <string name="location_permission_explanation" >We require location permission in order to access your current WiFi network information and to connect to Bluetooth.</string>
+    <string name="location_permission_explanation_title" >Location Permission</string>
+    <string name="bluetooth_permission_explanation" >We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
+    <string name="bluetooth_permission_explanation_title" >Bluetooth Permission</string>
+    <string name="bt_null">Error: Bluetooth object is null. </string>
+    <string name="proceed" >Grant</string>
+    <string name="cancel" >Cancel</string>
+    <string name="send_data">Send Data</string>
+    <string name="receive_data">Receive Data</string>
+    <string name="receive">Receive</string>
+
+>>>>>>> 41a76cfaa905a671082a81baed659c321e23487b
 </resources>
