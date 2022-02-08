@@ -25,7 +25,7 @@ public class ExportDataFragment extends PermissionsFragment {
 
     private Context mContext;
 
-    ImportViewModel mViewModel;
+    ExportViewModel mViewModel;
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -56,7 +56,7 @@ public class ExportDataFragment extends PermissionsFragment {
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ImportViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ExportViewModel.class);
     }
 
     @Override
