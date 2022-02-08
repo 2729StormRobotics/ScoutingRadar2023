@@ -19,12 +19,13 @@ public class DataUtils {
         for (ObjectiveMatchData data : dataList){
             sb.append(data).append('!');
         }
-        try {
-            Deflater compressor = new Deflater();
-            compressor.setInput(sb.toString().getBytes(StandardCharsets.UTF_8));
-            compressor.finish();
-            compressor.deflate
-        }
+//        try {
+//            Deflater compressor = new Deflater();
+//            compressor.setInput(sb.toString().getBytes(StandardCharsets.UTF_8));
+//            compressor.finish();
+//            // compressor.deflate
+//        }
+        return "";
     }
 
     public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
