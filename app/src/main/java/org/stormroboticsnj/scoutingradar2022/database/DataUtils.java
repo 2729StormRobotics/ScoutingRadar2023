@@ -17,9 +17,9 @@ import java.util.zip.DeflaterOutputStream;
 
 public class DataUtils {
 
-    public static byte[] compressObjectiveMatchData(List<ObjectiveMatchData> dataList){
+    public static byte[] compressData(List<?> dataList){
         StringBuilder sb = new StringBuilder();
-        for (ObjectiveMatchData data : dataList){
+        for (Object data : dataList){
             sb.append(data).append('!');
         }
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();

@@ -50,32 +50,6 @@ import java.util.UUID;
 public class BlueReceiveTestFragment extends PermissionsFragment {
     private Context mContext;
 
-    private final BluetoothCentralManagerCallback bluetoothCentralManagerCallback = new BluetoothCentralManagerCallback() {
-        @Override
-        public void onScanFailed(@NonNull ScanFailure scanFailure) {
-            super.onScanFailed(scanFailure);
-            Log.e("tag", "scan failed");
-        }
-
-        @Override
-        public void onDiscoveredPeripheral(
-                @NonNull BluetoothPeripheral peripheral, @NonNull ScanResult scanResult){
-            central.stopScan();
-            central.connectPeripheral(peripheral, peripheralCallback);
-        }
-
-        @Override
-        public void onConnectingPeripheral(@NonNull BluetoothPeripheral peripheral) {
-            super.onConnectingPeripheral(peripheral);
-            Log.d("BT RECEIVE", "CONNECTING");
-        }
-
-        @Override
-        public void onConnectedPeripheral(@NonNull BluetoothPeripheral peripheral) {
-            super.onConnectedPeripheral(peripheral);
-            Log.d("BT RECEIVE", "CONNECTED");
-        }
-    };
     private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {
 
         @Override
@@ -107,6 +81,32 @@ public class BlueReceiveTestFragment extends PermissionsFragment {
         }
 
 
+    };
+    private final BluetoothCentralManagerCallback bluetoothCentralManagerCallback = new BluetoothCentralManagerCallback() {
+        @Override
+        public void onScanFailed(@NonNull ScanFailure scanFailure) {
+            super.onScanFailed(scanFailure);
+            Log.e("tag", "scan failed");
+        }
+
+        @Override
+        public void onDiscoveredPeripheral(
+                @NonNull BluetoothPeripheral peripheral, @NonNull ScanResult scanResult){
+            central.stopScan();
+            central.connectPeripheral(peripheral, peripheralCallback);
+        }
+
+        @Override
+        public void onConnectingPeripheral(@NonNull BluetoothPeripheral peripheral) {
+            super.onConnectingPeripheral(peripheral);
+            Log.d("BT RECEIVE", "CONNECTING");
+        }
+
+        @Override
+        public void onConnectedPeripheral(@NonNull BluetoothPeripheral peripheral) {
+            super.onConnectedPeripheral(peripheral);
+            Log.d("BT RECEIVE", "CONNECTED");
+        }
     };
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
         @Override

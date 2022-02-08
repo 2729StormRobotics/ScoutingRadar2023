@@ -57,6 +57,7 @@ public class ExportDataFragment extends PermissionsFragment {
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ExportViewModel.class);
+
     }
 
     @Override
@@ -75,7 +76,11 @@ public class ExportDataFragment extends PermissionsFragment {
     @Override
     protected void onPermissionsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BluetoothServer.getInstance(mContext).startAdvertising();
+            BluetoothServer bluetoothServer = BluetoothServer.getInstance(mContext);
+            mViewModel.getmObjectiveLiveData().observe(this, bluetoothServer::setObjectiveData);
+            mViewModel.getmSubjectiveLiveData().observe(this, bluetoothServer::setSubjectiveData);
+            mViewModel.getmPitScoutData().observe(this, bluetoothServer::setPitData);
+            bluetoothServer.startAdvertising();
         }
     }
 

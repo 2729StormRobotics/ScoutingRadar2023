@@ -25,6 +25,7 @@ import com.welie.blessed.BluetoothPeripheralManager;
 import com.welie.blessed.BluetoothPeripheralManagerCallback;
 import com.welie.blessed.GattStatus;
 
+@RequiresApi (Build.VERSION_CODES.LOLLIPOP)
 public class BluetoothServer {
     private static final String LOG_TAG = BluetoothServer.class.getSimpleName();
     private static BluetoothServer instance = null;
@@ -42,9 +43,6 @@ public class BluetoothServer {
                         @NonNull BluetoothCentral bluetoothCentral,
                         @NonNull BluetoothGattCharacteristic characteristic) {
                     super.onCharacteristicRead(bluetoothCentral, characteristic);
-                    if (characteristic.getUuid().equals(Objective_Data_UUID.getUuid())){
-                        characteristic.setValue("characteristic test");
-                    }
                 }
 
                 @Override
@@ -55,6 +53,9 @@ public class BluetoothServer {
                     return super.onCharacteristicWrite(bluetoothCentral, characteristic, value);
                 }
             };
+    private BluetoothGattCharacteristic pitData = null;
+    private BluetoothGattCharacteristic objectiveData = null;
+    private BluetoothGattCharacteristic subjectiveData = null;
 
     @SuppressLint("MissingPermission")
     public BluetoothServer(Context context) {
@@ -80,11 +81,10 @@ public class BluetoothServer {
                 peripheralManagerCallback);
 
         BluetoothGattService service = new BluetoothGattService(Service_UUID.getUuid(), BluetoothGattService.SERVICE_TYPE_PRIMARY);
-        BluetoothGattCharacteristic pitData = new BluetoothGattCharacteristic(Pit_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
-        BluetoothGattCharacteristic objectiveData = new BluetoothGattCharacteristic(Objective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
-        BluetoothGattCharacteristic subjectiveData = new BluetoothGattCharacteristic(Subjective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
-
-
+        pitData =
+                new BluetoothGattCharacteristic(Pit_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
+        objectiveData = new BluetoothGattCharacteristic(Objective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
+        subjectiveData = new BluetoothGattCharacteristic(Subjective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
 
         service.addCharacteristic(pitData);
         service.addCharacteristic(objectiveData);
@@ -101,13 +101,21 @@ public class BluetoothServer {
         return instance;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("MissingPermission")
     public void startAdvertising() {
         peripheralManager.startAdvertising(buildAdvertiseSettings(), buildAdvertiseData(), buildScanResponse());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void setPitData(byte[] data){
+        pitData.setValue(data);
+    }
+    public void setObjectiveData(byte[] data){
+        objectiveData.setValue(data);
+    }
+    public void setSubjectiveData(byte[] data){
+        subjectiveData.setValue(data);
+    }
+
     private AdvertiseSettings buildAdvertiseSettings() {
         return new AdvertiseSettings.Builder()
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER)
