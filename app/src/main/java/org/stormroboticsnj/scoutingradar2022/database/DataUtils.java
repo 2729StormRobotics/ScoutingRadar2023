@@ -4,6 +4,8 @@ import android.content.Context;
 
 import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,21 +13,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 
 public class DataUtils {
 
-    public static String compressObjectiveMatchData(List<ObjectiveMatchData> dataList){
+    public static byte[] compressObjectiveMatchData(List<ObjectiveMatchData> dataList){
         StringBuilder sb = new StringBuilder();
         for (ObjectiveMatchData data : dataList){
             sb.append(data).append('!');
         }
-//        try {
-//            Deflater compressor = new Deflater();
-//            compressor.setInput(sb.toString().getBytes(StandardCharsets.UTF_8));
-//            compressor.finish();
-//            // compressor.deflate
-//        }
-        return "";
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(outStream);
+        try {
+            deflaterOutputStream.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+            deflaterOutputStream.finish();
+            outStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outStream.toByteArray();
     }
 
     public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
