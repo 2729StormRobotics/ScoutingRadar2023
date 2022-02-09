@@ -92,9 +92,9 @@ public class BluetoothReader {
         public void onConnectedPeripheral(@NonNull BluetoothPeripheral peripheral) {
             super.onConnectedPeripheral(peripheral);
             Log.d("BT RECEIVE", "CONNECTED");
-            peripheral.getName().substring(0, peripheral.getName().indexOf(':'));
-            if (teamNumber == peripheral.getName().split(":")[0]){
-
+            int peripheralTeamNumber = Integer.parseInt(peripheral.getName().substring(0, peripheral.getName().indexOf(':')));
+            if (teamNumber != peripheralTeamNumber){
+                // This is another team's data. Stop and move onto the next advertising peripheral.
             }
         }
     };
