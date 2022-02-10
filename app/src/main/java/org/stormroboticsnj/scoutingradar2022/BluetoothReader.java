@@ -79,7 +79,8 @@ public class BluetoothReader {
         public void onDiscoveredPeripheral(
                 @NonNull BluetoothPeripheral peripheral, @NonNull ScanResult scanResult){
             central.stopScan();
-            central.connectPeripheral(peripheral, peripheralCallback);
+            int peripheralTeamNumber = Integer.parseInt(peripheral.getName().substring(0, peripheral.getName().indexOf(':')));
+            if (teamNumber == peripheralTeamNumber) central.connectPeripheral(peripheral, peripheralCallback);
         }
 
         @Override
@@ -92,10 +93,6 @@ public class BluetoothReader {
         public void onConnectedPeripheral(@NonNull BluetoothPeripheral peripheral) {
             super.onConnectedPeripheral(peripheral);
             Log.d("BT RECEIVE", "CONNECTED");
-            int peripheralTeamNumber = Integer.parseInt(peripheral.getName().substring(0, peripheral.getName().indexOf(':')));
-            if (teamNumber != peripheralTeamNumber){
-                // This is another team's data. Stop and move onto the next advertising peripheral.
-            }
         }
     };
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {

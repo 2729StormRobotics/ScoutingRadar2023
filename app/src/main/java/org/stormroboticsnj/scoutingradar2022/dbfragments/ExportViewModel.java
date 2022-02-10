@@ -12,6 +12,8 @@ import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
 import org.stormroboticsnj.scoutingradar2022.database.PitRepository;
 import org.stormroboticsnj.scoutingradar2022.database.SubjectiveRepository;
 
+import java.io.IOException;
+
 public class ExportViewModel extends AndroidViewModel {
     public ExportViewModel(@NonNull Application application) {
         super(application);
@@ -19,9 +21,12 @@ public class ExportViewModel extends AndroidViewModel {
         SubjectiveRepository mSubjectiveRepository = new SubjectiveRepository(application);
         PitRepository mPitRepository = new PitRepository(application);
 
-        mObjectiveLiveData = Transformations.map(mObjectiveRepository.getDataList(), DataUtils::compressData);
-        mSubjectiveLiveData = Transformations.map(mSubjectiveRepository.getDataList(), DataUtils::compressData);
-        mPitScoutData = Transformations.map(mPitRepository.getDataList(), DataUtils::compressData);
+            mObjectiveLiveData = Transformations.map(mObjectiveRepository.getDataList(),
+                    DataUtils::compressData);
+            mSubjectiveLiveData = Transformations.map(mSubjectiveRepository.getDataList(),
+                    DataUtils::compressData);
+            mPitScoutData =
+                    Transformations.map(mPitRepository.getDataList(), DataUtils::compressData);
 
     }
     private final LiveData<byte[]> mObjectiveLiveData;
