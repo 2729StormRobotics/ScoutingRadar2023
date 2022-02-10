@@ -43,12 +43,20 @@
             android:id="@+id/subjectiveMatchFragment"
             android:name="org.stormroboticsnj.scoutingradar2022.scoutingfragments.SubjectiveMatchFragment"
             android:label="@string/label_fragment_subjective"
-            tools:layout="@layout/fragment_subjective_match" />
+            tools:layout="@layout/fragment_subjective_match" >
+        <action
+                android:id="@+id/action_subjectiveMatchFragment_to_matchRecordFragment"
+                app:destination="@id/matchRecordFragment" />
+    </fragment>
     <fragment
             android:id="@+id/pitScoutFragment"
             android:name="org.stormroboticsnj.scoutingradar2022.scoutingfragments.PitScoutFragment"
             android:label="@string/label_fragment_pit_scout"
-            tools:layout="@layout/fragment_pit_scout" />
+            tools:layout="@layout/fragment_pit_scout" >
+        <action
+                android:id="@+id/action_pitScoutFragment_to_matchRecordFragment"
+                app:destination="@id/matchRecordFragment" />
+    </fragment>
     <fragment
             android:id="@+id/import_data_fragment"
             android:name="org.stormroboticsnj.scoutingradar2022.dbfragments.ImportDataFragment"
