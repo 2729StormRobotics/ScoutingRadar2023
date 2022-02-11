@@ -107,6 +107,7 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
    // }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("MissingPermission")
     private void stopAdvertising() {
         Toast.makeText(mContext, "Advertising stopping", Toast.LENGTH_LONG).show();
@@ -116,6 +117,7 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private AdvertiseSettings buildAdvertiseSettings() {
         AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
         settingsBuilder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER);
@@ -126,6 +128,7 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
     /**
      * Returns an AdvertiseData object which includes the Service UUID and Device Name.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private AdvertiseData buildAdvertiseData() {
 
         /**
@@ -202,6 +205,7 @@ public class BluePeripheralTestFragment extends PermissionsFragment{
      * Custom callback after Advertising succeeds or fails to start. Broadcasts the error code
      * in an Intent to be picked up by AdvertiserFragment and stops this Service.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private class SampleAdvertiseCallback extends AdvertiseCallback {
 
         @Override
