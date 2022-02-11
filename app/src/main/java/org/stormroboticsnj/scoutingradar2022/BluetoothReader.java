@@ -1,5 +1,7 @@
 package org.stormroboticsnj.scoutingradar2022;
 
+import static org.stormroboticsnj.scoutingradar2022.Constants.Service_UUID;
+
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -22,8 +24,19 @@ import com.welie.blessed.BluetoothPeripheralCallback;
 import com.welie.blessed.GattStatus;
 import com.welie.blessed.ScanFailure;
 
+import java.util.UUID;
+
 @RequiresApi (Build.VERSION_CODES.LOLLIPOP)
 public class BluetoothReader {
+    private static volatile BluetoothReader INSTANCE = null;
+
+    public static BluetoothReader getInstance(Context context, DataReceivedCallback callback) {
+        if (INSTANCE == null) {
+            INSTANCE = new BluetoothReader(context, callback);
+        }
+        return INSTANCE;
+    }
+
     private final DataReceivedCallback mCallback;
     private BluetoothCentralManager central = null;
     private static final int teamNumber = 0;
@@ -79,8 +92,9 @@ public class BluetoothReader {
         public void onDiscoveredPeripheral(
                 @NonNull BluetoothPeripheral peripheral, @NonNull ScanResult scanResult){
             central.stopScan();
-            int peripheralTeamNumber = Integer.parseInt(peripheral.getName().substring(0, peripheral.getName().indexOf(':')));
-            if (teamNumber == peripheralTeamNumber) central.connectPeripheral(peripheral, peripheralCallback);
+            //int peripheralTeamNumber = Integer.parseInt(peripheral.getName().substring(0, peripheral.getName().indexOf(':')));
+//            if (teamNumber == peripheralTeamNumber) central.connectPeripheral(peripheral, peripheralCallback);
+            central.connectPeripheral(peripheral, peripheralCallback);
         }
 
         @Override
@@ -111,6 +125,10 @@ public class BluetoothReader {
         mCallback = callback;
         central = new BluetoothCentralManager(context.getApplicationContext(),
                 bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
+    }
+
+    public void startScan() {
+        central.scanForPeripheralsWithServices(new UUID[] {Service_UUID.getUuid()});
     }
 
     public static abstract class DataReceivedCallback {
