@@ -68,11 +68,11 @@ public class BluetoothReader {
         @Override
         public void onServicesDiscovered(@NonNull BluetoothPeripheral peripheral) {
             super.onServicesDiscovered(peripheral);
-            BluetoothGattService scoutingService = peripheral.getServices().get(0);
+            BluetoothGattService scoutingService = peripheral.getService(Service_UUID.getUuid());
 
-            BluetoothGattCharacteristic pitCharacteristic = scoutingService.getCharacteristics().get(0);
-            BluetoothGattCharacteristic objectiveMatchCharacteristic = scoutingService.getCharacteristics().get(1);
-            BluetoothGattCharacteristic subjectiveMatchCharacteristic = scoutingService.getCharacteristics().get(2);
+            BluetoothGattCharacteristic pitCharacteristic = scoutingService.getCharacteristic(Constants.Pit_Data_UUID.getUuid());
+            BluetoothGattCharacteristic objectiveMatchCharacteristic = scoutingService.getCharacteristic(Constants.Objective_Data_UUID.getUuid());
+            BluetoothGattCharacteristic subjectiveMatchCharacteristic = scoutingService.getCharacteristic(Constants.Subjective_Data_UUID.getUuid());
 
             peripheral.readCharacteristic(pitCharacteristic);
             peripheral.readCharacteristic(objectiveMatchCharacteristic);

@@ -18,6 +18,8 @@ import org.stormroboticsnj.scoutingradar2022.BluetoothReader;
 import org.stormroboticsnj.scoutingradar2022.PermissionsFragment;
 import org.stormroboticsnj.scoutingradar2022.R;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ImportDataFragment#newInstance} factory method to
@@ -69,7 +71,7 @@ public class ImportDataFragment extends PermissionsFragment {
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTextView = view.findViewById(R.id.import_text_test);
-
+        mTextView.setText("");
         mViewModel = new ViewModelProvider(this).get(ImportViewModel.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             checkPermissionsAndAct(mContext);
@@ -105,17 +107,23 @@ public class ImportDataFragment extends PermissionsFragment {
                 @Override
                 public void onObjectiveDataReceived(byte[] data, String name) {
                     mTextView.setText(
-                            mTextView.getText() + name);
+                            mTextView.getText() + name + " Objective: " + new String(data, StandardCharsets.UTF_8) + "\n");
+                    mViewModel.saveObjectiveData(data);
                 }
+
 
                 @Override
                 public void onSubjectiveDataReceived(byte[] data, String name) {
-
+                    mTextView.setText(
+                            mTextView.getText() + name + " Subjective: " + new String(data, StandardCharsets.UTF_8) + "\n");
+                    mViewModel.saveSubjectiveData(data);
                 }
 
                 @Override
                 public void onPitDataReceived(byte[] data, String name) {
-
+                    mTextView.setText(
+                            mTextView.getText() + name + " Pit: " + new String(data, StandardCharsets.UTF_8) + "\n");
+                    mViewModel.savePitData(data);
                 }
             };
             BluetoothReader.getInstance(mContext).startScan(callback);
