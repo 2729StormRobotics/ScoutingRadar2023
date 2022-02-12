@@ -1,11 +1,13 @@
 package org.stormroboticsnj.scoutingradar2022.dbfragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import org.stormroboticsnj.scoutingradar2022.R;
 public class ExportDataFragment extends PermissionsFragment {
 
     private Context mContext;
+    private TextView mTextView;
 
     ExportViewModel mViewModel;
 
@@ -56,8 +59,9 @@ public class ExportDataFragment extends PermissionsFragment {
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mTextView = view.findViewById(R.id.export_text_test);
         mViewModel = new ViewModelProvider(this).get(ExportViewModel.class);
-
+        checkPermissionsAndAct(mContext);
     }
 
     @Override
@@ -70,16 +74,34 @@ public class ExportDataFragment extends PermissionsFragment {
 
     @Override
     protected String[] getPermissionsToRequest() {
-        return new String[0];
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
+               new String[]{
+                       Manifest.permission.ACCESS_FINE_LOCATION,
+                       Manifest.permission.BLUETOOTH_CONNECT,
+                       Manifest.permission.BLUETOOTH_ADVERTISE
+               } : new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                };
     }
 
     @Override
     protected void onPermissionsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BluetoothServer bluetoothServer = BluetoothServer.getInstance(mContext);
-            mViewModel.getmObjectiveLiveData().observe(this, bluetoothServer::setObjectiveData);
-            mViewModel.getmSubjectiveLiveData().observe(this, bluetoothServer::setSubjectiveData);
-            mViewModel.getmPitScoutData().observe(this, bluetoothServer::setPitData);
+            mViewModel.getmObjectiveLiveData().observe(this, (data) -> {
+                mTextView.setText(mTextView.getText() + "\n Objective Data Loaded...");
+                bluetoothServer.setObjectiveData(data);
+            });
+            mViewModel.getmSubjectiveLiveData().observe(this, (data) -> {
+                mTextView.setText(mTextView.getText() + "\n Subjective Data Loaded...");
+                bluetoothServer.setSubjectiveData(data);
+            });
+            mViewModel.getmPitScoutData().observe(this, (data) -> {
+                mTextView.setText(mTextView.getText() + "\n Pit Data Loaded...");
+                bluetoothServer.setPitData(data);
+            });
             bluetoothServer.startAdvertising();
         }
     }
