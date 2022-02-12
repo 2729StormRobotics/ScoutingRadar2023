@@ -64,5 +64,8 @@
     <string name="receive">Receive</string>
     <string name="scouting_fields">Scouting Fields</string>
     <string name="add_field">Add Field</string>
+    <string name="imported_data">Imported Data:</string>
+    <string name="start_bluetooth_scan">Start Bluetooth Scan</string>
+    <string name="stop_bluetooth_scan">Stop Bluetooth Scan</string>
 
 </resources>

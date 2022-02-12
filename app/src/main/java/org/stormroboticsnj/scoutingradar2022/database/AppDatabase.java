@@ -57,34 +57,34 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
 
-            databaseWriteExecutor.execute(() -> {
-                ObjectiveMatchDao dao = instance.objectiveMatchDao();
-                dao.deleteAll();
+//            databaseWriteExecutor.execute(() -> {
+//                ObjectiveMatchDao dao = instance.objectiveMatchDao();
+//                dao.deleteAll();
+//
+//                ObjectiveMatchData data = new ObjectiveMatchData(2729, 1);
+//                dao.insert(data);
+//                data = new ObjectiveMatchData(2722, 2);
+//                dao.insert(data);
+//                data = new ObjectiveMatchData(2720, 3);
+//                dao.insert(data);
+//
+//                SubjectiveMatchDao dao2 = instance.subjectiveMatchDao();
+//                dao2.deleteAll();
+//
+//                SubjectiveMatchData data2 = new SubjectiveMatchData(2729, 1, true, "Sub Data 1");
+//                dao2.insert(data2);
+//                data2 = new SubjectiveMatchData(2722, 2, true, "Sub Data 2");
+//                dao2.insert(data2);
+//                data2 = new SubjectiveMatchData(2729, 1, true, "Sub Data 1");
+//                dao2.insert(data2);
+//
+//                PitScoutDao dao3 = instance.pitScoutDao();
+//                dao3.deleteAll();
+//                PitScoutData data3 = new PitScoutData(2729, "Pit Data 1");
+//                dao3.insert(data3);
 
-                ObjectiveMatchData data = new ObjectiveMatchData(2729, 1);
-                dao.insert(data);
-                data = new ObjectiveMatchData(2722, 2);
-                dao.insert(data);
-                data = new ObjectiveMatchData(2720, 3);
-                dao.insert(data);
 
-                SubjectiveMatchDao dao2 = instance.subjectiveMatchDao();
-                dao2.deleteAll();
-
-                SubjectiveMatchData data2 = new SubjectiveMatchData(2729, 1, true, "Sub Data 1");
-                dao2.insert(data2);
-                data2 = new SubjectiveMatchData(2722, 2, true, "Sub Data 2");
-                dao2.insert(data2);
-                data2 = new SubjectiveMatchData(2729, 1, true, "Sub Data 1");
-                dao2.insert(data2);
-
-                PitScoutDao dao3 = instance.pitScoutDao();
-                dao3.deleteAll();
-                PitScoutData data3 = new PitScoutData(2729, "Pit Data 1");
-                dao3.insert(data3);
-
-
-            });
+//            });
 
         }
     };
