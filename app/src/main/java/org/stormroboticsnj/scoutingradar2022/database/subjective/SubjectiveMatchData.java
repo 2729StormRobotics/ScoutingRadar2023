@@ -36,6 +36,7 @@ public class SubjectiveMatchData {
         this.data = data;
     }
 
+
     @NonNull
     @Override
     public String toString() {

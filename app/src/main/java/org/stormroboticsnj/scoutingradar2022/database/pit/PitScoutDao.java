@@ -27,4 +27,6 @@ public interface PitScoutDao {
     @Query("SELECT * FROM pit_scout_matches")
     LiveData<List<PitScoutData>> getAllMatches();
 
+    @Query("DELETE FROM pit_scout_matches")
+    void deleteAll();
 }
