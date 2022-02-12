@@ -1,8 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".scoutingfragments.SubjectiveMatchFragment"
-        android:id="@+id/subjective_layout_main"/>
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".scoutingfragments.SubjectiveMatchFragment"
+                android:id="@+id/layout_sub_main">
+
+                <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/team_number"
+                        android:id="@+id/subjective_text_input_team_number"
+                        android:layout_margin="16dp"
+                        app:counterMaxLength="4"
+                        app:counterEnabled="true"
+                        style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subjective_text_input_team_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/match_number"
+                        android:id="@+id/subjective_text_input_match_number"
+                        android:layout_margin="16dp"
+                        app:counterMaxLength="3"
+                        app:counterEnabled="true"
+                        style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/subjective_togglegroup_alliance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subjective_text_input_match_number"
+                        app:selectionRequired="true"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/subjective_button_red"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/red" />
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/subjective_button_blue"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/blue" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <TextView
+                        android:id="@+id/subjective_text_alliance_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        android:textColor="?colorError"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="@id/subjective_togglegroup_alliance"
+                        app:layout_constraintTop_toBottomOf="@id/subjective_togglegroup_alliance"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                        android:id="@+id/subjective_text_actions"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subjective_togglegroup_alliance" />
+
+                <androidx.constraintlayout.widget.Guideline
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/subjective_guideline_vertical"
+                        app:layout_constraintGuide_percent="0.5"
+                        android:orientation="vertical" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

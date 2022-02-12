@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022.database;
 import android.util.Log;
 
 import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -79,6 +80,10 @@ public class DataUtils {
 
         return new ObjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());
+    }
+
+    public static SubjectiveMatchData processSubjectiveData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
+    return null;
     }
 
     public static class Action {
