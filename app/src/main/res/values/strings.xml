@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Scouting Radar</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="add_word">Scout new match</string>
+
     <string name="record_text_match">Match %1$d</string>
     <string name="record_text_team">Team %1$d</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="field_text_cat">Category: %1$s</string>
+
+    <string name="field_text_name">Name: %1$s</string>
+    <string name="field_text_abbr">Abbreviation: %1$s</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_fragment_objective">Objective Match Scouting</string>
     <string name="label_fragment_subjective">Subjective Match Scouting</string>
@@ -58,5 +62,7 @@
     <string name="send_data">Send Data</string>
     <string name="receive_data">Receive Data</string>
     <string name="receive">Receive</string>
+    <string name="scouting_fields">Scouting Fields</string>
+    <string name="add_field">Add Field</string>
 
 </resources>

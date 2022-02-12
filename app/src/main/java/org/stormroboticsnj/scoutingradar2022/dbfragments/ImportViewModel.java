@@ -4,45 +4,60 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
-import org.stormroboticsnj.scoutingradar2022.database.PitRepository;
-import org.stormroboticsnj.scoutingradar2022.database.PitScoutData;
-import org.stormroboticsnj.scoutingradar2022.database.SubjectiveMatchData;
-import org.stormroboticsnj.scoutingradar2022.database.SubjectiveRepository;
-
-import java.util.List;
+import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveRepository;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitRepository;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 
 public class ImportViewModel extends AndroidViewModel {
+
+    private final PitRepository mPitRepository;
+    private final ObjectiveRepository mObjectiveRepository;
+    private final SubjectiveRepository mSubjectiveRepository;
+
     public ImportViewModel(@NonNull Application application) {
         super(application);
+
         mObjectiveRepository = new ObjectiveRepository(application);
         mSubjectiveRepository = new SubjectiveRepository(application);
         mPitRepository = new PitRepository(application);
-
-        mObjectiveLiveData = mObjectiveRepository.getDataList();
-        mSubjectiveLiveData = mSubjectiveRepository.getDataList();
-        mPitScoutData = mPitRepository.getDataList();
-    }
-    private LiveData<List<ObjectiveMatchData>> mObjectiveLiveData;
-    private LiveData<List<SubjectiveMatchData>> mSubjectiveLiveData;
-    private LiveData<List<PitScoutData>> mPitScoutData;
-
-    private ObjectiveRepository mObjectiveRepository;
-    private SubjectiveRepository mSubjectiveRepository;
-    private PitRepository mPitRepository;
-
-    public LiveData<List<ObjectiveMatchData>> getmObjectiveLiveData() {
-        return mObjectiveLiveData;
     }
 
-    public LiveData<List<SubjectiveMatchData>> getmSubjectiveLiveData() {
-        return mSubjectiveLiveData;
+    public void saveObjectiveData(byte[] data) {
+        new Thread(() -> {
+
+            String[] uncompressedData = DataUtils.extractData(data);
+            for (String s : uncompressedData) {
+                mObjectiveRepository.insert(ObjectiveMatchData.valueOf(s));
+            }
+
+        }).start();
     }
 
-    public LiveData<List<PitScoutData>> getmPitScoutData() {
-        return mPitScoutData;
+    public void saveSubjectiveData(byte[] data) {
+        new Thread(() -> {
+
+            String[] uncompressedData = DataUtils.extractData(data);
+            for (String s : uncompressedData) {
+                mSubjectiveRepository.insert(SubjectiveMatchData.valueOf(s));
+            }
+
+        }).start();
     }
+
+    public void savePitData(byte[] data) {
+        new Thread(() -> {
+
+            String[] uncompressedData = DataUtils.extractData(data);
+            for (String s : uncompressedData) {
+                mPitRepository.insert(PitScoutData.valueOf(s));
+            }
+
+        }).start();
+    }
+
 }

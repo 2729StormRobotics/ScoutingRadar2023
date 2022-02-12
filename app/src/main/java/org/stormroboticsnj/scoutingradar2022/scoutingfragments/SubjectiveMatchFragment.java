@@ -1,12 +1,15 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import org.stormroboticsnj.scoutingradar2022.R;
 
@@ -17,14 +20,21 @@ import org.stormroboticsnj.scoutingradar2022.R;
  */
 public class SubjectiveMatchFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String[] SPINNERS_NAMES = new String[]{
+            "Driver Skill",
+            "Defense Skill"
+    };
+    private static final boolean HAS_SPINNERS = true;
+    private static final String[] SPINNER_RATING = new String[]{
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+    };
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Context mContext;
 
     public SubjectiveMatchFragment() {
         // Required empty public constructor
@@ -34,27 +44,23 @@ public class SubjectiveMatchFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SubjectiveMatchFragment.
+     * @return A new instance of fragment ObjectiveMatchFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SubjectiveMatchFragment newInstance(String param1, String param2) {
-        SubjectiveMatchFragment fragment = new SubjectiveMatchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    public static SubjectiveMatchFragment newInstance() {
+
+        return new SubjectiveMatchFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -64,4 +70,44 @@ public class SubjectiveMatchFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_subjective_match, container, false);
     }
+
+    @Override
+    public void onViewCreated(
+            @NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        generateUI();
+        SubjectiveScoutingViewModel mActionsViewModel =
+                new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
+
+        subscribeToActions();
+    }
+
+    private void subscribeToActions() {
+    }
 }
+
+//    private void generateUI() {
+//        if (HAS_SPINNERS) {
+//            // Spinners
+//            mSpinnerInfos = new ObjectiveMatchFragment.SpinnerInfo[SPINNER_NAMES.length];
+//            int lastId = HAS_BUTTONS ? mButtonInfos[mButtonInfos.length - 2].id :
+//                         mChronometer.getId();
+//            // Set up first spinner
+//            mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
+//                    lastId);
+//            // Set up the rest of the spinners
+//            for (int i = 1; i < SPINNER_NAMES.length; i++) {
+//                mSpinnerInfos[i] =
+//                        setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
+//            }
+//        }
+//
+//        int lastId;
+//        if (HAS_SPINNERS) {
+//            lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
+//        } else if (HAS_BUTTONS) {
+//            lastId = mButtonInfos[mButtonInfos.length - 2].id;
+//        } else {
+//            lastId = mChronometer.getId();
+//        }
+//    }

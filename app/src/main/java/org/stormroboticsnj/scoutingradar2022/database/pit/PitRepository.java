@@ -1,8 +1,10 @@
-package org.stormroboticsnj.scoutingradar2022.database;
+package org.stormroboticsnj.scoutingradar2022.database.pit;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+
+import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 

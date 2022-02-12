@@ -8,19 +8,26 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchDao;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutDao;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchDao;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //defines a database that uses the match entity
 @Database(entities = {ObjectiveMatchData.class, SubjectiveMatchData.class, PitScoutData.class},
-          version = 1)
+          version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     /* Singleton Pattern
     'volatile' ensures that there is always one instance of the database
     do not want copies to be made */
     private static volatile AppDatabase instance;
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public AppDatabase() {}
