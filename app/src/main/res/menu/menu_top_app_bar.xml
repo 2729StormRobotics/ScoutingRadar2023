@@ -13,7 +13,5 @@
         android:title="@string/settings"
         android:contentDescription="@string/settings"
         app:showAsAction="never" />
-    <item android:id="@+id/setup_fragment"
-        android:title="Setup Scouting Fields"
 
 </menu>
