@@ -8,8 +8,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import org.stormroboticsnj.scoutingradar2022.database.field.Field;
-import org.stormroboticsnj.scoutingradar2022.database.field.FieldDao;
 import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchDao;
 import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
 import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutDao;
@@ -21,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //defines a database that uses the match entity
-@Database(entities = {ObjectiveMatchData.class, SubjectiveMatchData.class, PitScoutData.class, Field.class},
+@Database(entities = {ObjectiveMatchData.class, SubjectiveMatchData.class, PitScoutData.class},
           version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     /* Singleton Pattern
@@ -39,8 +37,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SubjectiveMatchDao subjectiveMatchDao();
 
     public abstract PitScoutDao pitScoutDao();
-
-    public abstract FieldDao fieldDao();
 
     public static AppDatabase getInstance(final Context context) {
         //returns the single instance of the database
