@@ -2,6 +2,7 @@ package org.stormroboticsnj.scoutingradar2022.database.subjective;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -26,5 +27,8 @@ public interface SubjectiveMatchDao {
     //gets all entries in table
     @Query("SELECT * FROM subjective_matches")
     LiveData<List<SubjectiveMatchData>> getAllMatches();
+
+    @Query("DELETE FROM subjective_matches")
+    void deleteAll();
 }
 
