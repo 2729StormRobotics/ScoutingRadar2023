@@ -22,6 +22,7 @@ import com.welie.blessed.BluetoothCentralManagerCallback;
 import com.welie.blessed.BluetoothPeripheral;
 import com.welie.blessed.BluetoothPeripheralCallback;
 import com.welie.blessed.GattStatus;
+import com.welie.blessed.HciStatus;
 import com.welie.blessed.ScanFailure;
 
 import java.util.UUID;
@@ -77,6 +78,8 @@ public class BluetoothReader {
             peripheral.readCharacteristic(pitCharacteristic);
             peripheral.readCharacteristic(objectiveMatchCharacteristic);
             peripheral.readCharacteristic(subjectiveMatchCharacteristic);
+
+            mCallback.onScanStopped();
         }
 
 
@@ -86,6 +89,13 @@ public class BluetoothReader {
         public void onScanFailed(@NonNull ScanFailure scanFailure) {
             super.onScanFailed(scanFailure);
             Log.e("tag", "scan failed");
+        }
+
+        @Override
+        public void onConnectionFailed(
+                @NonNull BluetoothPeripheral peripheral, @NonNull HciStatus status) {
+            super.onConnectionFailed(peripheral, status);
+            Log.d("test", "test");
         }
 
         @Override
@@ -124,6 +134,7 @@ public class BluetoothReader {
     public BluetoothReader (Context context){
         central = new BluetoothCentralManager(context.getApplicationContext(),
                 bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
+        central.enableLogging();
     }
 
     public void startScan(DataReceivedCallback callback){
@@ -135,9 +146,15 @@ public class BluetoothReader {
         central.stopScan();
     }
 
+    public void closeScanner(){
+        central.close();
+        INSTANCE = null;
+    }
+
     public static abstract class DataReceivedCallback {
         public abstract void onObjectiveDataReceived(byte[] data, String name);
         public abstract void onSubjectiveDataReceived(byte[] data, String name);
         public abstract void onPitDataReceived(byte[] data, String name);
+        public abstract void onScanStopped();
     }
 }

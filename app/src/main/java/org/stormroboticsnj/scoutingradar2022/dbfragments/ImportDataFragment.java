@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +33,7 @@ public class ImportDataFragment extends PermissionsFragment {
     private ImportViewModel mViewModel;
     private Context mContext;
     private TextView mTextView;
-
+    private ToggleButton mScanButton;
 
 
     @Override
@@ -70,19 +73,38 @@ public class ImportDataFragment extends PermissionsFragment {
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTextView = view.findViewById(R.id.import_text_test);
+        mTextView = view.findViewById(R.id.import_text_info);
         mTextView.setText("");
         mViewModel = new ViewModelProvider(this).get(ImportViewModel.class);
+        mScanButton = view.findViewById(R.id.import_button_scan_start);
+        mScanButton.setChecked(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mScanButton.setOnCheckedChangeListener(this::onScanButtonToggled);
+        } else {
+            mScanButton.setEnabled(false);
+        }
+    }
+
+    private void onScanButtonToggled(CompoundButton compoundButton, boolean b) {
+        if (!b) {
             checkPermissionsAndAct(mContext);
+        } else {
+            stopScanning();
+        }
+    }
+
+    private void stopScanning() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BluetoothReader.getInstance(mContext).stopScan();
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        stopScanning();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BluetoothReader.getInstance(mContext).stopScan();
+            BluetoothReader.getInstance(mContext).closeScanner();
         }
     }
 
@@ -115,7 +137,7 @@ public class ImportDataFragment extends PermissionsFragment {
                 @Override
                 public void onSubjectiveDataReceived(byte[] data, String name) {
                     mTextView.setText(
-                            mTextView.getText() + name + " Subjective: " + new String(data, StandardCharsets.UTF_8) + "\n");
+                            mTextView.getText() + name + " Subjective: " + new String(data, StandardCharsets.UTF_8) + "\n \n");
                     mViewModel.saveSubjectiveData(data);
                 }
 
@@ -124,6 +146,11 @@ public class ImportDataFragment extends PermissionsFragment {
                     mTextView.setText(
                             mTextView.getText() + name + " Pit: " + new String(data, StandardCharsets.UTF_8) + "\n");
                     mViewModel.savePitData(data);
+                }
+
+                @Override
+                public void onScanStopped() {
+                    mScanButton.setChecked(true);
                 }
             };
             BluetoothReader.getInstance(mContext).startScan(callback);
