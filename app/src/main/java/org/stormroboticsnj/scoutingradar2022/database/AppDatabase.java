@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //defines a database that uses the match entity
-@Database(entities = {ObjectiveMatchData.class, SubjectiveMatchData.class, PitScoutMatchData.class},
+@Database(entities = {ObjectiveMatchData.class, SubjectiveMatchData.class, PitScoutData.class},
           version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     /* Singleton Pattern
@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract SubjectiveMatchDao subjectiveMatchDao();
 
-    public abstract PitScoutMatchDao pitScoutMatchDao();
+    public abstract PitScoutDao pitScoutDao();
 
     public static AppDatabase getInstance(final Context context) {
         //returns the single instance of the database

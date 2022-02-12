@@ -1,5 +1,6 @@
 package org.stormroboticsnj.scoutingradar2022.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -34,11 +35,29 @@ public class ObjectiveMatchData {
         this.matchNum = matchNum;
     }
 
+    @Ignore
     public ObjectiveMatchData(int teamNum, int matchNum, boolean isRed, String data) {
         this.teamNum = teamNum;
         this.matchNum = matchNum;
         this.isRed = isRed;
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return
+                teamNum +
+               ";" + matchNum +
+               ";" + (isRed ? 1 : 0) +
+               ";" + data;
+    }
+
+    public static ObjectiveMatchData valueOf(String string) {
+        String[] values = string.split(";");
+        if (values.length == 4) {
+            return new ObjectiveMatchData(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]) == 1, values[3]);
+        }
+        return null;
     }
 
     //getters and setters for member variables

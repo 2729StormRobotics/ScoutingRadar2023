@@ -1,5 +1,6 @@
 package org.stormroboticsnj.scoutingradar2022.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -9,21 +10,21 @@ import java.util.List;
 
 //adds data to database
 @Dao
-public interface PitScoutMatchDao {
+public interface PitScoutDao {
     //insert one match
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert (PitScoutMatchData pitScoutMatchData);
+    void insert (PitScoutData pitScoutData);
 
     //insert a list of matches
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertList (List<PitScoutMatchData> pitScoutMatchData);
+    void insertList (List<PitScoutData> pitScoutData);
 
     //inserts multiple matches independently
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll (PitScoutMatchData... pitScoutMatchData);
+    void insertAll (PitScoutData... pitScoutData);
 
     //gets all entries in table
     @Query("SELECT * FROM pit_scout_matches")
-    PitScoutMatchData[] getAllMatches();
+    LiveData<List<PitScoutData>> getAllMatches();
 
 }

@@ -5,19 +5,19 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import org.stormroboticsnj.scoutingradar2022.database.MatchRepository;
+import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
 import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
 
 import java.util.List;
 
 public class MatchViewModel extends AndroidViewModel {
 
-    private final MatchRepository mRepository;
+    private final ObjectiveRepository mRepository;
     private final LiveData<List<ObjectiveMatchData>> mDataList;
 
     public MatchViewModel (Application app) {
         super(app);
-        mRepository = new MatchRepository(app);
+        mRepository = new ObjectiveRepository(app);
         mDataList = mRepository.getDataList();
     }
 

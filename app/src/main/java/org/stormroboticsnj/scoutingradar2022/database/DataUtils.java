@@ -1,16 +1,58 @@
-package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
+package org.stormroboticsnj.scoutingradar2022.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.InflaterInputStream;
+import java.util.zip.InflaterOutputStream;
 
 public class DataUtils {
+
+    public static byte[] compressData(List<?> dataList){
+        StringBuilder sb = new StringBuilder();
+        for (Object data : dataList){
+            sb.append(data).append('!');
+        }
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(outStream);
+        try {
+            deflaterOutputStream.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+            deflaterOutputStream.finish();
+        } catch (IOException e){
+            Log.e(DataUtils.class.getSimpleName(), "Compress Data", e);
+        }
+        return outStream.toByteArray();
+    }
+
+    /**
+     *
+     * @param compressedData a byte array of data to be added to the database
+     * @return the data in a form that can be added to the database
+     */
+    public static String[] extractData(byte[] compressedData){
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        InflaterOutputStream inflaterOutputStream = new InflaterOutputStream(outStream);
+        try {
+            inflaterOutputStream.write(compressedData);
+            inflaterOutputStream.finish();
+        } catch (IOException e) {
+            Log.e(DataUtils.class.getSimpleName(), "Extract Data", e);
+        }
+        return (new String(outStream.toByteArray(), StandardCharsets.UTF_8)).split("!");
+    }
 
     public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
         List<Action> actionsCopy = new ArrayList<>(actions);

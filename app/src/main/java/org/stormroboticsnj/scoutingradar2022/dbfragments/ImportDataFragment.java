@@ -1,30 +1,44 @@
 package org.stormroboticsnj.scoutingradar2022.dbfragments;
 
+import android.Manifest;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import org.stormroboticsnj.scoutingradar2022.BluetoothReader;
+import org.stormroboticsnj.scoutingradar2022.PermissionsFragment;
 import org.stormroboticsnj.scoutingradar2022.R;
+import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
+import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
+
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ImportDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ImportDataFragment extends Fragment {
+public class ImportDataFragment extends PermissionsFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ImportViewModel mViewModel;
+    private Context mContext;
+    private TextView mTextView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     public ImportDataFragment() {
         // Required empty public constructor
@@ -34,27 +48,15 @@ public class ImportDataFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ImportDataFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ImportDataFragment newInstance(String param1, String param2) {
-        ImportDataFragment fragment = new ImportDataFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static ImportDataFragment newInstance() {
+        return new ImportDataFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -63,5 +65,66 @@ public class ImportDataFragment extends Fragment {
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_import_data, container, false);
+    }
+
+    @Override
+    public void onViewCreated(
+            @NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mTextView = view.findViewById(R.id.import_text_test);
+
+        mViewModel = new ViewModelProvider(this).get(ImportViewModel.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            checkPermissionsAndAct(mContext);
+        }
+    }
+
+    @Override
+    protected String[] getPermissionsToRequest() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
+               new String[]{
+                       Manifest.permission.ACCESS_FINE_LOCATION,
+                       Manifest.permission.BLUETOOTH_SCAN,
+                       Manifest.permission.BLUETOOTH_CONNECT
+               } : new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                };
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onPermissionsGranted() {
+        BluetoothReader.DataReceivedCallback callback = new BluetoothReader.DataReceivedCallback() {
+            @Override
+            public void onObjectiveDataReceived(byte[] data, String name) {
+                mTextView.setText(
+                        mTextView.getText() + name);
+            }
+
+            @Override
+            public void onSubjectiveDataReceived(byte[] data, String name) {
+
+            }
+
+            @Override
+            public void onPitDataReceived(byte[] data, String name) {
+
+            }
+        };
+        BluetoothReader.getInstance(mContext, callback).startScan();
+    }
+
+
+
+    @Override
+    protected String getExplanationDialogTitle() {
+        return null;
+    }
+
+    @Override
+    protected String getExplanationDialogMessage() {
+        return null;
     }
 }
