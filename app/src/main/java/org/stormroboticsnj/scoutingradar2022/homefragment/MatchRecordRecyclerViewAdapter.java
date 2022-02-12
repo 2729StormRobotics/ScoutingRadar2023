@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.stormroboticsnj.scoutingradar2022.R;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
 import org.stormroboticsnj.scoutingradar2022.databinding.FragmentMatchRecordBinding;
 
 /**

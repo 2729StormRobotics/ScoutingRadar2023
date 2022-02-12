@@ -1,4 +1,4 @@
-package org.stormroboticsnj.scoutingradar2022.database;
+package org.stormroboticsnj.scoutingradar2022.database.pit;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

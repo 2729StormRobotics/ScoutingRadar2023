@@ -8,11 +8,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
-import org.stormroboticsnj.scoutingradar2022.database.PitRepository;
-import org.stormroboticsnj.scoutingradar2022.database.SubjectiveRepository;
-
-import java.io.IOException;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveRepository;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitRepository;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 
 public class ExportViewModel extends AndroidViewModel {
     public ExportViewModel(@NonNull Application application) {

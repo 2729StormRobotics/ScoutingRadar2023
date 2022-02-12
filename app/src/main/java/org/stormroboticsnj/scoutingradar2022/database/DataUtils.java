@@ -1,11 +1,9 @@
 package org.stormroboticsnj.scoutingradar2022.database;
 
-import android.content.Context;
 import android.util.Log;
 
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,9 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
-import java.util.zip.InflaterInputStream;
 import java.util.zip.InflaterOutputStream;
 
 public class DataUtils {

@@ -212,6 +212,15 @@ public class ObjectiveMatchFragment extends Fragment {
                     getString(R.string.error_toolong_matchnum)) &
             validateToggleGroup()) {
 
+            // Add the Spinner Info
+            if (HAS_SPINNERS) {
+                for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
+                    mActionsViewModel.addAction(new Action(spinnerInfo.abbreviation,
+                            spinnerInfo.contents_abbreviations
+                                    [spinnerInfo.spinner.getSelectedItemPosition()]));
+                }
+            }
+
             mActionsViewModel.processAndSaveMatch(
                     Objects.requireNonNull(mActionsViewModel.getLiveData().getValue(),
                             "Action list is null"),
@@ -226,29 +235,9 @@ public class ObjectiveMatchFragment extends Fragment {
             // Stop the chronometer
             mChronometer.stop();
 
-            // Add the Spinner Info
-            if (HAS_SPINNERS) {
-                for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                    mActionsViewModel.addAction(new Action(spinnerInfo.abbreviation,
-                            spinnerInfo.contents_abbreviations
-                                    [spinnerInfo.spinner.getSelectedItemPosition()]));
-                }
-            }
-
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                       .navigate(R.id.action_objectiveMatchFragment_to_matchRecordFragment);
-//            StringBuilder sb = new StringBuilder();
-//            for (Action action : Objects.requireNonNull(mActionsViewModel.getLiveData().getValue(),
-//                    "Action list is null")) {
-//                sb.append(action.getSubAction().equals(DataUtils.Action.SUBACTION_NONE) ?
-//                          String.valueOf(action.getTimeString()) : action.getSubAction())
-//                  .append(" ")
-//                  .append(action.getAbbreviation())
-//                  .append("\n");
-//            }
-//
-//            // Make pop-up with result
-//            new AlertDialog.Builder(mContext).setTitle("Result").setMessage(sb.toString()).show();
+
         } else {
             // Toast error
             Toast.makeText(mContext, "Errors found.", Toast.LENGTH_SHORT).show();

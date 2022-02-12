@@ -63,7 +63,7 @@
             tools:layout="@layout/fragment_export_data" />
     <fragment
             android:id="@+id/setupFieldsFragment"
-            android:name="org.stormroboticsnj.scoutingradar2022.SetupFieldsFragment"
+            android:name="org.stormroboticsnj.scoutingradar2022.dbfragments.SetupFieldsFragment"
             android:label="fragment_setup_fields_list"
             tools:layout="@layout/fragment_setup_fields_list" />
 
@@ -80,6 +80,6 @@
             android:id="@+id/blueReceiveTestFragment"
             android:name="org.stormroboticsnj.scoutingradar2022.BlueReceiveTestFragment"
             android:label="fragment_receive"
-            tools:layout="@layout/fragment_blue_receive_test" />
+            tools:layout="@layout/fragment_blue_receive_test" /><action android:id="@+id/action_global_setupFieldsFragment" app:destination="@id/setupFieldsFragment"/>
 
 </navigation>
