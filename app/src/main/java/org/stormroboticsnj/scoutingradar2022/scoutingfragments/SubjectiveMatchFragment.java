@@ -2,15 +2,14 @@ package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.stormroboticsnj.scoutingradar2022.R;
 
@@ -25,6 +24,7 @@ public class SubjectiveMatchFragment extends Fragment {
             "Driver Skill",
             "Defense Skill"
     };
+    private static final boolean HAS_SPINNERS = true;
     private static final String[] SPINNER_RATING = new String[]{
             "0",
             "1",
@@ -57,6 +57,7 @@ public class SubjectiveMatchFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,11 +70,12 @@ public class SubjectiveMatchFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_subjective_match, container, false);
     }
+
     @Override
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        generateUI();
+//        generateUI();
         SubjectiveScoutingViewModel mActionsViewModel =
                 new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
 
@@ -82,29 +84,30 @@ public class SubjectiveMatchFragment extends Fragment {
 
     private void subscribeToActions() {
     }
-
-    private void generateUI() {
-        if (HAS_SPINNERS) {
-            // Spinners
-            mSpinnerInfos = new ObjectiveMatchFragment.SpinnerInfo[SPINNER_NAMES.length];
-            int lastId = HAS_BUTTONS ? mButtonInfos[mButtonInfos.length - 2].id :
-                         mChronometer.getId();
-            // Set up first spinner
-            mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
-                    lastId);
-            // Set up the rest of the spinners
-            for (int i = 1; i < SPINNER_NAMES.length; i++) {
-                mSpinnerInfos[i] =
-                        setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
-            }
-        }
-
-        int lastId;
-        if (HAS_SPINNERS) {
-            lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
-        } else if (HAS_BUTTONS) {
-            lastId = mButtonInfos[mButtonInfos.length - 2].id;
-        } else {
-            lastId = mChronometer.getId();
-    }
 }
+
+//    private void generateUI() {
+//        if (HAS_SPINNERS) {
+//            // Spinners
+//            mSpinnerInfos = new ObjectiveMatchFragment.SpinnerInfo[SPINNER_NAMES.length];
+//            int lastId = HAS_BUTTONS ? mButtonInfos[mButtonInfos.length - 2].id :
+//                         mChronometer.getId();
+//            // Set up first spinner
+//            mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
+//                    lastId);
+//            // Set up the rest of the spinners
+//            for (int i = 1; i < SPINNER_NAMES.length; i++) {
+//                mSpinnerInfos[i] =
+//                        setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
+//            }
+//        }
+//
+//        int lastId;
+//        if (HAS_SPINNERS) {
+//            lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
+//        } else if (HAS_BUTTONS) {
+//            lastId = mButtonInfos[mButtonInfos.length - 2].id;
+//        } else {
+//            lastId = mChronometer.getId();
+//        }
+//    }

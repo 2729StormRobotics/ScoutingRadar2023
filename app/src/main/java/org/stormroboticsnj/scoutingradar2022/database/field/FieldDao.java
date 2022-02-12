@@ -1,7 +1,8 @@
-package org.stormroboticsnj.scoutingradar2022.database;
+package org.stormroboticsnj.scoutingradar2022.database.field;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -46,4 +47,10 @@ public interface FieldDao {
     @Query("DELETE FROM fields")
     void deleteAll();
 
+    /**
+     * Delete a field from the table
+     * @param field The field to delete
+     */
+    @Delete
+    void delete(Field field);
 }

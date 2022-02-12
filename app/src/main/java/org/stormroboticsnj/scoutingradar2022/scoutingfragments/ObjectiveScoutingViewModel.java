@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveRepository;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
 
 import java.util.ArrayList;
 import java.util.Collections;

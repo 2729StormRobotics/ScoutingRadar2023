@@ -6,12 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveRepository;
-import org.stormroboticsnj.scoutingradar2022.database.PitRepository;
-import org.stormroboticsnj.scoutingradar2022.database.PitScoutData;
-import org.stormroboticsnj.scoutingradar2022.database.SubjectiveMatchData;
-import org.stormroboticsnj.scoutingradar2022.database.SubjectiveRepository;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveRepository;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitRepository;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 
 public class ImportViewModel extends AndroidViewModel {
 

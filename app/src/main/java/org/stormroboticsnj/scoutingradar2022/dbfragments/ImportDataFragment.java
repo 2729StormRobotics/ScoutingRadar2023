@@ -11,17 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.stormroboticsnj.scoutingradar2022.BluetoothReader;
 import org.stormroboticsnj.scoutingradar2022.PermissionsFragment;
 import org.stormroboticsnj.scoutingradar2022.R;
-import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
-import org.stormroboticsnj.scoutingradar2022.database.ObjectiveMatchData;
-
-import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +28,8 @@ public class ImportDataFragment extends PermissionsFragment {
     private ImportViewModel mViewModel;
     private Context mContext;
     private TextView mTextView;
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -80,6 +77,14 @@ public class ImportDataFragment extends PermissionsFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BluetoothReader.getInstance(mContext).stopScan();
+        }
+    }
+
+    @Override
     protected String[] getPermissionsToRequest() {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ?
                new String[]{
@@ -93,27 +98,28 @@ public class ImportDataFragment extends PermissionsFragment {
                 };
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onPermissionsGranted() {
-        BluetoothReader.DataReceivedCallback callback = new BluetoothReader.DataReceivedCallback() {
-            @Override
-            public void onObjectiveDataReceived(byte[] data, String name) {
-                mTextView.setText(
-                        mTextView.getText() + name);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BluetoothReader.DataReceivedCallback callback = new BluetoothReader.DataReceivedCallback() {
+                @Override
+                public void onObjectiveDataReceived(byte[] data, String name) {
+                    mTextView.setText(
+                            mTextView.getText() + name);
+                }
 
-            @Override
-            public void onSubjectiveDataReceived(byte[] data, String name) {
+                @Override
+                public void onSubjectiveDataReceived(byte[] data, String name) {
 
-            }
+                }
 
-            @Override
-            public void onPitDataReceived(byte[] data, String name) {
+                @Override
+                public void onPitDataReceived(byte[] data, String name) {
 
-            }
-        };
-        BluetoothReader.getInstance(mContext, callback).startScan();
+                }
+            };
+            BluetoothReader.getInstance(mContext).startScan(callback);
+        }
     }
 
 

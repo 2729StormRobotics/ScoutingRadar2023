@@ -30,14 +30,14 @@ import java.util.UUID;
 public class BluetoothReader {
     private static volatile BluetoothReader INSTANCE = null;
 
-    public static BluetoothReader getInstance(Context context, DataReceivedCallback callback) {
+    public static BluetoothReader getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new BluetoothReader(context, callback);
+            INSTANCE = new BluetoothReader(context);
         }
         return INSTANCE;
     }
 
-    private final DataReceivedCallback mCallback;
+    private DataReceivedCallback mCallback = null;
     private BluetoothCentralManager central = null;
     private static final int teamNumber = 0;
 
@@ -121,14 +121,18 @@ public class BluetoothReader {
         }
     };
 
-    public BluetoothReader (Context context, DataReceivedCallback callback){
-        mCallback = callback;
+    public BluetoothReader (Context context){
         central = new BluetoothCentralManager(context.getApplicationContext(),
                 bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
     }
 
-    public void startScan() {
+    public void startScan(DataReceivedCallback callback){
+        mCallback = callback;
         central.scanForPeripheralsWithServices(new UUID[] {Service_UUID.getUuid()});
+    }
+
+    public void stopScan() {
+        central.stopScan();
     }
 
     public static abstract class DataReceivedCallback {
