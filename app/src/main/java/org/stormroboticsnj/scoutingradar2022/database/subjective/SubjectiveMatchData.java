@@ -5,17 +5,21 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
+
 //defines the table and the identifier for each row
 @Entity(tableName = "subjective_matches", primaryKeys = {"team_num", "match_num"})
 
 public class SubjectiveMatchData {
+
+
+
     /*
-    defines data for columns in table
-    teamNum - team number
-    matchNum - match number
-    isRed - red/blue alliance
-    autoData, teleopData, endgameData - data that was recorded during that phase
-     */
+        defines data for columns in table
+        teamNum - team number
+        matchNum - match number
+        isRed - red/blue alliance
+        autoData, teleopData, endgameData - data that was recorded during that phase
+         */
     @ColumnInfo(name= "team_num")
     private int teamNum;
     @ColumnInfo(name= "match_num")
