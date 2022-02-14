@@ -9,4 +9,28 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="dark_entries">
+        <item>Dark</item>
+        <item>Light</item>
+        <item>Follow System</item>
+    </string-array>
+
+    <string-array name="dark_values">
+        <item>@string/pref_value_dark_dark</item>
+        <item>@string/pref_value_dark_light</item>
+        <item>@string/pref_value_dark_system</item>
+    </string-array>
+
+    <string-array name="team_entries">
+        <item>2722 Charge</item>
+        <item>2720 Red Watch</item>
+    </string-array>
+
+    <string-array name="team_values">
+        <item>@string/pref_value_team_charge</item>
+        <item>@string/pref_value_team_redwatch</item>
+    </string-array>
+
+
 </resources>

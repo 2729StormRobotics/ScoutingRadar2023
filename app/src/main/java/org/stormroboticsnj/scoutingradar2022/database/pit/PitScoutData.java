@@ -9,25 +9,18 @@ import androidx.room.Ignore;
 @Entity(tableName = "pit_scout_matches", primaryKeys = {"team_num"})
 
 public class PitScoutData {
-    /*
-    defines data for columns in table
-    teamNum - team number
-    matchNum - match number
-    isRed - red/blue alliance
-    autoData, teleopData, endgameData - data that was recorded during that phase
-     */
-    @ColumnInfo(name= "team_num")
+
+    @ColumnInfo(name = "team_num")
     private int teamNum;
 
-    @ColumnInfo(name= "data")
+    @ColumnInfo(name = "data")
     private String data;
 
-    public PitScoutData(){}
+    public PitScoutData() {}
 
     @Ignore
     public PitScoutData(int teamNum, String data) {
         this.teamNum = teamNum;
-
         this.data = data;
     }
 
@@ -39,10 +32,10 @@ public class PitScoutData {
                 ";" + data;
     }
 
-    public static PitScoutData valueOf(String string){
+    public static PitScoutData valueOf(String string) {
         String[] values = string.split(";");
         if (values.length == 2) {
-            return new PitScoutData(Integer.parseInt(values[0]),  values[1]);
+            return new PitScoutData(Integer.parseInt(values[0]), values[1]);
         }
         return null;
     }

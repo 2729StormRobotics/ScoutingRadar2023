@@ -20,10 +20,12 @@
         <entry key="..\:/Users/sidparikh/AndroidStudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_subjective_match.xml" value="0.1" />
         <entry key="..\:/Users/sidparikh/StudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sidparikh/StudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record_list.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/menu/menu_top_app_bar.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.24139492753623187" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

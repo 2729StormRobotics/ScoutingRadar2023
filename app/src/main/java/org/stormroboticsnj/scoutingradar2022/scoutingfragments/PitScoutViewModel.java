@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitRepository;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutData;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 
@@ -15,15 +17,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SubjectiveScoutingViewModel extends AndroidViewModel {
+public class PitScoutViewModel extends AndroidViewModel {
 
-    private SubjectiveRepository mSubjectiveRepository;
+    private final PitRepository mSubjectiveRepository;
     private final List<DataUtils.Action> mActions;
 
-    public SubjectiveScoutingViewModel(
-            @NonNull Application application) {
+    public PitScoutViewModel(@NonNull Application application) {
         super(application);
-        mSubjectiveRepository = new SubjectiveRepository(application);
+        mSubjectiveRepository = new PitRepository(application);
         mActions = new ArrayList<>();
     }
 
@@ -31,15 +32,14 @@ public class SubjectiveScoutingViewModel extends AndroidViewModel {
         mActions.add(action);
     }
 
-    public void saveMatch(SubjectiveMatchData matchData) {
-        mSubjectiveRepository.insert(matchData);
+    public void saveMatch(PitScoutData data) {
+        mSubjectiveRepository.insert(data);
     }
 
-
-    public void processAndSaveMatch( int teamNumber, int matchNumber, boolean isRed) {
+    public void processAndSaveMatch(int teamNumber, String notes) {
         new Thread(() -> {
-            SubjectiveMatchData data =
-                    DataUtils.processSubjectiveData(mActions, teamNumber, matchNumber, isRed);
+            PitScoutData data =
+                    DataUtils.processPitData(mActions, notes, teamNumber);
             saveMatch(data);
         }).start();
     }

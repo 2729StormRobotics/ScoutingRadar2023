@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022.database;
 import android.util.Log;
 
 import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.pit.PitScoutData;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
 
 import java.io.ByteArrayOutputStream;
@@ -109,6 +110,35 @@ public class DataUtils {
 
         return new SubjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());
+    }
+
+    public static PitScoutData processPitData(List<Action> actions, String notes, int teamNumber) {
+        List<Action> actionsCopy = new ArrayList<>(actions);
+
+        // Make a map of action names to comma separated timestamps
+        HashMap<String, String> actionMap = new HashMap<>();
+        for (Action action : actionsCopy) {
+            String subData = action.subAction.equals(Action.SUBACTION_NONE) ?
+                             String.valueOf(action.getTimeSeconds()) : action.subAction;
+            if (actionMap.containsKey(action.abbreviation)) {
+                actionMap.put(action.abbreviation,
+                        actionMap.get(action.abbreviation) + "," + subData);
+            } else {
+                actionMap.put(action.abbreviation, subData);
+            }
+
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String key : actionMap.keySet()) {
+            stringBuilder.append(key).append(":").append(actionMap.get(key)).append("|");
+        }
+        if (stringBuilder.length() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
+        stringBuilder.append("|Notes: ").append(notes);
+
+        return new PitScoutData(teamNumber, stringBuilder.toString());
     }
 
     public static class Action {

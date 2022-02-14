@@ -8,9 +8,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,8 +82,8 @@ public class ObjectiveMatchFragment extends Fragment {
             new String[]{"0", "L", "M", "H", "T"}
     };
     private static final int BUTTON_MARGIN = 8;
-    ButtonInfo[] mButtonInfos;
-    SpinnerInfo[] mSpinnerInfos;
+    UiUtils.ButtonInfo[] mButtonInfos;
+    UiUtils.SpinnerInfo[] mSpinnerInfos;
     private ObjectiveScoutingViewModel mActionsViewModel;
     private Context mContext;
     // Chronometer
@@ -127,7 +125,7 @@ public class ObjectiveMatchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mButtonInfos = new ButtonInfo[BUTTONS.length];
+        mButtonInfos = new UiUtils.ButtonInfo[BUTTONS.length];
 
 
     }
@@ -189,7 +187,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Start the chronometer
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.start();
-        for (ButtonInfo buttonInfo : mButtonInfos) {
+        for (UiUtils.ButtonInfo buttonInfo : mButtonInfos) {
             buttonInfo.button.setEnabled(true);
         }
         mButtonInfos[0].button.setEnabled(false);
@@ -214,7 +212,7 @@ public class ObjectiveMatchFragment extends Fragment {
 
             // Add the Spinner Info
             if (HAS_SPINNERS) {
-                for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
+                for (UiUtils.SpinnerInfo spinnerInfo : mSpinnerInfos) {
                     mActionsViewModel.addAction(new Action(spinnerInfo.abbreviation,
                             spinnerInfo.contents_abbreviations
                                     [spinnerInfo.spinner.getSelectedItemPosition()]));
@@ -266,7 +264,7 @@ public class ObjectiveMatchFragment extends Fragment {
 
         if (HAS_SPINNERS) {
             // Spinners
-            mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
+            mSpinnerInfos = new UiUtils.SpinnerInfo[SPINNER_NAMES.length];
             int lastId = HAS_BUTTONS ? mButtonInfos[mButtonInfos.length - 2].id :
                          mChronometer.getId();
             // Set up first spinner
@@ -296,7 +294,7 @@ public class ObjectiveMatchFragment extends Fragment {
         mButtonInfos[mButtonInfos.length - 1].button.setEnabled(!HAS_BUTTONS);
     }
 
-    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId) {
+    private UiUtils.ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId) {
         // Create the button
         Button button = new MaterialButton(mContext);
         // Generate a unique id for the button
@@ -321,10 +319,10 @@ public class ObjectiveMatchFragment extends Fragment {
         constraintSet.applyTo(mConstraintLayout);
 
         // Return the button info
-        return new ButtonInfo(BUTTONS[index], BUTTON_ABBREVIATIONS[index], buttonId, button);
+        return new UiUtils.ButtonInfo(BUTTONS[index], BUTTON_ABBREVIATIONS[index], buttonId, button);
     }
 
-    private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
+    private UiUtils.SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
         // Generate a unique id for the spinner
@@ -346,7 +344,7 @@ public class ObjectiveMatchFragment extends Fragment {
         constraintSet.applyTo(mConstraintLayout);
 
         // Return the spinner info
-        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index],
+        return new UiUtils.SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index],
                 SPINNER_CONTENTS[index], SPINNER_CONTENTS_ABBREVIATIONS[index], spinnerId,
                 spinner);
 
@@ -433,7 +431,7 @@ public class ObjectiveMatchFragment extends Fragment {
                 return;
             }
 
-            for (ButtonInfo bi : mButtonInfos) {
+            for (UiUtils.ButtonInfo bi : mButtonInfos) {
                 if (view.getId() == bi.id) {
                     Action a = new Action(bi.abbreviation,
                             SystemClock.elapsedRealtime() - mChronometer.getBase());
@@ -505,73 +503,4 @@ public class ObjectiveMatchFragment extends Fragment {
         return !isError;
     }
 
-    private static class ButtonInfo {
-        String name;
-        String abbreviation;
-        int id;
-        Button button;
-
-        public ButtonInfo(String name, String abbreviation, int id, Button button) {
-            this.name = name;
-            this.abbreviation = abbreviation;
-            this.id = id;
-            this.button = button;
-        }
-    }
-
-    private static class SpinnerInfo {
-        String name;
-        String abbreviation;
-        String[] contents;
-        String[] contents_abbreviations;
-        int id;
-        Spinner spinner;
-
-        public SpinnerInfo(
-                String name, String abbreviation, String[] contents,
-                String[] contents_abbreviations, int id, Spinner spinner) {
-            this.name = name;
-            this.abbreviation = abbreviation;
-            this.contents = contents;
-            this.contents_abbreviations = contents_abbreviations;
-            this.id = id;
-            this.spinner = spinner;
-        }
-
-    }
-
-    /**
-     * A smaller version of TextWatcher that automatically implements the two methods that are
-     * usually unused. It also replaces the third method with a more useful one, providing the
-     * subclass with more information. This is a utility to reduce boilerplate code in the main methods.
-     */
-    public abstract static class SmallerTextWatcher implements TextWatcher {
-        private final TextInputLayout mTextInputLayout;
-        private final EditText mEditText;
-
-        SmallerTextWatcher(TextInputLayout l) {
-            mTextInputLayout = l;
-            mEditText = l.getEditText();
-        }
-
-        @Override
-        public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // Do nothing
-        }
-
-        @Override
-        public final void onTextChanged(CharSequence s, int start, int before, int count) {
-            // Do nothing here as it interrupts the user. Prefer afterTextChanged.
-        }
-
-        @Override
-        public final void afterTextChanged(Editable s) {
-            // Defer to a more useful method
-            afterTextChanged(s.toString(), mTextInputLayout, mEditText);
-        }
-
-        public abstract void afterTextChanged(
-                String input, TextInputLayout layout,
-                EditText editText);
-    }
 }

@@ -22,7 +22,7 @@
                         android:layout_margin="16dp"
                         app:counterMaxLength="4"
                         app:counterEnabled="true"
-                        style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 
                         >
 
@@ -43,7 +43,7 @@
                         android:layout_margin="16dp"
                         app:counterMaxLength="3"
                         app:counterEnabled="true"
-                        style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 
                         >
 
@@ -99,25 +99,6 @@
                         app:layout_constraintTop_toBottomOf="@id/subjective_togglegroup_alliance"
                         app:layout_constraintVertical_bias="0.0" />
 
-                <TextView
-                        android:id="@+id/subjective_text_actions"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/subjective_togglegroup_alliance" />
-
-                <androidx.constraintlayout.widget.Guideline
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/subjective_guideline_vertical"
-                        app:layout_constraintGuide_percent="0.5"
-                        android:orientation="vertical" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

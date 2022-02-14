@@ -1,13 +1,12 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
-import android.app.AlertDialog;
+import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,8 +35,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -53,8 +50,8 @@ public class SubjectiveMatchFragment extends Fragment {
             "BgF"
     };
     private static final String[][] SPINNER_CONTENTS = new String[][]{
-            new String[]{"0", "1", "2", "3", "4", "5"},
-            new String[]{"0", "1", "2", "3", "4", "5"},
+            new String[]{"1", "2", "3", "4", "5"},
+            new String[]{"1", "2", "3", "4", "5"},
             new String[]{
                     "Auto",
                     "Defense",
@@ -65,19 +62,18 @@ public class SubjectiveMatchFragment extends Fragment {
             }
     };
     private static final int BUTTON_MARGIN = 8;
-    SpinnerInfo[] mSpinnerInfos;
+    private SpinnerInfo[] mSpinnerInfos;
     private SubjectiveScoutingViewModel mActionsViewModel;
     private Context mContext;
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
     // Actions List TextView
-    private TextView mActionsListView;
     private TextInputLayout mTeamNumTextInput;
     private TextInputLayout mMatchNumTextInput;
     private int mConstraintLayoutId;
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
-    private ButtonInfo mSubmitButtonInfo;
+    private Button mSubmitButton;
     private TextView mToggleErrorText;
     private MaterialButtonToggleGroup mAllianceToggleGroup;
 
@@ -109,18 +105,6 @@ public class SubjectiveMatchFragment extends Fragment {
 
     }
 
-    private void subscribeToActions() {
-        mActionsViewModel.getLiveData().observe(getViewLifecycleOwner(), (actions) -> {
-            // Clear the TextView
-            mActionsListView.setText(R.string.action_list_start_prefix);
-            // Loop through the actions and add them to the TextView
-            if (actions != null) {
-                for (DataUtils.Action action : actions) {
-                    mActionsListView.append(action.getAbbreviation() + " ");
-                }
-            }
-        });
-    }
 
     @Override
     public void onViewCreated(
@@ -128,8 +112,6 @@ public class SubjectiveMatchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         generateUI();
         mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
-
-        subscribeToActions();
     }
 
     @Override
@@ -141,12 +123,6 @@ public class SubjectiveMatchFragment extends Fragment {
 
         mConstraintLayout = v.findViewById(R.id.layout_sub_main);
         mConstraintLayoutId = mConstraintLayout.getId();
-
-
-        mActionsListView = v.findViewById(R.id.subjective_text_actions);
-
-
-        mActionsListView.setVisibility(View.GONE);
 
         mTeamNumTextInput = v.findViewById(R.id.subjective_text_input_team_number);
         mMatchNumTextInput = v.findViewById(R.id.subjective_text_input_match_number);
@@ -177,14 +153,12 @@ public class SubjectiveMatchFragment extends Fragment {
             validateToggleGroup()) {
 
             // Add the Spinner Info
-                for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                    mActionsViewModel.addAction(new DataUtils.Action(spinnerInfo.abbreviation,
-                            spinnerInfo.contents[spinnerInfo.spinner.getSelectedItemPosition()]));
-                }
+            for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
+                mActionsViewModel.addAction(new DataUtils.Action(spinnerInfo.abbreviation,
+                        spinnerInfo.contents[spinnerInfo.spinner.getSelectedItemPosition()]));
+            }
 
             mActionsViewModel.processAndSaveMatch(
-                    Objects.requireNonNull(mActionsViewModel.getLiveData().getValue(),
-                            "Action list is null"),
                     Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Integer.parseInt(Objects.requireNonNull(mMatchNumTextInput.getEditText(),
@@ -193,7 +167,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
 
             //set submit to disable
-            mSubmitButtonInfo.button.setEnabled(false);
+            mSubmitButton.setEnabled(false);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                       .navigate(R.id.action_subjectiveMatchFragment_to_matchRecordFragment);
 
@@ -218,12 +192,12 @@ public class SubjectiveMatchFragment extends Fragment {
                     setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
         }
 
-        mSubmitButtonInfo = setupSubmitButton(mSpinnerInfos.length + 1, constraintSet,
+        mSubmitButton = setupSubmitButton(constraintSet,
                 mSpinnerInfos[mSpinnerInfos.length - 1].id);
 
     }
 
-    private ButtonInfo setupSubmitButton(int index, ConstraintSet constraintSet, int previousId) {
+    private Button setupSubmitButton(ConstraintSet constraintSet, int previousId) {
         // Create the button
         Button button = new MaterialButton(mContext);
         // Generate a unique id for the button
@@ -245,9 +219,7 @@ public class SubjectiveMatchFragment extends Fragment {
         // Apply the constraints
         constraintSet.applyTo(mConstraintLayout);
 
-        // Return the button info
-        return new ButtonInfo(getString(R.string.button_submit),
-                getString(R.string.abbreviation_submit), buttonId, button);
+        return button;
     }
 
     private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
@@ -275,10 +247,12 @@ public class SubjectiveMatchFragment extends Fragment {
         // Connect the spinner to the previous spinner
         chainViewsVertically(constraintSet, previousId, spinnerId);
 
-        constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT, 0);
+        constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT,
+                0);
         constraintSet.connect(textId, ConstraintSet.RIGHT, spinnerId, ConstraintSet.LEFT, 8);
         constraintSet.connect(spinnerId, ConstraintSet.LEFT, textId, ConstraintSet.RIGHT, 0);
-        constraintSet.connect(spinnerId, ConstraintSet.RIGHT, mConstraintLayoutId, ConstraintSet.RIGHT, 0);
+        constraintSet.connect(spinnerId, ConstraintSet.RIGHT, mConstraintLayoutId,
+                ConstraintSet.RIGHT, 0);
         constraintSet.connect(textId, ConstraintSet.TOP, spinnerId, ConstraintSet.TOP);
         constraintSet.connect(textId, ConstraintSet.BOTTOM, spinnerId, ConstraintSet.BOTTOM);
 
@@ -290,7 +264,8 @@ public class SubjectiveMatchFragment extends Fragment {
 
 
         // Return the spinner info
-        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index], SPINNER_CONTENTS[index], spinnerId, spinner);
+        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index],
+                SPINNER_CONTENTS[index], SPINNER_CONTENTS[index], spinnerId, spinner);
 
     }
 
@@ -359,7 +334,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
     public void onButtonClick(View view) {
 
-        if (view.getId() == mSubmitButtonInfo.button.getId()) {
+        if (view.getId() == mSubmitButton.getId()) {
             endMatch();
         }
 
@@ -367,7 +342,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
     /**
      * Checks for and displays errors on a given number-input {@link TextInputLayout} and creates a
-     * {@link ObjectiveMatchFragment.SmallerTextWatcher} to dismiss the error once it is corrected.
+     * {@link org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher} to dismiss the error once it is corrected.
      * <p>
      * The parameters for validation are that the entered input must be 1. Not Empty 2. Digits Only
      * 3. Less than the set max length, if one is set as an attribute of the TextInputLayout.
@@ -403,7 +378,8 @@ public class SubjectiveMatchFragment extends Fragment {
         //  If errors were found, add a listener to dismiss the error once it is corrected
         if (isError) {
             editText.addTextChangedListener(
-                    new ObjectiveMatchFragment.SmallerTextWatcher(textInputLayout) {
+                    new org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher(
+                            textInputLayout) {
                         @Override
                         public void afterTextChanged(
                                 String input, TextInputLayout layout,
@@ -426,70 +402,5 @@ public class SubjectiveMatchFragment extends Fragment {
         return !isError;
     }
 
-    private static class ButtonInfo {
-        String name;
-        String abbreviation;
-        int id;
-        Button button;
-
-        public ButtonInfo(String name, String abbreviation, int id, Button button) {
-            this.name = name;
-            this.abbreviation = abbreviation;
-            this.id = id;
-            this.button = button;
-        }
-    }
-
-    private static class SpinnerInfo {
-        String name;
-        String abbreviation;
-        String[] contents;
-        int id;
-        Spinner spinner;
-
-        public SpinnerInfo(String name, String abbreviation, String[] contents, int id, Spinner spinner) {
-            this.name = name;
-            this.abbreviation = abbreviation;
-            this.contents = contents;
-            this.id = id;
-            this.spinner = spinner;
-        }
-
-    }
-
-    /**
-     * A smaller version of TextWatcher that automatically implements the two methods that are
-     * usually unused. It also replaces the third method with a more useful one, providing the
-     * subclass with more information. This is a utility to reduce boilerplate code in the main methods.
-     */
-    public abstract static class SmallerTextWatcher implements TextWatcher {
-        private final TextInputLayout mTextInputLayout;
-        private final EditText mEditText;
-
-        SmallerTextWatcher(TextInputLayout l) {
-            mTextInputLayout = l;
-            mEditText = l.getEditText();
-        }
-
-        @Override
-        public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // Do nothing
-        }
-
-        @Override
-        public final void onTextChanged(CharSequence s, int start, int before, int count) {
-            // Do nothing here as it interrupts the user. Prefer afterTextChanged.
-        }
-
-        @Override
-        public final void afterTextChanged(Editable s) {
-            // Defer to a more useful method
-            afterTextChanged(s.toString(), mTextInputLayout, mEditText);
-        }
-
-        public abstract void afterTextChanged(
-                String input, TextInputLayout layout,
-                EditText editText);
-    }
 
 }

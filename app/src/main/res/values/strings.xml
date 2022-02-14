@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Scouting Radar</string>
     <string name="add_word">Scout new match</string>
 
@@ -52,13 +52,13 @@
     <string name="blue">Blue</string>
     <string name="error_alliance_missing">Alliance is required.</string>
     <string name="empty" />
-    <string name="location_permission_explanation" >We require location permission in order to access your current WiFi network information and to connect to Bluetooth.</string>
-    <string name="location_permission_explanation_title" >Location Permission</string>
-    <string name="bluetooth_permission_explanation" >We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
-    <string name="bluetooth_permission_explanation_title" >Bluetooth Permission</string>
+    <string name="location_permission_explanation">We require location permission in order to access your current WiFi network information and to connect to Bluetooth.</string>
+    <string name="location_permission_explanation_title">Location Permission</string>
+    <string name="bluetooth_permission_explanation">We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
+    <string name="bluetooth_permission_explanation_title">Bluetooth Permission</string>
     <string name="bt_null">Error: Bluetooth object is null. </string>
-    <string name="proceed" >Grant</string>
-    <string name="cancel" >Cancel</string>
+    <string name="proceed">Grant</string>
+    <string name="cancel">Cancel</string>
     <string name="send_data">Send Data</string>
     <string name="receive_data">Receive Data</string>
     <string name="receive">Receive</string>
@@ -67,5 +67,25 @@
     <string name="imported_data">Imported Data:</string>
     <string name="start_bluetooth_scan">Start Bluetooth Scan</string>
     <string name="stop_bluetooth_scan">Stop Bluetooth Scan</string>
+    <string name="notes">Notes</string>
+    <string name="pref_title_appearance">Appearance</string>
+
+    <string name="pref_key_dark">dark_mode_key</string>
+    <string name="pref_value_dark_dark">dark</string>
+    <string name="pref_value_dark_light">light</string>
+    <string name="pref_value_dark_system">system</string>
+    <string name="light_dark_mode">Light/Dark Mode</string>
+
+    <string name="pref_key_team">team_theme_key</string>
+    <string name="pref_value_team_charge">2722</string>
+    <string name="pref_value_team_redwatch">2720</string>
+    <string name="team_themes_title">Team Colors</string>
+    <string name="appearance">Appearance</string>
+    <string name="btsettings">btsettings</string>
+    <string name="bt_settings_title">Bluetooth Settings</string>
+    <string name="pref_key_teamnum">team_num_pref_key</string>
+    <string name="device_name_pref_title">Device Name</string>
+    <string name="pref_key_device_name">device_name_key</string>
+
 
 </resources>

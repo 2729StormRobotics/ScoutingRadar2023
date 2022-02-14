@@ -12,7 +12,6 @@ import androidx.room.Ignore;
 public class SubjectiveMatchData {
 
 
-
     /*
         defines data for columns in table
         teamNum - team number
@@ -20,13 +19,13 @@ public class SubjectiveMatchData {
         isRed - red/blue alliance
         autoData, teleopData, endgameData - data that was recorded during that phase
          */
-    @ColumnInfo(name= "team_num")
+    @ColumnInfo(name = "team_num")
     private int teamNum;
-    @ColumnInfo(name= "match_num")
+    @ColumnInfo(name = "match_num")
     private int matchNum;
-    @ColumnInfo (name= "is_red")
+    @ColumnInfo(name = "is_red")
     private boolean isRed;
-    @ColumnInfo(name= "data")
+    @ColumnInfo(name = "data")
     private String data;
 
     public SubjectiveMatchData() {
@@ -40,6 +39,14 @@ public class SubjectiveMatchData {
         this.data = data;
     }
 
+    public static SubjectiveMatchData valueOf(String string) {
+        String[] values = string.split(";");
+        if (values.length == 4) {
+            return new SubjectiveMatchData(Integer.parseInt(values[0]), Integer.parseInt(values[1]),
+                    Integer.parseInt(values[2]) == 1, values[3]);
+        }
+        return null;
+    }
 
     @NonNull
     @Override
@@ -49,14 +56,6 @@ public class SubjectiveMatchData {
                 ";" + matchNum +
                 ";" + (isRed ? 1 : 0) +
                 ";" + data;
-    }
-
-    public static SubjectiveMatchData valueOf(String string){
-        String[] values = string.split(";");
-        if (values.length == 4) {
-            return new SubjectiveMatchData(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]) == 1, values[3]);
-        }
-        return null;
     }
 
     //getters and setters for member variables
