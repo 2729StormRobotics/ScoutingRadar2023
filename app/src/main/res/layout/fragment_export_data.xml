@@ -9,6 +9,7 @@
             android:id="@+id/export_text_test"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:text="@string/data_loaded_for_exporting"
+            android:textSize="20sp" />
 
 </FrameLayout>

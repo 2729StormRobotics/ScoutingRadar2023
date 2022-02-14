@@ -129,7 +129,7 @@ public class ImportDataFragment extends PermissionsFragment {
                 @Override
                 public void onObjectiveDataReceived(byte[] data, String name) {
                     mTextView.setText(
-                            mTextView.getText() + name + " Objective: " + new String(data, StandardCharsets.UTF_8) + "\n");
+                            mTextView.getText() + "Objective, ");
                     mViewModel.saveObjectiveData(data);
                 }
 
@@ -137,14 +137,14 @@ public class ImportDataFragment extends PermissionsFragment {
                 @Override
                 public void onSubjectiveDataReceived(byte[] data, String name) {
                     mTextView.setText(
-                            mTextView.getText() + name + " Subjective: " + new String(data, StandardCharsets.UTF_8) + "\n \n");
+                            mTextView.getText() + "Subjective " + "\n");
                     mViewModel.saveSubjectiveData(data);
                 }
 
                 @Override
                 public void onPitDataReceived(byte[] data, String name) {
                     mTextView.setText(
-                            mTextView.getText() + name + " Pit: " + new String(data, StandardCharsets.UTF_8) + "\n");
+                            mTextView.getText() + name + " data received: Pit, ");
                     mViewModel.savePitData(data);
                 }
 

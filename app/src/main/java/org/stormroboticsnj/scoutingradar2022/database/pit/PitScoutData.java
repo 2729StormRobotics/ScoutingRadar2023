@@ -1,6 +1,9 @@
 package org.stormroboticsnj.scoutingradar2022.database.pit;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -32,10 +35,15 @@ public class PitScoutData {
                 ";" + data;
     }
 
+    @Nullable
     public static PitScoutData valueOf(String string) {
         String[] values = string.split(";");
         if (values.length == 2) {
-            return new PitScoutData(Integer.parseInt(values[0]), values[1]);
+            try {
+                return new PitScoutData(Integer.parseInt(values[0]), values[1]);
+            } catch (NumberFormatException e) {
+                Log.e("Pit Scout", "Non number team number", e);
+            }
         }
         return null;
     }

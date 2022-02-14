@@ -54,12 +54,12 @@
     <fragment
             android:id="@+id/import_data_fragment"
             android:name="org.stormroboticsnj.scoutingradar2022.dbfragments.ImportDataFragment"
-            android:label="fragment_import_data"
+            android:label="@string/label_fragment_import_data"
             tools:layout="@layout/fragment_import_data" />
     <fragment
             android:id="@+id/export_data_fragment"
             android:name="org.stormroboticsnj.scoutingradar2022.dbfragments.ExportDataFragment"
-            android:label="fragment_export_data"
+            android:label="@string/label_fragment_export_data"
             tools:layout="@layout/fragment_export_data" />
 
 

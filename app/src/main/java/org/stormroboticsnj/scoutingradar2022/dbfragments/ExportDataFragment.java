@@ -91,15 +91,15 @@ public class ExportDataFragment extends PermissionsFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BluetoothServer bluetoothServer = BluetoothServer.getInstance(mContext);
             mViewModel.getmObjectiveLiveData().observe(this, (data) -> {
-                mTextView.setText(mTextView.getText() + "\n Objective Data Loaded...");
+                mTextView.setText(mTextView.getText() + "\n Objective data loaded...");
                 bluetoothServer.setObjectiveData(data);
             });
             mViewModel.getmSubjectiveLiveData().observe(this, (data) -> {
-                mTextView.setText(mTextView.getText() + "\n Subjective Data Loaded...");
+                mTextView.setText(mTextView.getText() + "\n Subjective data loaded...");
                 bluetoothServer.setSubjectiveData(data);
             });
             mViewModel.getmPitScoutData().observe(this, (data) -> {
-                mTextView.setText(mTextView.getText() + "\n Pit Data Loaded...");
+                mTextView.setText(mTextView.getText() + "\n Pit data loaded...");
                 bluetoothServer.setPitData(data);
             });
             bluetoothServer.startAdvertising();

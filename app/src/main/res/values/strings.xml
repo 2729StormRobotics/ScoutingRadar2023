@@ -9,10 +9,12 @@
     <string name="field_text_name">Name: %1$s</string>
     <string name="field_text_abbr">Abbreviation: %1$s</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="data_loaded_for_exporting">&#160;Data loaded for exporting:</string>
     <string name="label_fragment_objective">Objective Match Scouting</string>
     <string name="label_fragment_subjective">Subjective Match Scouting</string>
     <string name="label_fragment_pit_scout">Pit Scout</string>
+    <string name="label_fragment_import_data">Import Data</string>
+    <string name="label_fragment_export_data">Export Data</string>
     <string name="import_data">Import Data</string>
     <string name="export_data">Export Data</string>
     <string name="settings">Settings</string>
