@@ -18,9 +18,9 @@ import java.util.zip.InflaterOutputStream;
 
 public class DataUtils {
 
-    public static byte[] compressData(List<?> dataList){
+    public static byte[] compressData(List<?> dataList) {
         StringBuilder sb = new StringBuilder();
-        for (Object data : dataList){
+        for (Object data : dataList) {
             sb.append(data).append('!');
         }
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -28,18 +28,17 @@ public class DataUtils {
         try {
             deflaterOutputStream.write(sb.toString().getBytes(StandardCharsets.UTF_8));
             deflaterOutputStream.finish();
-        } catch (IOException e){
+        } catch (IOException e) {
             Log.e(DataUtils.class.getSimpleName(), "Compress Data", e);
         }
         return outStream.toByteArray();
     }
 
     /**
-     *
      * @param compressedData a byte array of data to be added to the database
      * @return the data in a form that can be added to the database
      */
-    public static String[] extractData(byte[] compressedData){
+    public static String[] extractData(byte[] compressedData) {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         InflaterOutputStream inflaterOutputStream = new InflaterOutputStream(outStream);
         try {
@@ -75,15 +74,41 @@ public class DataUtils {
         for (String key : actionMap.keySet()) {
             stringBuilder.append(key).append(":").append(actionMap.get(key)).append("|");
         }
-        if (stringBuilder.length() > 0) stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-        String s = stringBuilder.toString();
+        if (stringBuilder.length() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
 
         return new ObjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());
     }
 
     public static SubjectiveMatchData processSubjectiveData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
-    return null;
+        List<Action> actionsCopy = new ArrayList<>(actions);
+
+        // Make a map of action names to comma separated timestamps
+        HashMap<String, String> actionMap = new HashMap<>();
+        for (Action action : actionsCopy) {
+            String subData = action.subAction.equals(Action.SUBACTION_NONE) ?
+                             String.valueOf(action.getTimeSeconds()) : action.subAction;
+            if (actionMap.containsKey(action.abbreviation)) {
+                actionMap.put(action.abbreviation,
+                        actionMap.get(action.abbreviation) + "," + subData);
+            } else {
+                actionMap.put(action.abbreviation, subData);
+            }
+
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String key : actionMap.keySet()) {
+            stringBuilder.append(key).append(":").append(actionMap.get(key)).append("|");
+        }
+        if (stringBuilder.length() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
+
+        return new SubjectiveMatchData(teamNumber, matchNumber, isRed,
+                stringBuilder.toString());
     }
 
     public static class Action {

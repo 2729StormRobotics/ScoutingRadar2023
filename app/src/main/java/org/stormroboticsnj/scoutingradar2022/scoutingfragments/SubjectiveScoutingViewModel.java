@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
@@ -19,6 +20,7 @@ public class SubjectiveScoutingViewModel extends AndroidViewModel {
     private SubjectiveRepository mSubjectiveRepository;
     private final MutableLiveData<List<DataUtils.Action>> mActionsLiveData;
     private final List<DataUtils.Action> mActions;
+
     public SubjectiveScoutingViewModel(
             @NonNull Application application) {
         super(application);
@@ -37,6 +39,11 @@ public class SubjectiveScoutingViewModel extends AndroidViewModel {
     public void saveMatch(SubjectiveMatchData matchData) {
         mSubjectiveRepository.insert(matchData);
     }
+
+    public LiveData<List<DataUtils.Action>> getLiveData() {
+        return mActionsLiveData;
+    }
+
 
     public void processAndSaveMatch(List<DataUtils.Action> actions, int teamNumber, int matchNumber, boolean isRed) {
         new Thread(() -> {

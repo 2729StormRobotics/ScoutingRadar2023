@@ -66,7 +66,7 @@ public class SubjectiveMatchFragment extends Fragment {
     };
     private static final int BUTTON_MARGIN = 8;
     SpinnerInfo[] mSpinnerInfos;
-    private ObjectiveScoutingViewModel mActionsViewModel;
+    private SubjectiveScoutingViewModel mActionsViewModel;
     private Context mContext;
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
@@ -127,7 +127,7 @@ public class SubjectiveMatchFragment extends Fragment {
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         generateUI();
-        mActionsViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
+        mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
 
         subscribeToActions();
     }
@@ -203,9 +203,6 @@ public class SubjectiveMatchFragment extends Fragment {
         }
     }
 
-    private void undoAction() {
-        mActionsViewModel.removeLastAction();
-    }
 
     public void generateUI() {
         // Reusable ConstraintSet
