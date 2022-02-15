@@ -64,12 +64,12 @@ public class ObjectiveMatchFragment extends Fragment {
     private ObjectiveScoutingViewModel mActionsViewModel;
     // Context :))
     private Context mContext;
+
     // Chronometer
     private Chronometer mChronometer;
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
     private int mConstraintLayoutId;
-
     // Actions List TextView
     private TextView mActionsListView;
 
@@ -77,11 +77,10 @@ public class ObjectiveMatchFragment extends Fragment {
     private UiUtils.TextInputWrapper mTeamNumTextInput;
     private UiUtils.TextInputWrapper mMatchNumTextInput;
 
+    private UiUtils.ToggleGroupWrapper mAllianceToggleGroup;
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
-
     private TextView mToggleErrorText;
-    private MaterialButtonToggleGroup mAllianceToggleGroup;
 
     public ObjectiveMatchFragment() {
         // Required empty public constructor
@@ -121,7 +120,7 @@ public class ObjectiveMatchFragment extends Fragment {
         mRedButton = v.findViewById(R.id.objective_button_red);
         mBlueButton = v.findViewById(R.id.objective_button_blue);
         mToggleErrorText = v.findViewById(R.id.objective_text_alliance_error);
-        mAllianceToggleGroup = v.findViewById(R.id.objective_togglegroup_alliance);
+        mAllianceToggleGroup = new UiUtils.ToggleGroupWrapper(v.findViewById(R.id.objective_togglegroup_alliance));
 
         // TextInputLayouts go in a wrapper so we can handle their Watchers (avoids scary crashes)
         mTeamNumTextInput =
@@ -229,7 +228,7 @@ public class ObjectiveMatchFragment extends Fragment {
                 i++;
             }
 
-            hasSpinners = true;
+            hasButtons = true;
         }
 
     }
@@ -295,7 +294,7 @@ public class ObjectiveMatchFragment extends Fragment {
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Integer.parseInt(Objects.requireNonNull(mMatchNumTextInput.getEditText(),
                             "NO MATCH NUM EDIT TEXT").getText().toString()),
-                    mAllianceToggleGroup.getCheckedButtonId() == mRedButton.getId());
+                    mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() == mRedButton.getId());
 
 
             mButtonInfos[mButtonInfos.length - 1].button.setEnabled(false);
@@ -331,9 +330,11 @@ public class ObjectiveMatchFragment extends Fragment {
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
 
+        mButtonInfos = new UiUtils.ButtonInfo[mButtonNames.length];
+        if (mButtonInfos.length == 0) mButtonInfos = new UiUtils.ButtonInfo[1];
+
         if (hasButtons) {
             // Button Infos saved here
-            mButtonInfos = new UiUtils.ButtonInfo[mButtonNames.length];
             // Set up the start button
             mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId());
             // Enable the start button
@@ -369,7 +370,7 @@ public class ObjectiveMatchFragment extends Fragment {
         } else if (hasButtons) {
             lastId = mButtonInfos[mButtonInfos.length - 2].id;
         } else {
-            lastId = mAllianceToggleGroup.getId();
+            lastId = mAllianceToggleGroup.getToggleGroup().getId();
         }
 
         // Set up the submit button
@@ -525,7 +526,7 @@ public class ObjectiveMatchFragment extends Fragment {
      */
     private boolean validateToggleGroup() {
         boolean errored = false;
-        int checkedButton = mAllianceToggleGroup.getCheckedButtonId();
+        int checkedButton = mAllianceToggleGroup.getToggleGroup().getCheckedButtonId();
 
         if (checkedButton == View.NO_ID) {
             // No alliance is selected
@@ -549,7 +550,7 @@ public class ObjectiveMatchFragment extends Fragment {
             mToggleErrorText.setVisibility(View.VISIBLE);
 
             // Reset the ToggleGroup once an item is selected
-            mAllianceToggleGroup.addOnButtonCheckedListener(
+            mAllianceToggleGroup.setWatcher(
                     new MaterialButtonToggleGroup.OnButtonCheckedListener() {
                         @Override
                         public void onButtonChecked(
@@ -559,7 +560,7 @@ public class ObjectiveMatchFragment extends Fragment {
                             mBlueButton.setStrokeColor(oldColor);
                             mToggleErrorText.setText(R.string.empty);
                             mToggleErrorText.setVisibility(View.GONE);
-                            mAllianceToggleGroup.removeOnButtonCheckedListener(this);
+                            mAllianceToggleGroup.removeWatcher(this);
                         }
                     });
         }
