@@ -56,7 +56,7 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-
+//
 //            databaseWriteExecutor.execute(() -> {
 //                ObjectiveMatchDao dao = instance.objectiveMatchDao();
 //                dao.deleteAll();
@@ -82,8 +82,8 @@ public abstract class AppDatabase extends RoomDatabase {
 //                dao3.deleteAll();
 //                PitScoutData data3 = new PitScoutData(2729, "Pit Data 1");
 //                dao3.insert(data3);
-
-
+//
+//
 //            });
 
         }

@@ -1,5 +1,8 @@
 package org.stormroboticsnj.scoutingradar2022.database.objective;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -51,10 +54,16 @@ public class ObjectiveMatchData {
                ";" + data;
     }
 
+    @Nullable
     public static ObjectiveMatchData valueOf(String string) {
         String[] values = string.split(";");
         if (values.length == 4) {
-            return new ObjectiveMatchData(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Integer.parseInt(values[2]) == 1, values[3]);
+            try {
+                return new ObjectiveMatchData(Integer.parseInt(values[0]),
+                        Integer.parseInt(values[1]), Integer.parseInt(values[2]) == 1, values[3]);
+            } catch (NumberFormatException e){
+                Log.e("Objective Match Data", "Non number team number", e);
+            }
         }
         return null;
     }

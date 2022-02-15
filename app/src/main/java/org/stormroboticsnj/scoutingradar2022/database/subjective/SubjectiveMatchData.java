@@ -1,6 +1,9 @@
 package org.stormroboticsnj.scoutingradar2022.database.subjective;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -39,11 +42,17 @@ public class SubjectiveMatchData {
         this.data = data;
     }
 
+    @Nullable
     public static SubjectiveMatchData valueOf(String string) {
         String[] values = string.split(";");
         if (values.length == 4) {
-            return new SubjectiveMatchData(Integer.parseInt(values[0]), Integer.parseInt(values[1]),
-                    Integer.parseInt(values[2]) == 1, values[3]);
+            try {
+                return new SubjectiveMatchData(Integer.parseInt(values[0]),
+                        Integer.parseInt(values[1]),
+                        Integer.parseInt(values[2]) == 1, values[3]);
+            } catch (NumberFormatException e){
+                Log.e("Subjective Match Data", "Non number team number", e);
+            }
         }
         return null;
     }

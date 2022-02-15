@@ -32,7 +32,10 @@ public class ImportViewModel extends AndroidViewModel {
 
             String[] uncompressedData = DataUtils.extractData(data);
             for (String s : uncompressedData) {
-                mObjectiveRepository.insert(ObjectiveMatchData.valueOf(s));
+                ObjectiveMatchData obj = ObjectiveMatchData.valueOf(s);
+                if (obj != null) {
+                    mObjectiveRepository.insert(ObjectiveMatchData.valueOf(s));
+                }
             }
 
         }).start();
@@ -43,7 +46,10 @@ public class ImportViewModel extends AndroidViewModel {
 
             String[] uncompressedData = DataUtils.extractData(data);
             for (String s : uncompressedData) {
-                mSubjectiveRepository.insert(SubjectiveMatchData.valueOf(s));
+                SubjectiveMatchData sub = SubjectiveMatchData.valueOf(s);
+                if (sub != null) {
+                    mSubjectiveRepository.insert(sub);
+                }
             }
 
         }).start();
@@ -54,7 +60,10 @@ public class ImportViewModel extends AndroidViewModel {
 
             String[] uncompressedData = DataUtils.extractData(data);
             for (String s : uncompressedData) {
-                mPitRepository.insert(PitScoutData.valueOf(s));
+                PitScoutData pit = PitScoutData.valueOf(s);
+                if (pit != null) {
+                    mPitRepository.insert(pit);
+                }
             }
 
         }).start();

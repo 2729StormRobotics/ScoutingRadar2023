@@ -6,6 +6,8 @@
     <string name="label_fragment_objective">Objective Match Scouting</string>
     <string name="label_fragment_subjective">Subjective Match Scouting</string>
     <string name="label_fragment_pit_scout">Pit Scout</string>
+    <string name="label_fragment_import_data">Import Data</string>
+    <string name="label_fragment_export_data">Export Data</string>
     <string name="import_data">Import Data</string>
     <string name="export_data">Export Data</string>
     <string name="settings">Settings</string>

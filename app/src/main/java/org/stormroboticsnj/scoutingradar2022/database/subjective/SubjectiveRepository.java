@@ -2,6 +2,7 @@ package org.stormroboticsnj.scoutingradar2022.database.subjective;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
@@ -23,7 +24,7 @@ public class SubjectiveRepository {
         return mDataList;
     }
 
-    public void insert(SubjectiveMatchData match) {
+    public void insert(@NonNull SubjectiveMatchData match) {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(match));
     }
 

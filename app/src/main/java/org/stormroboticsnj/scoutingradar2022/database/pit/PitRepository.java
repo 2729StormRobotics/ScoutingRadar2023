@@ -2,6 +2,7 @@ package org.stormroboticsnj.scoutingradar2022.database.pit;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
@@ -23,7 +24,7 @@ public class PitRepository {
         return mDataList;
     }
 
-    public void insert(PitScoutData data) {
+    public void insert(@NonNull PitScoutData data) {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(data));
     }
 
