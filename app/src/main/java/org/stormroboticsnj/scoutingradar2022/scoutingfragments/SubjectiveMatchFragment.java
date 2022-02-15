@@ -45,34 +45,33 @@ public class SubjectiveMatchFragment extends Fragment {
 
 
     private static final int BUTTON_MARGIN = 8;
+
     private SpinnerInfo[] mSpinnerInfos;
-    private SubjectiveScoutingViewModel mActionsViewModel;
-    private Context mContext;
+    private String[] mSpinnerNames;
+    private String[][] mSpinnerContents;
+
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
-    // Actions List TextView
+    private int mConstraintLayoutId;
+
+    // Input Views
     private UiUtils.TextInputWrapper mTeamNumTextInput;
     private UiUtils.TextInputWrapper mMatchNumTextInput;
-    private int mConstraintLayoutId;
+
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
-    private Button mSubmitButton;
     private TextView mToggleErrorText;
-    private MaterialButtonToggleGroup mAllianceToggleGroup;
+    private UiUtils.ToggleGroupWrapper mAllianceToggleGroup;
 
-    private String[] SPINNER_NAMES;
-    private String[][] SPINNER_CONTENTS;
+    private Button mSubmitButton;
+
+    private SubjectiveScoutingViewModel mActionsViewModel;
+    private Context mContext;
 
     public SubjectiveMatchFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ObjectiveMatchFragment.
-     */
 
     @SuppressWarnings("unused")
     public static SubjectiveMatchFragment newInstance() {
@@ -88,51 +87,6 @@ public class SubjectiveMatchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-
-    @Override
-    public void onViewCreated(
-            @NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Get the SharedPreferences
-        SharedPreferences
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-        // Get all of the spinner contents
-        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_sub_spinner),
-                null);
-
-        if (set != null) {
-            SPINNER_CONTENTS = new String[set.size()][];
-            SPINNER_NAMES = new String[set.size()];
-            // Split the spinner contents into arrays
-            int i = 0;
-            for (String s : set) {
-                String[] split = s.split(":");
-                SPINNER_CONTENTS[i] = split[1].split(",");
-                SPINNER_NAMES[i] = split[0];
-                i++;
-            }
-        } else {
-            String[] arr = getResources().getStringArray(R.array.sub_spinners);
-            SPINNER_CONTENTS = new String[arr.length][];
-            SPINNER_NAMES = new String[arr.length];
-            // Split the spinner contents into arrays
-            int i = 0;
-            for (String s : arr) {
-                String[] split = s.split(":");
-                SPINNER_CONTENTS[i] = split[1].split(",");
-                SPINNER_NAMES[i] = split[0];
-                i++;
-            }
-        }
-
-
-        generateUI();
-        mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
     }
 
     @Override
@@ -154,9 +108,52 @@ public class SubjectiveMatchFragment extends Fragment {
         mBlueButton = v.findViewById(R.id.subjective_button_blue);
         //need to do submit Button!!
         mToggleErrorText = v.findViewById(R.id.subjective_text_alliance_error);
-        mAllianceToggleGroup = v.findViewById(R.id.subjective_togglegroup_alliance);
+        mAllianceToggleGroup = new UiUtils.ToggleGroupWrapper(v.findViewById(R.id.subjective_togglegroup_alliance));
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(
+            @NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Get the SharedPreferences
+        SharedPreferences
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        // Get all of the spinner contents
+        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_sub_spinner),
+                null);
+
+        if (set != null) {
+            mSpinnerContents = new String[set.size()][];
+            mSpinnerNames = new String[set.size()];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : set) {
+                String[] split = s.split(":");
+                mSpinnerContents[i] = split[1].split(",");
+                mSpinnerNames[i] = split[0];
+                i++;
+            }
+        } else {
+            String[] arr = getResources().getStringArray(R.array.sub_spinners);
+            mSpinnerContents = new String[arr.length][];
+            mSpinnerNames = new String[arr.length];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : arr) {
+                String[] split = s.split(":");
+                mSpinnerContents[i] = split[1].split(",");
+                mSpinnerNames[i] = split[0];
+                i++;
+            }
+        }
+
+
+        generateUI();
+        mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
     }
 
     @Override
@@ -186,7 +183,7 @@ public class SubjectiveMatchFragment extends Fragment {
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Integer.parseInt(Objects.requireNonNull(mMatchNumTextInput.getEditText(),
                             "NO MATCH NUM EDIT TEXT").getText().toString()),
-                    mAllianceToggleGroup.getCheckedButtonId() == mRedButton.getId());
+                    mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() == mRedButton.getId());
 
 
             //set submit to disable
@@ -205,12 +202,12 @@ public class SubjectiveMatchFragment extends Fragment {
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
         // Spinners
-        mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
+        mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
         // Set up first spinner
         mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
-                mAllianceToggleGroup.getId());
+                mAllianceToggleGroup.getToggleGroup().getId());
         // Set up the rest of the spinners
-        for (int i = 1; i < SPINNER_NAMES.length; i++) {
+        for (int i = 1; i < mSpinnerNames.length; i++) {
             mSpinnerInfos[i] =
                     setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
         }
@@ -256,10 +253,10 @@ public class SubjectiveMatchFragment extends Fragment {
         TextView textView = new TextView(mContext);
         int textId = View.generateViewId();
         textView.setId(textId);
-        textView.setText(SPINNER_NAMES[index]);
+        textView.setText(mSpinnerNames[index]);
         // Create the adapter for the spinner
         spinner.setAdapter(new ArrayAdapter<>(mContext,
-                android.R.layout.simple_spinner_dropdown_item, SPINNER_CONTENTS[index]));
+                android.R.layout.simple_spinner_dropdown_item, mSpinnerContents[index]));
         // Add the spinner to the layout
         mConstraintLayout.addView(spinner);
         // Add the textview to the layout
@@ -287,7 +284,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
 
         // Return the spinner info
-        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_CONTENTS[index], spinnerId, spinner);
+        return new SpinnerInfo(mSpinnerNames[index], mSpinnerContents[index], spinnerId, spinner);
 
     }
 
@@ -313,7 +310,7 @@ public class SubjectiveMatchFragment extends Fragment {
      */
     private boolean validateToggleGroup() {
         boolean errored = false;
-        int checkedButton = mAllianceToggleGroup.getCheckedButtonId();
+        int checkedButton = mAllianceToggleGroup.getToggleGroup().getCheckedButtonId();
 
         if (checkedButton == View.NO_ID) {
             // No alliance is selected
@@ -337,7 +334,7 @@ public class SubjectiveMatchFragment extends Fragment {
             mToggleErrorText.setVisibility(View.VISIBLE);
 
             // Reset the ToggleGroup once an item is selected
-            mAllianceToggleGroup.addOnButtonCheckedListener(
+            mAllianceToggleGroup.setWatcher(
                     new MaterialButtonToggleGroup.OnButtonCheckedListener() {
                         @Override
                         public void onButtonChecked(
@@ -347,7 +344,7 @@ public class SubjectiveMatchFragment extends Fragment {
                             mBlueButton.setStrokeColor(oldColor);
                             mToggleErrorText.setText(R.string.empty);
                             mToggleErrorText.setVisibility(View.GONE);
-                            mAllianceToggleGroup.removeOnButtonCheckedListener(this);
+                            mAllianceToggleGroup.removeWatcher(this);
                         }
                     });
         }

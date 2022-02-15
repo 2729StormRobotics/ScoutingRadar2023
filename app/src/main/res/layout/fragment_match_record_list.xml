@@ -7,17 +7,45 @@
         android:layout_height="match_parent"
         tools:context=".homefragment.MatchRecordFragment">
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/match_image_logo"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:maxHeight="150dp"
+            android:contentDescription="@string/scouting_radar_logo"
+            android:adjustViewBounds="true"
+            android:maxWidth="150dp"
+            android:src="@drawable/ic_app_logo"
+            app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/match_text_welcome"
+            android:layout_height="wrap_content"
+            android:text="@string/home_welcome"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/match_image_logo" />
 
     <TextView
             android:id="@+id/record_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textAppearance="?textAppearanceHeadline6"
+            app:layout_constraintTop_toBottomOf="@id/match_text_welcome"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"
+            android:textAppearance="?textAppearanceOverline"
+            android:textSize="16sp"
             android:text="@string/recycler_title" />
 
 

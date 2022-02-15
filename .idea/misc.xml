@@ -20,8 +20,13 @@
         <entry key="..\:/Users/sidparikh/AndroidStudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_subjective_match.xml" value="0.1" />
         <entry key="..\:/Users/sidparikh/StudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/sidparikh/StudioProjects/ScoutingRadar2022/app/src/main/res/layout/fragment_match_record_list.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/drawable/ic_app_logo.xml" value="0.211" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.211" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.211" />
         <entry key="app/src/main/res/layout/fragment_configure_scouting.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_match_record_list.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_top_app_bar.xml" value="0.2947916666666667" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.211" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.24139492753623187" />
       </map>
     </option>

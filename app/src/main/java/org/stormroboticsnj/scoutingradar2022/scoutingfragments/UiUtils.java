@@ -7,6 +7,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
@@ -81,5 +82,34 @@ public class UiUtils {
         public EditText getEditText() {
             return mEditText;
         }
+    }
+
+    public static class ToggleGroupWrapper {
+        private final MaterialButtonToggleGroup toggleGroup;
+        private boolean hasWatcher = false;
+
+        public ToggleGroupWrapper(@NonNull MaterialButtonToggleGroup toggleGroup) {
+            this.toggleGroup = toggleGroup;
+        }
+
+        public MaterialButtonToggleGroup getToggleGroup() {
+            return toggleGroup;
+        }
+
+        public void setWatcher(MaterialButtonToggleGroup.OnButtonCheckedListener listener) {
+            if (!hasWatcher) {
+                toggleGroup.addOnButtonCheckedListener(listener);
+                hasWatcher = true;
+            }
+        }
+
+        public void removeWatcher(MaterialButtonToggleGroup.OnButtonCheckedListener listener) {
+            if (hasWatcher) {
+                toggleGroup.removeOnButtonCheckedListener(listener);
+                hasWatcher = false;
+            }
+        }
+
+
     }
 }

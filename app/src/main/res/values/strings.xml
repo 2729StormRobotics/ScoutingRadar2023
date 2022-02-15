@@ -23,7 +23,7 @@
     <string name="recycler_title">Previously Scouted Matches (Objective)</string>
     <string name="team_number">Team Number</string>
     <string name="match_number">Match Number</string>
-    <string name="action_list_start_prefix">\"START \"</string>
+    <string name="action_list_start_prefix">START\ </string>
     <string name="error_no_teamnum">Team Number is required</string>
     <string name="error_toolong_teamnum">Team Number must be 1–4 digits</string>
     <string name="error_notnumber_teamnum">Team Number must be a number</string>
@@ -72,5 +72,9 @@
     <string name="upload_config_file">Upload Config File</string>
     <string name="error_reading_file">Error reading file.</string>
     <string name="button_submit">Submit</string>
+    <string name="record_text_match">Match %1$d</string>
+    <string name="record_text_team">Team %1$d</string>
+    <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
+    <string name="scouting_radar_logo">Scouting Radar Logo</string>
 
 </resources>
