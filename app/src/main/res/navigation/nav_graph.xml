@@ -81,5 +81,10 @@
             android:id="@+id/settings_fragment"
             android:name="org.stormroboticsnj.scoutingradar2022.SettingsFragment"
             android:label="Settings" />
+    <fragment
+            android:id="@+id/configure_scouting_fragment"
+            android:name="org.stormroboticsnj.scoutingradar2022.ConfigureScoutingFragment"
+            android:label="Configure Scouting"
+            tools:layout="@layout/fragment_configure_scouting" />
 
 </navigation>

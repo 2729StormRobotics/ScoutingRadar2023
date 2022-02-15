@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -22,6 +23,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,6 +33,7 @@ import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,47 +42,27 @@ import java.util.Objects;
  */
 public class PitScoutFragment extends Fragment {
 
-    private static final String[] SPINNER_NAMES = new String[]{
-            "Driver Age",
-            "Drivetrain"
-    };
-    private static final String[] SPINNER_ABBREVIATIONS = new String[]{
-            "DrA",
-            "Drt",
-            };
-    private static final String[][] SPINNER_CONTENTS = new String[][]{
-            new String[]{"1", "2", "3", "4", "5"},
-            new String[]{
-                    "Tank",
-                    "West Coast",
-                    "Swerve",
-                    "Mecanum",
-                    "Other",
-                    }
-    };
-    private static final int BUTTON_MARGIN = 8;
+    private static final int VERTICAL_MARGIN = 8;
     private SpinnerInfo[] mSpinnerInfos;
     private PitScoutViewModel mActionsViewModel;
     private Context mContext;
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
     // Actions List TextView
-    private TextInputLayout mTeamNumTextInput;
-    private TextInputLayout mNotesTextInput;
+    private UiUtils.TextInputWrapper mTeamNumTextInput;
+    private UiUtils.TextInputWrapper mNotesTextInput;
     private int mConstraintLayoutId;
     private Button mSubmitButton;
+
+    private String[] SPINNER_NAMES;
+    private String[][] SPINNER_CONTENTS;
 
 
     public PitScoutFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment PitScoutFragment.
-     */
+    @SuppressWarnings("unused")
     public static PitScoutFragment newInstance() {
         return new PitScoutFragment();
     }
@@ -97,8 +81,9 @@ public class PitScoutFragment extends Fragment {
         mConstraintLayout = v.findViewById(R.id.layout_pit_main);
         mConstraintLayoutId = mConstraintLayout.getId();
 
-        mTeamNumTextInput = v.findViewById(R.id.pit_text_input_team_num);
-        mNotesTextInput = v.findViewById(R.id.pit_text_input_notes);
+        mTeamNumTextInput =
+                new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_team_num));
+        mNotesTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_notes));
 
         return v;
     }
@@ -107,18 +92,56 @@ public class PitScoutFragment extends Fragment {
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        // Get the SharedPreferences
+        SharedPreferences
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        // Get all of the spinner contents
+        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_pit_spinner),
+                null);
+
+        if (set != null) {
+            SPINNER_CONTENTS = new String[set.size()][];
+            SPINNER_NAMES = new String[set.size()];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : set) {
+                String[] split = s.split(":");
+                SPINNER_CONTENTS[i] = split[1].split(",");
+                SPINNER_NAMES[i] = split[0];
+                i++;
+            }
+        } else {
+            String[] arr = getResources().getStringArray(R.array.pit_spinners);
+            SPINNER_CONTENTS = new String[arr.length][];
+            SPINNER_NAMES = new String[arr.length];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : arr) {
+                String[] split = s.split(":");
+                SPINNER_CONTENTS[i] = split[1].split(",");
+                SPINNER_NAMES[i] = split[0];
+                i++;
+            }
+        }
+
+        // Generate the UI
         generateUI();
+        // Make the ViewModel
         mActionsViewModel = new ViewModelProvider(this).get(PitScoutViewModel.class);
     }
 
     public void generateUI() {
+
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
         // Spinners
         mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
         // Set up first spinner
         mSpinnerInfos[0] = mSpinnerInfos[0] =
-                setupNewSpinner(0, constraintSet, mNotesTextInput.getId());
+                setupNewSpinner(0, constraintSet, mNotesTextInput.getInputLayout().getId());
         // Set up the rest of the spinners
         for (int i = 1; i < SPINNER_NAMES.length; i++) {
             mSpinnerInfos[i] =
@@ -150,7 +173,7 @@ public class PitScoutFragment extends Fragment {
 
             // Add the Spinner Info
             for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                mActionsViewModel.addAction(new DataUtils.Action(spinnerInfo.abbreviation,
+                mActionsViewModel.addAction(new DataUtils.Action(spinnerInfo.name,
                         spinnerInfo.contents[spinnerInfo.spinner.getSelectedItemPosition()]));
             }
 
@@ -161,10 +184,8 @@ public class PitScoutFragment extends Fragment {
                            .getText()
                            .toString());
 
-            //set submit to disable
-            mSubmitButton.setEnabled(false);
-//            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-//                      .navigate(R.id.action_subjectiveMatchFragment_to_matchRecordFragment);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                      .navigate(R.id.action_pitScoutFragment_to_matchRecordFragment);
 
         } else {
             // Toast error
@@ -237,10 +258,8 @@ public class PitScoutFragment extends Fragment {
         //textView.setHeight(spinner.getHeight());
         textView.setGravity(Gravity.CENTER);
 
-
         // Return the spinner info
-        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index],
-                SPINNER_CONTENTS[index], SPINNER_CONTENTS[index], spinnerId, spinner);
+        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_CONTENTS[index], spinnerId, spinner);
 
     }
 
@@ -255,7 +274,7 @@ public class PitScoutFragment extends Fragment {
 
     private void chainViewsVertically(ConstraintSet constraintSet, int topId, int bottomId) {
         constraintSet.connect(bottomId, ConstraintSet.TOP, topId, ConstraintSet.BOTTOM,
-                BUTTON_MARGIN);
+                VERTICAL_MARGIN);
     }
 
     /**
@@ -265,39 +284,33 @@ public class PitScoutFragment extends Fragment {
      * The parameters for validation are that the entered input must be 1. Not Empty 2. Digits Only
      * 3. Less than the set max length, if one is set as an attribute of the TextInputLayout.
      *
-     * @param textInputLayout TextInputLayout to monitor
-     * @param emptyError      The error message to be displayed if this TextInputLayout is empty.
+     * @param textInputWrapper TextInputLayout to monitor
+     * @param emptyError       The error message to be displayed if this TextInputLayout is empty.
      * @return whether or not an error was found
      */
-    public boolean validateNumberTextInput(final TextInputLayout textInputLayout, String emptyError, String notNumberError, String tooLongError) {
+    public boolean validateNumberTextInput(final UiUtils.TextInputWrapper textInputWrapper, String emptyError, String notNumberError, String tooLongError) {
         boolean isError = false;
-        final EditText editText = textInputLayout.getEditText();
-
-        // This shouldn't happen but TextInputLayout#getEditText() is marked as nullable.
-        if (editText == null) {
-            return true;
-        }
-        String input = editText.getText().toString();
+        String input = textInputWrapper.getEditText().getText().toString();
 
         /* Check to make sure the entered text exists, is a number, and is shorter than
            the set max length */
         if (TextUtils.isEmpty(input)) {
             isError = true;
-            textInputLayout.setError(emptyError);
+            textInputWrapper.getInputLayout().setError(emptyError);
         } else if (!TextUtils.isDigitsOnly(input)) {
             isError = true;
-            textInputLayout.setError(notNumberError);
-        } else if (textInputLayout.getCounterMaxLength() > 0 &&
-                   input.length() > textInputLayout.getCounterMaxLength()) {
+            textInputWrapper.getInputLayout().setError(notNumberError);
+        } else if (textInputWrapper.getInputLayout().getCounterMaxLength() > 0 &&
+                   input.length() > textInputWrapper.getInputLayout().getCounterMaxLength()) {
             isError = true;
-            textInputLayout.setError(tooLongError);
+            textInputWrapper.getInputLayout().setError(tooLongError);
         }
 
         //  If errors were found, add a listener to dismiss the error once it is corrected
         if (isError) {
-            editText.addTextChangedListener(
+            textInputWrapper.setTextWatcher(
                     new org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher(
-                            textInputLayout) {
+                            textInputWrapper.getInputLayout()) {
                         @Override
                         public void afterTextChanged(
                                 String input, TextInputLayout layout,
@@ -311,7 +324,7 @@ public class PitScoutFragment extends Fragment {
                                     input)) && (layout.getCounterMaxLength() <= 0 ||
                                                 input.length() <= layout.getCounterMaxLength())) {
                                 layout.setError(null);
-                                editText.removeTextChangedListener(this);
+                                textInputWrapper.removeTextWatcher(this);
                             }
                         }
                     });

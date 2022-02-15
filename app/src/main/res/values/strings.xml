@@ -1,13 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Scouting Radar</string>
     <string name="add_word">Scout new match</string>
-
-    <string name="record_text_match">Match %1$d</string>
-    <string name="record_text_team">Team %1$d</string>
-    <string name="field_text_cat">Category: %1$s</string>
-
-    <string name="field_text_name">Name: %1$s</string>
-    <string name="field_text_abbr">Abbreviation: %1$s</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_fragment_objective">Objective Match Scouting</string>
@@ -16,29 +9,8 @@
     <string name="import_data">Import Data</string>
     <string name="export_data">Export Data</string>
     <string name="settings">Settings</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="recycler_title">Previously Scouted Matches (Objective)</string>
-    <string name="button_start">Start</string>
-    <string name="abbreviation_start">START</string>
-    <string name="button_end">End</string>
-    <string name="abbreviation_end">END</string>
-    <string name="button_undo">Undo</string>
-    <string name="abbreviation_undo">UNDO</string>
-    <string name="button_submit">Submit</string>
-    <string name="abbreviation_submit">SUBMIT</string>
     <string name="team_number">Team Number</string>
     <string name="match_number">Match Number</string>
     <string name="action_list_start_prefix">\"START \"</string>
@@ -52,23 +24,18 @@
     <string name="blue">Blue</string>
     <string name="error_alliance_missing">Alliance is required.</string>
     <string name="empty" />
-    <string name="location_permission_explanation">We require location permission in order to access your current WiFi network information and to connect to Bluetooth.</string>
-    <string name="location_permission_explanation_title">Location Permission</string>
+
     <string name="bluetooth_permission_explanation">We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
     <string name="bluetooth_permission_explanation_title">Bluetooth Permission</string>
-    <string name="bt_null">Error: Bluetooth object is null. </string>
     <string name="proceed">Grant</string>
     <string name="cancel">Cancel</string>
     <string name="send_data">Send Data</string>
     <string name="receive_data">Receive Data</string>
     <string name="receive">Receive</string>
-    <string name="scouting_fields">Scouting Fields</string>
-    <string name="add_field">Add Field</string>
     <string name="imported_data">Imported Data:</string>
     <string name="start_bluetooth_scan">Start Bluetooth Scan</string>
     <string name="stop_bluetooth_scan">Stop Bluetooth Scan</string>
     <string name="notes">Notes</string>
-    <string name="pref_title_appearance">Appearance</string>
 
     <string name="pref_key_dark">dark_mode_key</string>
     <string name="pref_value_dark_dark">dark</string>
@@ -84,8 +51,16 @@
     <string name="btsettings">btsettings</string>
     <string name="bt_settings_title">Bluetooth Settings</string>
     <string name="pref_key_teamnum">team_num_pref_key</string>
-    <string name="device_name_pref_title">Device Name</string>
     <string name="pref_key_device_name">device_name_key</string>
 
+    <string name="pref_key_pit_spinner">pit_spinner_key</string>
+    <string name="pref_key_sub_spinner">sub_spinner_key</string>
+    <string name="pref_key_obj_spinner">obj_spinner_key</string>
+    <string name="pref_key_obj_buttons">obj_buttons_key</string>
+
+    <string name="configure_scouting">Configure Scouting</string>
+    <string name="upload_config_file">Upload Config File</string>
+    <string name="error_reading_file">Error reading file.</string>
+    <string name="button_submit">Submit</string>
 
 </resources>
