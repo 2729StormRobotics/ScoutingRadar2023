@@ -28,7 +28,7 @@ public class ExportDataFragment extends PermissionsFragment {
     private Context mContext;
     private TextView mTextView;
 
-    ExportViewModel mViewModel;
+    private ExportViewModel mViewModel;
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -90,19 +90,21 @@ public class ExportDataFragment extends PermissionsFragment {
     protected void onPermissionsGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BluetoothServer bluetoothServer = BluetoothServer.getInstance(mContext);
-            mViewModel.getmObjectiveLiveData().observe(this, (data) -> {
-                mTextView.setText(mTextView.getText() + "\n Objective data loaded...");
-                bluetoothServer.setObjectiveData(data);
-            });
-            mViewModel.getmSubjectiveLiveData().observe(this, (data) -> {
-                mTextView.setText(mTextView.getText() + "\n Subjective data loaded...");
-                bluetoothServer.setSubjectiveData(data);
-            });
-            mViewModel.getmPitScoutData().observe(this, (data) -> {
-                mTextView.setText(mTextView.getText() + "\n Pit data loaded...");
-                bluetoothServer.setPitData(data);
-            });
-            bluetoothServer.startAdvertising();
+            if (bluetoothServer.isBtSupported()) {
+                mViewModel.getmObjectiveLiveData().observe(this, (data) -> {
+                    mTextView.setText(mTextView.getText() + "\n Objective data loaded...");
+                    bluetoothServer.setObjectiveData(data);
+                });
+                mViewModel.getmSubjectiveLiveData().observe(this, (data) -> {
+                    mTextView.setText(mTextView.getText() + "\n Subjective data loaded...");
+                    bluetoothServer.setSubjectiveData(data);
+                });
+                mViewModel.getmPitScoutData().observe(this, (data) -> {
+                    mTextView.setText(mTextView.getText() + "\n Pit data loaded...");
+                    bluetoothServer.setPitData(data);
+                });
+                bluetoothServer.startAdvertising();
+            }
         }
     }
 

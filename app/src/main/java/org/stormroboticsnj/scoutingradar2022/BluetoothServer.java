@@ -15,7 +15,6 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -25,11 +24,12 @@ import com.welie.blessed.BluetoothPeripheralManager;
 import com.welie.blessed.BluetoothPeripheralManagerCallback;
 import com.welie.blessed.GattStatus;
 
-@RequiresApi (Build.VERSION_CODES.LOLLIPOP)
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 public class BluetoothServer {
+
     private static final String LOG_TAG = BluetoothServer.class.getSimpleName();
     private static BluetoothServer instance = null;
-    private BluetoothPeripheralManager peripheralManager = null;
+    private final boolean btSupported;
     private final BluetoothPeripheralManagerCallback peripheralManagerCallback =
             new BluetoothPeripheralManagerCallback() {
 
@@ -53,6 +53,7 @@ public class BluetoothServer {
                     return super.onCharacteristicWrite(bluetoothCentral, characteristic, value);
                 }
             };
+    private BluetoothPeripheralManager peripheralManager = null;
     private BluetoothGattCharacteristic pitData = null;
     private BluetoothGattCharacteristic objectiveData = null;
     private BluetoothGattCharacteristic subjectiveData = null;
@@ -67,11 +68,13 @@ public class BluetoothServer {
 
         if (bluetoothAdapter == null || bluetoothManager == null) {
             Log.e(LOG_TAG, "Bluetooth not supported.");
+            btSupported = false;
             return;
         }
 
         if (!bluetoothAdapter.isMultipleAdvertisementSupported()) {
             Log.e(LOG_TAG, "Advertising not supported.");
+            btSupported = false;
             return;
         }
 
@@ -80,17 +83,25 @@ public class BluetoothServer {
         this.peripheralManager = new BluetoothPeripheralManager(context, bluetoothManager,
                 peripheralManagerCallback);
 
-        BluetoothGattService service = new BluetoothGattService(Service_UUID.getUuid(), BluetoothGattService.SERVICE_TYPE_PRIMARY);
+        BluetoothGattService service = new BluetoothGattService(Service_UUID.getUuid(),
+                BluetoothGattService.SERVICE_TYPE_PRIMARY);
         pitData =
-                new BluetoothGattCharacteristic(Pit_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
-        objectiveData = new BluetoothGattCharacteristic(Objective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
-        subjectiveData = new BluetoothGattCharacteristic(Subjective_Data_UUID.getUuid(), BluetoothGattCharacteristic.PROPERTY_READ, BluetoothGattCharacteristic.PERMISSION_READ);
+                new BluetoothGattCharacteristic(Pit_Data_UUID.getUuid(),
+                        BluetoothGattCharacteristic.PROPERTY_READ,
+                        BluetoothGattCharacteristic.PERMISSION_READ);
+        objectiveData = new BluetoothGattCharacteristic(Objective_Data_UUID.getUuid(),
+                BluetoothGattCharacteristic.PROPERTY_READ,
+                BluetoothGattCharacteristic.PERMISSION_READ);
+        subjectiveData = new BluetoothGattCharacteristic(Subjective_Data_UUID.getUuid(),
+                BluetoothGattCharacteristic.PROPERTY_READ,
+                BluetoothGattCharacteristic.PERMISSION_READ);
 
         service.addCharacteristic(pitData);
         service.addCharacteristic(objectiveData);
         service.addCharacteristic(subjectiveData);
 
         peripheralManager.add(service);
+        btSupported = true;
     }
 
 
@@ -101,18 +112,27 @@ public class BluetoothServer {
         return instance;
     }
 
-    @SuppressLint("MissingPermission")
-    public void startAdvertising() {
-        peripheralManager.startAdvertising(buildAdvertiseSettings(), buildAdvertiseData(), buildScanResponse());
+    public boolean isBtSupported() {
+        return btSupported;
     }
 
-    public void setPitData(byte[] data){
+    @SuppressLint("MissingPermission")
+    public void startAdvertising() {
+        if (btSupported) {
+            peripheralManager.startAdvertising(buildAdvertiseSettings(), buildAdvertiseData(),
+                    buildScanResponse());
+        }
+    }
+
+    public void setPitData(byte[] data) {
         pitData.setValue(data);
     }
-    public void setObjectiveData(byte[] data){
+
+    public void setObjectiveData(byte[] data) {
         objectiveData.setValue(data);
     }
-    public void setSubjectiveData(byte[] data){
+
+    public void setSubjectiveData(byte[] data) {
         subjectiveData.setValue(data);
     }
 
@@ -148,7 +168,7 @@ public class BluetoothServer {
         return dataBuilder.build();
     }
 
-    private AdvertiseData buildScanResponse(){
+    private AdvertiseData buildScanResponse() {
         return new AdvertiseData.Builder()
                 .setIncludeDeviceName(true)
                 .build();
