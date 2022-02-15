@@ -68,5 +68,6 @@
     <string name="record_text_team">Team %1$d</string>
     <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
     <string name="scouting_radar_logo">Scouting Radar Logo</string>
+    <string name="data_loaded_for_exporting">Data loaded for exporting:</string>
 
 </resources>

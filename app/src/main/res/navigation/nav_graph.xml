@@ -64,20 +64,6 @@
 
 
     <fragment
-            android:id="@+id/bluePeripheralTestFragment"
-            android:name="org.stormroboticsnj.scoutingradar2022.BluePeripheralTestFragment"
-            android:label="fragment_peripheral"
-            tools:layout="@layout/fragment_blue_peripheral_test" >
-        <action
-                android:id="@+id/action_bluePeripheralTestFragment_to_blueReceiveTestFragment"
-                app:destination="@id/blueReceiveTestFragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/blueReceiveTestFragment"
-            android:name="org.stormroboticsnj.scoutingradar2022.BlueReceiveTestFragment"
-            android:label="fragment_receive"
-            tools:layout="@layout/fragment_blue_receive_test" />
-    <fragment
             android:id="@+id/settings_fragment"
             android:name="org.stormroboticsnj.scoutingradar2022.SettingsFragment"
             android:label="Settings" />
