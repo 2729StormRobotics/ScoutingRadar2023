@@ -4,6 +4,7 @@ package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 import static org.stormroboticsnj.scoutingradar2022.database.DataUtils.Action;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -37,6 +39,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.stormroboticsnj.scoutingradar2022.R;
 
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,58 +48,38 @@ import java.util.Objects;
  */
 public class ObjectiveMatchFragment extends Fragment {
 
-    private static final String[] BUTTONS = new String[]{
-            "Start",
-            "Acquire",
-            "Upper Hub",
-            "Lower Hub",
-            "Miss",
-            "Start Climb",
-            "End Climb",
-            "UNDO",
-            "SUBMIT"
-    };
-    private static final boolean HAS_BUTTONS = true;
-    private static final String[] BUTTON_ABBREVIATIONS = new String[]{
-            "START",
-            "AQ",
-            "UH",
-            "LH",
-            "MS",
-            "SC",
-            "EC",
-            "UNDO",
-            "SUBMIT"
-    };
-    private static final String[] SPINNER_NAMES = new String[]{
-            "Climb Position"
-    };
-    private static final String[] SPINNER_ABBREVIATIONS = new String[]{
-            "CP"
-    };
-    private static final boolean HAS_SPINNERS = false;
-    private static final String[][] SPINNER_CONTENTS = new String[][]{
-            new String[]{"None", "Low", "Mid", "High", "Traversal"}
-    };
-    private static final String[][] SPINNER_CONTENTS_ABBREVIATIONS = new String[][]{
-            new String[]{"0", "L", "M", "H", "T"}
-    };
     private static final int BUTTON_MARGIN = 8;
-    UiUtils.ButtonInfo[] mButtonInfos;
-    UiUtils.SpinnerInfo[] mSpinnerInfos;
+
+    private UiUtils.ButtonInfo[] mButtonInfos;
+    private UiUtils.SpinnerInfo[] mSpinnerInfos;
+
+    private String[] mSpinnerNames;
+    private String[][] mSpinnerContents;
+    private String[] mButtonNames;
+    private String[] mButtonAbbreviations;
+    private boolean hasSpinners;
+    private boolean hasButtons;
+
+    // ViewModel :)
     private ObjectiveScoutingViewModel mActionsViewModel;
+    // Context :))
     private Context mContext;
     // Chronometer
     private Chronometer mChronometer;
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
+    private int mConstraintLayoutId;
+
     // Actions List TextView
     private TextView mActionsListView;
-    private TextInputLayout mTeamNumTextInput;
-    private TextInputLayout mMatchNumTextInput;
-    private int mConstraintLayoutId;
+
+    // Input Views
+    private UiUtils.TextInputWrapper mTeamNumTextInput;
+    private UiUtils.TextInputWrapper mMatchNumTextInput;
+
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
+
     private TextView mToggleErrorText;
     private MaterialButtonToggleGroup mAllianceToggleGroup;
 
@@ -104,32 +87,156 @@ public class ObjectiveMatchFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ObjectiveMatchFragment.
-     */
-
+    @SuppressWarnings("unused")
     public static ObjectiveMatchFragment newInstance() {
-
         return new ObjectiveMatchFragment();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        // Save context for later use
         mContext = context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mButtonInfos = new UiUtils.ButtonInfo[BUTTONS.length];
+    }
 
+    @Override
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_objective_match, container, false);
+
+        // Set up members
+        mConstraintLayout = v.findViewById(R.id.layout_obj_main);
+        mConstraintLayoutId = mConstraintLayout.getId();
+        mChronometer = v.findViewById(R.id.objective_chronometer);
+        mActionsListView = v.findViewById(R.id.objective_text_actions);
+
+        // Form members
+        mRedButton = v.findViewById(R.id.objective_button_red);
+        mBlueButton = v.findViewById(R.id.objective_button_blue);
+        mToggleErrorText = v.findViewById(R.id.objective_text_alliance_error);
+        mAllianceToggleGroup = v.findViewById(R.id.objective_togglegroup_alliance);
+
+        // TextInputLayouts go in a wrapper so we can handle their Watchers (avoids scary crashes)
+        mTeamNumTextInput =
+                new UiUtils.TextInputWrapper(
+                        v.findViewById(R.id.objective_text_input_team_number));
+        mMatchNumTextInput =
+                new UiUtils.TextInputWrapper(
+                        v.findViewById(R.id.objective_text_input_match_number));
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(
+            @NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Use SharedPreferences to get the information for building the UI
+        getPrefs();
+
+        // Use the collected information and create the UI!
+        generateUI();
+
+        // Set up the ViewModel
+        mActionsViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
+        // Subscribe to the ViewModel's changes in the ActionsList.
+        subscribeToActions();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Gets and saves the information that determines what Buttons and Spinners to generate.
+     */
+    private void getPrefs() {
+        // Get the SharedPreferences
+        SharedPreferences
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        // Get all of the spinner contents
+        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_sub_spinner),
+                null);
+
+        if (set != null) {
+            mSpinnerContents = new String[set.size()][];
+            mSpinnerNames = new String[set.size()];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : set) {
+                String[] split = s.split(":");
+                mSpinnerContents[i] = split[1].split(",");
+                mSpinnerNames[i] = split[0];
+                i++;
+            }
+
+            hasSpinners = mSpinnerNames.length > 0;
+        } else {
+            // Preference has never been set; use default options.
+            String[] arr = getResources().getStringArray(R.array.sub_spinners);
+            mSpinnerContents = new String[arr.length][];
+            mSpinnerNames = new String[arr.length];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : arr) {
+                String[] split = s.split(":");
+                mSpinnerContents[i] = split[1].split(",");
+                mSpinnerNames[i] = split[0];
+                i++;
+            }
+
+            hasSpinners = true;
+        }
+
+        // Get all of the button contents
+        set = sharedPreferences.getStringSet(getString(R.string.pref_key_obj_buttons), null);
+        if (set != null) {
+            mButtonNames = new String[set.size()];
+            mButtonAbbreviations = new String[set.size()];
+
+            // Split the button contents into names and abbreviations
+            int i = 0;
+            for (String s : set) {
+                String[] split = s.split(":");
+                mButtonNames[i] = split[0];
+                mButtonAbbreviations[i] = split[1];
+                i++;
+            }
+
+            hasButtons = mButtonNames.length > 0;
+        } else {
+            // Preference has never been set; use default options.
+            String[] arr = getResources().getStringArray(R.array.obj_buttons);
+            mButtonNames = new String[arr.length];
+            mButtonAbbreviations = new String[arr.length];
+
+            // Split the button contents into names and abbreviations
+            int i = 0;
+            for (String s : arr) {
+                String[] split = s.split(":");
+                mButtonNames[i] = split[0];
+                mButtonAbbreviations[i] = split[1];
+                i++;
+            }
+
+            hasSpinners = true;
+        }
 
     }
 
+    /**
+     * Sets an observer on the list of actions so that the TextView can be updated.
+     */
     private void subscribeToActions() {
         mActionsViewModel.getLiveData().observe(getViewLifecycleOwner(), (actions) -> {
             // Clear the TextView
@@ -143,46 +250,10 @@ public class ObjectiveMatchFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onViewCreated(
-            @NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        generateUI();
-        mActionsViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
 
-        subscribeToActions();
-    }
-
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_objective_match, container, false);
-
-        mConstraintLayout = v.findViewById(R.id.layout_obj_main);
-        mConstraintLayoutId = mConstraintLayout.getId();
-
-
-        mChronometer = v.findViewById(R.id.objective_chronometer);
-        mActionsListView = v.findViewById(R.id.objective_text_actions);
-
-        if (!HAS_BUTTONS) {
-            mChronometer.setVisibility(View.GONE);
-            mActionsListView.setVisibility(View.GONE);
-        }
-
-        mTeamNumTextInput = v.findViewById(R.id.objective_text_input_team_number);
-        mMatchNumTextInput = v.findViewById(R.id.objective_text_input_match_number);
-
-        mRedButton = v.findViewById(R.id.objective_button_red);
-        mBlueButton = v.findViewById(R.id.objective_button_blue);
-        mToggleErrorText = v.findViewById(R.id.objective_text_alliance_error);
-        mAllianceToggleGroup = v.findViewById(R.id.objective_togglegroup_alliance);
-
-        return v;
-    }
-
+    /**
+     * Starts the live match tracking by starting the chronometer and enabling the buttons.
+     */
     private void startMatch() {
         // Start the chronometer
         mChronometer.setBase(SystemClock.elapsedRealtime());
@@ -190,15 +261,13 @@ public class ObjectiveMatchFragment extends Fragment {
         for (UiUtils.ButtonInfo buttonInfo : mButtonInfos) {
             buttonInfo.button.setEnabled(true);
         }
+        // Start button
         mButtonInfos[0].button.setEnabled(false);
-
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
+    /**
+     * Ends the live match and submits the collected data
+     */
     private void endMatch() {
         if (validateNumberTextInput(mTeamNumTextInput,
                 getString(R.string.error_no_teamnum),
@@ -211,10 +280,10 @@ public class ObjectiveMatchFragment extends Fragment {
             validateToggleGroup()) {
 
             // Add the Spinner Info
-            if (HAS_SPINNERS) {
+            if (hasSpinners) {
                 for (UiUtils.SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                    mActionsViewModel.addAction(new Action(spinnerInfo.abbreviation,
-                            spinnerInfo.contents_abbreviations
+                    mActionsViewModel.addAction(new Action(spinnerInfo.name,
+                            spinnerInfo.contents
                                     [spinnerInfo.spinner.getSelectedItemPosition()]));
                 }
             }
@@ -242,15 +311,29 @@ public class ObjectiveMatchFragment extends Fragment {
         }
     }
 
+    /**
+     * Undoes the most recently taken Action
+     */
     private void undoAction() {
         mActionsViewModel.removeLastAction();
     }
 
+    /**
+     * Generates the UI based on the user preferences
+     */
     public void generateUI() {
+        // If we don't have buttons, remove their helper views.
+        if (!hasButtons) {
+            mChronometer.setVisibility(View.GONE);
+            mActionsListView.setVisibility(View.GONE);
+        }
+
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
 
-        if (HAS_BUTTONS) {
+        if (hasButtons) {
+            // Button Infos saved here
+            mButtonInfos = new UiUtils.ButtonInfo[mButtonNames.length];
             // Set up the start button
             mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId());
             // Enable the start button
@@ -262,28 +345,31 @@ public class ObjectiveMatchFragment extends Fragment {
             }
         }
 
-        if (HAS_SPINNERS) {
+        if (hasSpinners) {
+            // Spinner Infos saved here
+            mSpinnerInfos = new UiUtils.SpinnerInfo[mSpinnerNames.length];
             // Spinners
-            mSpinnerInfos = new UiUtils.SpinnerInfo[SPINNER_NAMES.length];
-            int lastId = HAS_BUTTONS ? mButtonInfos[mButtonInfos.length - 2].id :
+            mSpinnerInfos = new UiUtils.SpinnerInfo[mSpinnerNames.length];
+            int lastId = hasButtons ? mButtonInfos[mButtonInfos.length - 2].id :
                          mChronometer.getId();
             // Set up first spinner
             mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
                     lastId);
             // Set up the rest of the spinners
-            for (int i = 1; i < SPINNER_NAMES.length; i++) {
+            for (int i = 1; i < mSpinnerNames.length; i++) {
                 mSpinnerInfos[i] =
                         setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
             }
         }
 
+        // Check which view is the lowest on the screen (most recently created)
         int lastId;
-        if (HAS_SPINNERS) {
+        if (hasSpinners) {
             lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
-        } else if (HAS_BUTTONS) {
+        } else if (hasButtons) {
             lastId = mButtonInfos[mButtonInfos.length - 2].id;
         } else {
-            lastId = mChronometer.getId();
+            lastId = mAllianceToggleGroup.getId();
         }
 
         // Set up the submit button
@@ -291,9 +377,16 @@ public class ObjectiveMatchFragment extends Fragment {
                 setupNewButton(mButtonInfos.length - 1, constraintSet, lastId);
 
         // Submit button is enabled if there is no start button
-        mButtonInfos[mButtonInfos.length - 1].button.setEnabled(!HAS_BUTTONS);
+        mButtonInfos[mButtonInfos.length - 1].button.setEnabled(!hasButtons);
     }
 
+    /**
+     * Creates and constrains a MaterialButton
+     * @param index the index of the button, used for mButtonNames and mButtonAbbreviations
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param previousId the id of the view that this button should be placed underneath
+     * @return a ButtonInfo about the created Button
+     */
     private UiUtils.ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId) {
         // Create the button
         Button button = new MaterialButton(mContext);
@@ -303,7 +396,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Button is disabled by default
         button.setEnabled(false);
         // Set the text of the button
-        button.setText(BUTTONS[index]);
+        button.setText(mButtonNames[index]);
         // This fragment is the listener for the button
         button.setOnClickListener(this::onButtonClick);
         // Add the button to the layout
@@ -319,9 +412,17 @@ public class ObjectiveMatchFragment extends Fragment {
         constraintSet.applyTo(mConstraintLayout);
 
         // Return the button info
-        return new UiUtils.ButtonInfo(BUTTONS[index], BUTTON_ABBREVIATIONS[index], buttonId, button);
+        return new UiUtils.ButtonInfo(mButtonNames[index], mButtonAbbreviations[index], buttonId,
+                button);
     }
 
+    /**
+     * Creates and constrains a new Spinner
+     * @param index the index of the Spinner, used for mSpinnerNames and mSpinnerContents
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param previousId the id of the view that this Spinner should be placed below
+     * @return a SpinnerInfo about the created Spinner
+     */
     private UiUtils.SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
@@ -330,7 +431,7 @@ public class ObjectiveMatchFragment extends Fragment {
         spinner.setId(spinnerId);
         // Create the adapter for the spinner
         spinner.setAdapter(new ArrayAdapter<>(mContext,
-                android.R.layout.simple_spinner_dropdown_item, SPINNER_CONTENTS[index]));
+                android.R.layout.simple_spinner_dropdown_item, mSpinnerContents[index]));
         // Add the spinner to the layout
         mConstraintLayout.addView(spinner);
 
@@ -344,12 +445,16 @@ public class ObjectiveMatchFragment extends Fragment {
         constraintSet.applyTo(mConstraintLayout);
 
         // Return the spinner info
-        return new UiUtils.SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index],
-                SPINNER_CONTENTS[index], SPINNER_CONTENTS_ABBREVIATIONS[index], spinnerId,
+        return new UiUtils.SpinnerInfo(mSpinnerNames[index], mSpinnerContents[index], spinnerId,
                 spinner);
 
     }
 
+    /**
+     * Centers a view horizontally within mConstraintLayout
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param viewId the id of the view to center
+     */
     private void centerViewHorizontally(ConstraintSet constraintSet, int viewId) {
         constraintSet.connect(viewId, ConstraintSet.LEFT, mConstraintLayoutId,
                 ConstraintSet.LEFT,
@@ -359,11 +464,59 @@ public class ObjectiveMatchFragment extends Fragment {
                 0);
     }
 
+    /**
+     * Places a view below another
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param topId the id of the upper view
+     * @param bottomId the id of the lower view
+     */
     private void chainViewsVertically(ConstraintSet constraintSet, int topId, int bottomId) {
         constraintSet.connect(bottomId, ConstraintSet.TOP, topId, ConstraintSet.BOTTOM,
                 BUTTON_MARGIN);
     }
 
+
+
+
+    /**
+     * Handles all button clicks for this Fragment
+     */
+    public void onButtonClick(View view) {
+
+        // Check Time Buttons
+        if (hasButtons) {
+
+            // Start button
+            if (view.getId() == mButtonInfos[0].id) {
+                startMatch();
+                return;
+            }
+
+            // Undo Button
+            if (view.getId() == mButtonInfos[mButtonInfos.length - 2].id) {
+                undoAction();
+                return;
+            }
+
+            // Submit Button
+            if (view.getId() == mButtonInfos[mButtonInfos.length - 1].id) {
+                endMatch();
+                return;
+            }
+
+            // Time-based data buttons
+            for (UiUtils.ButtonInfo bi : mButtonInfos) {
+                if (view.getId() == bi.id) {
+                    Action a = new Action(bi.abbreviation,
+                            SystemClock.elapsedRealtime() - mChronometer.getBase());
+                    mActionsViewModel.addAction(a);
+                }
+            }
+        } else {
+            // The only option is submit
+            endMatch();
+        }
+    }
 
     /**
      * Checks that the alliance ToggleGroup is not empty and displays an error if it is.
@@ -413,91 +566,57 @@ public class ObjectiveMatchFragment extends Fragment {
         return !errored;
     }
 
-    public void onButtonClick(View view) {
-
-        if (HAS_BUTTONS) {
-            if (view.getId() == mButtonInfos[0].id) {
-                startMatch();
-                return;
-            }
-
-            if (view.getId() == mButtonInfos[mButtonInfos.length - 2].id) {
-                undoAction();
-                return;
-            }
-
-            if (view.getId() == mButtonInfos[mButtonInfos.length - 1].id) {
-                endMatch();
-                return;
-            }
-
-            for (UiUtils.ButtonInfo bi : mButtonInfos) {
-                if (view.getId() == bi.id) {
-                    Action a = new Action(bi.abbreviation,
-                            SystemClock.elapsedRealtime() - mChronometer.getBase());
-                    mActionsViewModel.addAction(a);
-                }
-            }
-        } else {
-            endMatch();
-        }
-    }
-
     /**
      * Checks for and displays errors on a given number-input {@link TextInputLayout} and creates a
-     * {@link SmallerTextWatcher} to dismiss the error once it is corrected.
+     * {@link org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher} to dismiss the error once it is corrected.
      * <p>
      * The parameters for validation are that the entered input must be 1. Not Empty 2. Digits Only
      * 3. Less than the set max length, if one is set as an attribute of the TextInputLayout.
      *
-     * @param textInputLayout TextInputLayout to monitor
-     * @param emptyError      The error message to be displayed if this TextInputLayout is empty.
+     * @param textInputWrapper TextInputLayout to monitor
+     * @param emptyError       The error message to be displayed if this TextInputLayout is empty.
      * @return whether or not an error was found
      */
-    public boolean validateNumberTextInput(final TextInputLayout textInputLayout, String emptyError, String notNumberError, String tooLongError) {
+    public boolean validateNumberTextInput(final UiUtils.TextInputWrapper textInputWrapper, String emptyError, String notNumberError, String tooLongError) {
         boolean isError = false;
-        final EditText editText = textInputLayout.getEditText();
-
-        // This shouldn't happen but TextInputLayout#getEditText() is marked as nullable.
-        if (editText == null) {
-            return true;
-        }
-        String input = editText.getText().toString();
+        String input = textInputWrapper.getEditText().getText().toString();
 
         /* Check to make sure the entered text exists, is a number, and is shorter than
            the set max length */
         if (TextUtils.isEmpty(input)) {
             isError = true;
-            textInputLayout.setError(emptyError);
+            textInputWrapper.getInputLayout().setError(emptyError);
         } else if (!TextUtils.isDigitsOnly(input)) {
             isError = true;
-            textInputLayout.setError(notNumberError);
-        } else if (textInputLayout.getCounterMaxLength() > 0 &&
-                   input.length() > textInputLayout.getCounterMaxLength()) {
+            textInputWrapper.getInputLayout().setError(notNumberError);
+        } else if (textInputWrapper.getInputLayout().getCounterMaxLength() > 0 &&
+                   input.length() > textInputWrapper.getInputLayout().getCounterMaxLength()) {
             isError = true;
-            textInputLayout.setError(tooLongError);
+            textInputWrapper.getInputLayout().setError(tooLongError);
         }
 
         //  If errors were found, add a listener to dismiss the error once it is corrected
         if (isError) {
-            editText.addTextChangedListener(new SmallerTextWatcher(textInputLayout) {
-                @Override
-                public void afterTextChanged(
-                        String input, TextInputLayout layout,
-                        EditText editText) {
+            textInputWrapper.setTextWatcher(
+                    new org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher(
+                            textInputWrapper.getInputLayout()) {
+                        @Override
+                        public void afterTextChanged(
+                                String input, TextInputLayout layout,
+                                EditText editText) {
                     /* Text has no errors if:
                        1. Not Empty
                        2. Digits Only
                        3. Either there is no max or length is <= max
                      */
-                    if ((!TextUtils.isEmpty(input) && TextUtils.isDigitsOnly(
-                            input)) && (layout.getCounterMaxLength() <= 0 ||
-                                        input.length() <= layout.getCounterMaxLength())) {
-                        layout.setError(null);
-                        editText.removeTextChangedListener(this);
-                    }
-                }
-            });
+                            if ((!TextUtils.isEmpty(input) && TextUtils.isDigitsOnly(
+                                    input)) && (layout.getCounterMaxLength() <= 0 ||
+                                                input.length() <= layout.getCounterMaxLength())) {
+                                layout.setError(null);
+                                textInputWrapper.removeTextWatcher(this);
+                            }
+                        }
+                    });
         }
 
         return !isError;

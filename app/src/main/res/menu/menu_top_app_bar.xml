@@ -13,5 +13,9 @@
         android:title="@string/settings"
         android:contentDescription="@string/settings"
         app:showAsAction="never" />
+    <item android:id="@+id/configure_scouting_fragment"
+            android:title="@string/configure_scouting"
+            android:contentDescription="@string/configure_scouting"
+            app:showAsAction="never" />
 
 </menu>

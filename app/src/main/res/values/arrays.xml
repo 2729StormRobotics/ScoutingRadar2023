@@ -32,5 +32,28 @@
         <item>@string/pref_value_team_redwatch</item>
     </string-array>
 
+    <!-- Scouting Fields -->
+    <string-array name="pit_spinners">
+        <item>Driver Age:1,2,3,4</item>
+        <item>Drivetrain:Tank,Swerve,Mecanum,Other</item>
+    </string-array>
+
+    <string-array name="sub_spinners">
+        <item>Driver Skill:1,2,3,4,5</item>
+        <item>Defense Skill:1,2,6,4,5</item>
+        <item>Biggest Flaw:Auto,Defense,Driving,Shooting Lower,Shooting Upper,Climbing</item>
+    </string-array>
+
+    <string-array name="obj_buttons">
+        <item>Start:START</item>
+        <item>Acquire:AQ</item>
+        <item>Upper Hub:UH</item>
+        <item>Lower Hub:LH</item>
+        <item>Miss:MS</item>
+        <item>Start Climb:SC</item>
+        <item>End Climb:EC</item>
+        <item>Undo: UNDO</item>
+        <item>Submit: SUBMIT</item>
+    </string-array>
 
 </resources>

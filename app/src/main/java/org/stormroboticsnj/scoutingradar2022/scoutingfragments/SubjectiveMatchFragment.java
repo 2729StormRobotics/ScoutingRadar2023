@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -36,31 +38,12 @@ import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
 import java.util.Objects;
+import java.util.Set;
 
 
 public class SubjectiveMatchFragment extends Fragment {
-    private static final String[] SPINNER_NAMES = new String[]{
-            "Driver Skill",
-            "Defense Skill",
-            "Biggest Flaw"
-    };
-    private static final String[] SPINNER_ABBREVIATIONS = new String[]{
-            "DrS",
-            "DfS",
-            "BgF"
-    };
-    private static final String[][] SPINNER_CONTENTS = new String[][]{
-            new String[]{"1", "2", "3", "4", "5"},
-            new String[]{"1", "2", "3", "4", "5"},
-            new String[]{
-                    "Auto",
-                    "Defense",
-                    "Driving",
-                    "Shooting Lower",
-                    "Shooting Upper",
-                    "Climbing"
-            }
-    };
+
+
     private static final int BUTTON_MARGIN = 8;
     private SpinnerInfo[] mSpinnerInfos;
     private SubjectiveScoutingViewModel mActionsViewModel;
@@ -68,14 +51,17 @@ public class SubjectiveMatchFragment extends Fragment {
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
     // Actions List TextView
-    private TextInputLayout mTeamNumTextInput;
-    private TextInputLayout mMatchNumTextInput;
+    private UiUtils.TextInputWrapper mTeamNumTextInput;
+    private UiUtils.TextInputWrapper mMatchNumTextInput;
     private int mConstraintLayoutId;
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
     private Button mSubmitButton;
     private TextView mToggleErrorText;
     private MaterialButtonToggleGroup mAllianceToggleGroup;
+
+    private String[] SPINNER_NAMES;
+    private String[][] SPINNER_CONTENTS;
 
     public SubjectiveMatchFragment() {
         // Required empty public constructor
@@ -88,8 +74,8 @@ public class SubjectiveMatchFragment extends Fragment {
      * @return A new instance of fragment ObjectiveMatchFragment.
      */
 
+    @SuppressWarnings("unused")
     public static SubjectiveMatchFragment newInstance() {
-
         return new SubjectiveMatchFragment();
     }
 
@@ -110,6 +96,41 @@ public class SubjectiveMatchFragment extends Fragment {
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Get the SharedPreferences
+        SharedPreferences
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        // Get all of the spinner contents
+        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_sub_spinner),
+                null);
+
+        if (set != null) {
+            SPINNER_CONTENTS = new String[set.size()][];
+            SPINNER_NAMES = new String[set.size()];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : set) {
+                String[] split = s.split(":");
+                SPINNER_CONTENTS[i] = split[1].split(",");
+                SPINNER_NAMES[i] = split[0];
+                i++;
+            }
+        } else {
+            String[] arr = getResources().getStringArray(R.array.sub_spinners);
+            SPINNER_CONTENTS = new String[arr.length][];
+            SPINNER_NAMES = new String[arr.length];
+            // Split the spinner contents into arrays
+            int i = 0;
+            for (String s : arr) {
+                String[] split = s.split(":");
+                SPINNER_CONTENTS[i] = split[1].split(",");
+                SPINNER_NAMES[i] = split[0];
+                i++;
+            }
+        }
+
+
         generateUI();
         mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
     }
@@ -124,8 +145,10 @@ public class SubjectiveMatchFragment extends Fragment {
         mConstraintLayout = v.findViewById(R.id.layout_sub_main);
         mConstraintLayoutId = mConstraintLayout.getId();
 
-        mTeamNumTextInput = v.findViewById(R.id.subjective_text_input_team_number);
-        mMatchNumTextInput = v.findViewById(R.id.subjective_text_input_match_number);
+        mTeamNumTextInput = new UiUtils.TextInputWrapper(
+                v.findViewById(R.id.subjective_text_input_team_number));
+        mMatchNumTextInput = new UiUtils.TextInputWrapper(
+                v.findViewById(R.id.subjective_text_input_match_number));
 
         mRedButton = v.findViewById(R.id.subjective_button_red);
         mBlueButton = v.findViewById(R.id.subjective_button_blue);
@@ -154,7 +177,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
             // Add the Spinner Info
             for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                mActionsViewModel.addAction(new DataUtils.Action(spinnerInfo.abbreviation,
+                mActionsViewModel.addAction(new DataUtils.Action(spinnerInfo.name,
                         spinnerInfo.contents[spinnerInfo.spinner.getSelectedItemPosition()]));
             }
 
@@ -264,8 +287,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
 
         // Return the spinner info
-        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_ABBREVIATIONS[index],
-                SPINNER_CONTENTS[index], SPINNER_CONTENTS[index], spinnerId, spinner);
+        return new SpinnerInfo(SPINNER_NAMES[index], SPINNER_CONTENTS[index], spinnerId, spinner);
 
     }
 
@@ -347,39 +369,33 @@ public class SubjectiveMatchFragment extends Fragment {
      * The parameters for validation are that the entered input must be 1. Not Empty 2. Digits Only
      * 3. Less than the set max length, if one is set as an attribute of the TextInputLayout.
      *
-     * @param textInputLayout TextInputLayout to monitor
-     * @param emptyError      The error message to be displayed if this TextInputLayout is empty.
+     * @param textInputWrapper TextInputLayout to monitor
+     * @param emptyError       The error message to be displayed if this TextInputLayout is empty.
      * @return whether or not an error was found
      */
-    public boolean validateNumberTextInput(final TextInputLayout textInputLayout, String emptyError, String notNumberError, String tooLongError) {
+    public boolean validateNumberTextInput(final UiUtils.TextInputWrapper textInputWrapper, String emptyError, String notNumberError, String tooLongError) {
         boolean isError = false;
-        final EditText editText = textInputLayout.getEditText();
-
-        // This shouldn't happen but TextInputLayout#getEditText() is marked as nullable.
-        if (editText == null) {
-            return true;
-        }
-        String input = editText.getText().toString();
+        String input = textInputWrapper.getEditText().getText().toString();
 
         /* Check to make sure the entered text exists, is a number, and is shorter than
            the set max length */
         if (TextUtils.isEmpty(input)) {
             isError = true;
-            textInputLayout.setError(emptyError);
+            textInputWrapper.getInputLayout().setError(emptyError);
         } else if (!TextUtils.isDigitsOnly(input)) {
             isError = true;
-            textInputLayout.setError(notNumberError);
-        } else if (textInputLayout.getCounterMaxLength() > 0 &&
-                   input.length() > textInputLayout.getCounterMaxLength()) {
+            textInputWrapper.getInputLayout().setError(notNumberError);
+        } else if (textInputWrapper.getInputLayout().getCounterMaxLength() > 0 &&
+                   input.length() > textInputWrapper.getInputLayout().getCounterMaxLength()) {
             isError = true;
-            textInputLayout.setError(tooLongError);
+            textInputWrapper.getInputLayout().setError(tooLongError);
         }
 
         //  If errors were found, add a listener to dismiss the error once it is corrected
         if (isError) {
-            editText.addTextChangedListener(
+            textInputWrapper.setTextWatcher(
                     new org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher(
-                            textInputLayout) {
+                            textInputWrapper.getInputLayout()) {
                         @Override
                         public void afterTextChanged(
                                 String input, TextInputLayout layout,
@@ -393,7 +409,7 @@ public class SubjectiveMatchFragment extends Fragment {
                                     input)) && (layout.getCounterMaxLength() <= 0 ||
                                                 input.length() <= layout.getCounterMaxLength())) {
                                 layout.setError(null);
-                                editText.removeTextChangedListener(this);
+                                textInputWrapper.removeTextWatcher(this);
                             }
                         }
                     });

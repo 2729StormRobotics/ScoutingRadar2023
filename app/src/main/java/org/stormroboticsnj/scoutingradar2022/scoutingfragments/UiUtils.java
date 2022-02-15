@@ -1,7 +1,15 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
+import android.text.TextWatcher;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 public class UiUtils {
 
@@ -21,22 +29,57 @@ public class UiUtils {
 
     static class SpinnerInfo {
         String name;
-        String abbreviation;
         String[] contents;
-        String[] contents_abbreviations;
         int id;
         Spinner spinner;
 
         public SpinnerInfo(
-                String name, String abbreviation, String[] contents,
-                String[] contents_abbreviations, int id, Spinner spinner) {
+                String name,  String[] contents, int id, Spinner spinner) {
             this.name = name;
-            this.abbreviation = abbreviation;
             this.contents = contents;
-            this.contents_abbreviations = contents_abbreviations;
             this.id = id;
             this.spinner = spinner;
         }
 
+    }
+
+    /**
+     * Wrapper Class for TextInputLayout that allows its EditText to have only one TextWatcher.
+     */
+    public static class TextInputWrapper {
+
+        private final TextInputLayout mTextInputLayout;
+        @NonNull
+        private final EditText mEditText;
+        private boolean hasTextWatcher = false;
+
+        public TextInputWrapper(@NonNull TextInputLayout layout) {
+            this.mTextInputLayout = layout;
+            this.mEditText = Objects.requireNonNull(mTextInputLayout.getEditText(),
+                    "TextInputLayout has no EditText!");
+        }
+
+        public void setTextWatcher(TextWatcher textWatcher) {
+            if (!hasTextWatcher) {
+                mEditText.addTextChangedListener(textWatcher);
+                hasTextWatcher = true;
+            }
+        }
+
+        public void removeTextWatcher(TextWatcher textWatcher) {
+            if (hasTextWatcher) {
+                mEditText.removeTextChangedListener(textWatcher);
+                hasTextWatcher = false;
+            }
+        }
+
+        public TextInputLayout getInputLayout() {
+            return mTextInputLayout;
+        }
+
+        @NonNull
+        public EditText getEditText() {
+            return mEditText;
+        }
     }
 }
