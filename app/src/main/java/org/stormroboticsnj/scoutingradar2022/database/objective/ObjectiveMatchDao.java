@@ -27,6 +27,9 @@ public interface ObjectiveMatchDao {
     @Query("SELECT * FROM objective_matches")
     LiveData<List<ObjectiveMatchData>> getAllMatches();
 
+    @Query("SELECT * FROM objective_matches")
+    List<ObjectiveMatchData> getListOfMatches();
+
     // Deletes entire table
     /* BE CAREFUL */
     @Query("DELETE FROM objective_matches")
