@@ -4,26 +4,31 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import org.ini4j.Ini;
 import org.ini4j.Profile;
+import org.stormroboticsnj.scoutingradar2022.database.CSVCreator;
+import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,6 +42,13 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
     private Context mContext;
 
     private SharedPreferences mSharedPreferences;
+    private TextView mCurrentPrefsTextView;
+
+    // Cache current configuration
+    private String mObjButtons = "";
+    private String mObjSpinners = "";
+    private String mSubSpinners = "";
+    private String mPitSpinners = "";
 
     public ConfigureScoutingFragment() {
         // Required empty public constructor
@@ -45,6 +57,16 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
     @SuppressWarnings("unused")
     public static ConfigureScoutingFragment newInstance() {
         return new ConfigureScoutingFragment();
+    }
+
+    private static String formatArray(String[] arr) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : arr) {
+            s = s.replace(",", ", ");
+            s = s.replace(":", ": ");
+            sb.append(s).append("\n");
+        }
+        return sb.toString();
     }
 
     @Override
@@ -66,13 +88,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -90,12 +106,62 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
 
         Button uploadButton = view.findViewById(R.id.configure_button_upload);
         uploadButton.setOnClickListener((v) -> fileResultLauncher.launch("*/*"));
+
+        TextView messageTextView = view.findViewById(R.id.configure_text_message);
+        messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        mCurrentPrefsTextView = view.findViewById(R.id.configure_text_current);
+        // Get the current configuration
+        readAllPrefs();
+        // Display the current configuration to the user
+        updateConfigTextView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    private void updateConfigTextView() {
+        mCurrentPrefsTextView.setText(R.string.configure_current_header);
+        mCurrentPrefsTextView.append("\nObjective Buttons\n");
+        mCurrentPrefsTextView.append(mObjButtons);
+        mCurrentPrefsTextView.append("\nObjective Spinners\n");
+        mCurrentPrefsTextView.append(mObjSpinners);
+        mCurrentPrefsTextView.append("\nSubjective Spinners\n");
+        mCurrentPrefsTextView.append(mSubSpinners);
+        mCurrentPrefsTextView.append("\nPit Spinners\n");
+        mCurrentPrefsTextView.append(mPitSpinners);
+    }
+
+
+    private void readAllPrefs() {
+        mObjButtons = formatArray(readPrefs(R.string.pref_key_obj_buttons, R.array.obj_buttons));
+        mObjSpinners = formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));
+        mSubSpinners = formatArray(readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners));
+        mPitSpinners = formatArray(readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners));
+    }
+
+    private String[] readPrefs(int prefKey, int defaultArray) {
+        // Get all of the spinner contents
+        Set<String> set = mSharedPreferences.getStringSet(getString(prefKey),
+                null);
+        String[] prefArray;
+        if (set != null) {
+            // Convert to array
+            prefArray = set.toArray(new String[0]);
+        } else {
+            // Preference has never been set; use default options.
+            prefArray = getResources().getStringArray(defaultArray);
+        }
+        return prefArray;
     }
 
     private void processIniFile(Uri input) {
@@ -105,6 +171,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                 Set<String> subSpinners = new HashSet<>();
                 Set<String> pitSpinners = new HashSet<>();
                 Set<String> objSpinners = new HashSet<>();
+                Set<String> objButtons = new HashSet<>();
 
                 // This warning is because Ini implements Map and the linter doesn't realize that
                 // the constructor builds data
@@ -157,6 +224,21 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     }
                 }
 
+                section = ini.get("objective_buttons");
+                if (section != null) {
+                    // Given format:
+                    // key:value is [button name]:[button abbreviation]
+                    Set<String> keys = section.keySet();
+                    for (String s : keys) {
+                        // Replace underscores with spaces to display cleanly
+                        String name = s.replace('_', ' ');
+                        String abbreivation = section.get(s);
+
+                        // Store in the same aforementioned format
+                        objButtons.add(name + ":" + abbreivation);
+                    }
+                }
+
                 mSharedPreferences.edit()
                                   .putStringSet(getString(R.string.pref_key_sub_spinner),
                                           subSpinners)
@@ -164,6 +246,8 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                                           pitSpinners)
                                   .putStringSet(getString(R.string.pref_key_obj_spinner),
                                           objSpinners)
+                                  .putStringSet(getString(R.string.pref_key_obj_buttons),
+                                          objButtons)
                                   .apply();
 
 
@@ -180,18 +264,19 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.pref_key_dark))) {
-            String string = sharedPreferences.getString(key, "");
-            if (getString(R.string.pref_value_dark_dark).equals(string)) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else if (getString(R.string.pref_value_dark_light).equals(string)) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else if (getString(R.string.pref_value_dark_system).equals(string)) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-            }
+        if (getString(R.string.pref_key_obj_buttons).equals(key)) {
+            mObjButtons =
+                    formatArray(readPrefs(R.string.pref_key_obj_buttons, R.array.obj_buttons));
+        } else if (getString(R.string.pref_key_obj_spinner).equals(key)) {
+            mObjSpinners =
+                    formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));
+        } else if (getString(R.string.pref_key_sub_spinner).equals(key)) {
+            mSubSpinners =
+                    formatArray(readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners));
+        } else if (getString(R.string.pref_key_pit_spinner).equals(key)) {
+            mPitSpinners =
+                    formatArray(readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners));
         }
-        if (key.equals(getString(R.string.pref_key_team))) {
-            requireActivity().recreate();
-        }
+        updateConfigTextView();
     }
 }

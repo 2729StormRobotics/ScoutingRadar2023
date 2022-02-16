@@ -1,6 +1,8 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
 import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
+import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.TextInputWrapper;
+import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.ToggleGroupWrapper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -40,9 +42,7 @@ import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 import java.util.Objects;
 import java.util.Set;
 
-
 public class SubjectiveMatchFragment extends Fragment {
-
 
     private static final int BUTTON_MARGIN = 8;
 
@@ -55,23 +55,24 @@ public class SubjectiveMatchFragment extends Fragment {
     private int mConstraintLayoutId;
 
     // Input Views
-    private UiUtils.TextInputWrapper mTeamNumTextInput;
-    private UiUtils.TextInputWrapper mMatchNumTextInput;
+    private TextInputWrapper mTeamNumTextInput;
+    private TextInputWrapper mMatchNumTextInput;
 
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
     private TextView mToggleErrorText;
-    private UiUtils.ToggleGroupWrapper mAllianceToggleGroup;
+    private ToggleGroupWrapper mAllianceToggleGroup;
 
     private Button mSubmitButton;
 
+    // ViewModel
     private SubjectiveScoutingViewModel mActionsViewModel;
+    // Context
     private Context mContext;
 
     public SubjectiveMatchFragment() {
         // Required empty public constructor
     }
-
 
     @SuppressWarnings("unused")
     public static SubjectiveMatchFragment newInstance() {
@@ -99,16 +100,20 @@ public class SubjectiveMatchFragment extends Fragment {
         mConstraintLayout = v.findViewById(R.id.layout_sub_main);
         mConstraintLayoutId = mConstraintLayout.getId();
 
-        mTeamNumTextInput = new UiUtils.TextInputWrapper(
+        // TextInputLayouts go in a wrapper so we can handle their Watchers (avoids scary crashes)
+        mTeamNumTextInput = new TextInputWrapper(
                 v.findViewById(R.id.subjective_text_input_team_number));
-        mMatchNumTextInput = new UiUtils.TextInputWrapper(
+        mMatchNumTextInput = new TextInputWrapper(
                 v.findViewById(R.id.subjective_text_input_match_number));
 
         mRedButton = v.findViewById(R.id.subjective_button_red);
         mBlueButton = v.findViewById(R.id.subjective_button_blue);
-        //need to do submit Button!!
+
         mToggleErrorText = v.findViewById(R.id.subjective_text_alliance_error);
-        mAllianceToggleGroup = new UiUtils.ToggleGroupWrapper(v.findViewById(R.id.subjective_togglegroup_alliance));
+
+        // Toggle Groups also go in a wrapper because multiple watchers causes problems
+        mAllianceToggleGroup = new ToggleGroupWrapper(
+                v.findViewById(R.id.subjective_togglegroup_alliance));
 
         return v;
     }
@@ -118,6 +123,25 @@ public class SubjectiveMatchFragment extends Fragment {
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Use SharedPreferences to get the information for building the UI
+        getPrefs();
+
+        // Use the collected information and create the UI!
+        generateUI();
+
+        // Set up the ViewModel
+        mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Gets and saves the information that determines what Spinners to generate.
+     */
+    private void getPrefs() {
         // Get the SharedPreferences
         SharedPreferences
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -151,17 +175,12 @@ public class SubjectiveMatchFragment extends Fragment {
             }
         }
 
-
-        generateUI();
-        mActionsViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    private void endMatch() {
+    /**
+     * Submits the inputted data to the database via the ViewModel.
+     */
+    private void submit() {
         if (validateNumberTextInput(mTeamNumTextInput,
                 getString(R.string.error_no_teamnum),
                 getString(R.string.error_notnumber_teamnum),
@@ -178,16 +197,15 @@ public class SubjectiveMatchFragment extends Fragment {
                         spinnerInfo.contents[spinnerInfo.spinner.getSelectedItemPosition()]));
             }
 
+            // Save data
             mActionsViewModel.processAndSaveMatch(
                     Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Integer.parseInt(Objects.requireNonNull(mMatchNumTextInput.getEditText(),
                             "NO MATCH NUM EDIT TEXT").getText().toString()),
-                    mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() == mRedButton.getId());
+                    mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() ==
+                    mRedButton.getId());
 
-
-            //set submit to disable
-            mSubmitButton.setEnabled(false);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                       .navigate(R.id.action_subjectiveMatchFragment_to_matchRecordFragment);
 
@@ -198,6 +216,9 @@ public class SubjectiveMatchFragment extends Fragment {
     }
 
 
+    /**
+     * Generates the UI based on the user preferences
+     */
     public void generateUI() {
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
@@ -217,6 +238,13 @@ public class SubjectiveMatchFragment extends Fragment {
 
     }
 
+    /**
+     * Creates and constrains a MaterialButton for the Submit Button
+     *
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param previousId    the id of the view that this button should be placed underneath
+     * @return the created Button
+     */
     private Button setupSubmitButton(ConstraintSet constraintSet, int previousId) {
         // Create the button
         Button button = new MaterialButton(mContext);
@@ -242,6 +270,14 @@ public class SubjectiveMatchFragment extends Fragment {
         return button;
     }
 
+    /**
+     * Creates and constrains a new Spinner
+     *
+     * @param index         the index of the Spinner, used for mSpinnerNames and mSpinnerContents
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param previousId    the id of the view that this Spinner should be placed below
+     * @return a SpinnerInfo about the created Spinner
+     */
     private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
@@ -288,6 +324,12 @@ public class SubjectiveMatchFragment extends Fragment {
 
     }
 
+    /**
+     * Centers a view horizontally within mConstraintLayout
+     *
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param viewId        the id of the view to center
+     */
     private void centerViewHorizontally(ConstraintSet constraintSet, int viewId) {
         constraintSet.connect(viewId, ConstraintSet.LEFT, mConstraintLayoutId,
                 ConstraintSet.LEFT,
@@ -297,11 +339,27 @@ public class SubjectiveMatchFragment extends Fragment {
                 0);
     }
 
+    /**
+     * Places a view below another
+     *
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param topId         the id of the upper view
+     * @param bottomId      the id of the lower view
+     */
     private void chainViewsVertically(ConstraintSet constraintSet, int topId, int bottomId) {
         constraintSet.connect(bottomId, ConstraintSet.TOP, topId, ConstraintSet.BOTTOM,
                 BUTTON_MARGIN);
     }
 
+    /**
+     * Handles all button clicks for this Fragment
+     * @param view
+     */
+    public void onButtonClick(View view) {
+        if (view.getId() == mSubmitButton.getId()) {
+            submit();
+        }
+    }
 
     /**
      * Checks that the alliance ToggleGroup is not empty and displays an error if it is.
@@ -351,14 +409,6 @@ public class SubjectiveMatchFragment extends Fragment {
         return !errored;
     }
 
-    public void onButtonClick(View view) {
-
-        if (view.getId() == mSubmitButton.getId()) {
-            endMatch();
-        }
-
-    }
-
     /**
      * Checks for and displays errors on a given number-input {@link TextInputLayout} and creates a
      * {@link org.stormroboticsnj.scoutingradar2022.scoutingfragments.SmallerTextWatcher} to dismiss the error once it is corrected.
@@ -370,7 +420,7 @@ public class SubjectiveMatchFragment extends Fragment {
      * @param emptyError       The error message to be displayed if this TextInputLayout is empty.
      * @return whether or not an error was found
      */
-    public boolean validateNumberTextInput(final UiUtils.TextInputWrapper textInputWrapper, String emptyError, String notNumberError, String tooLongError) {
+    public boolean validateNumberTextInput(final TextInputWrapper textInputWrapper, String emptyError, String notNumberError, String tooLongError) {
         boolean isError = false;
         String input = textInputWrapper.getEditText().getText().toString();
 

@@ -28,4 +28,7 @@ public class ObjectiveRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(match));
     }
 
+    public List<ObjectiveMatchData> getRawData() {
+        return mDao.getListOfMatches();
+    }
 }
