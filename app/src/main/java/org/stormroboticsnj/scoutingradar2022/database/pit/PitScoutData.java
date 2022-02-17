@@ -9,7 +9,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 
 //defines the table and the identifier for each row
-@Entity(tableName = "pit_scout_matches", primaryKeys = {"team_num"})
+@Entity(tableName = "pit_scout", primaryKeys = {"team_num"})
 
 public class PitScoutData {
 

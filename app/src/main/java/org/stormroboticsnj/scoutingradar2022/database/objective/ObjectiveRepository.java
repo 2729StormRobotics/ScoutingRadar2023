@@ -9,6 +9,8 @@ import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+
 public class ObjectiveRepository {
 
     private final ObjectiveMatchDao mDao;
@@ -17,10 +19,10 @@ public class ObjectiveRepository {
     public ObjectiveRepository(Application app) {
         AppDatabase db = AppDatabase.getInstance(app);
         mDao = db.objectiveMatchDao();
-        mDataList = mDao.getAllMatches();
+        mDataList = mDao.getLiveMatches();
     }
 
-    public LiveData<List<ObjectiveMatchData>> getDataList() {
+    public LiveData<List<ObjectiveMatchData>> getLiveMatches() {
         return mDataList;
     }
 
@@ -28,7 +30,7 @@ public class ObjectiveRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(match));
     }
 
-    public List<ObjectiveMatchData> getRawData() {
-        return mDao.getListOfMatches();
+    public Maybe<List<ObjectiveMatchData>> getAllMatches() {
+        return mDao.getAllMatches();
     }
 }

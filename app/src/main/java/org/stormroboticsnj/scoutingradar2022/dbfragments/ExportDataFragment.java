@@ -1,19 +1,22 @@
 package org.stormroboticsnj.scoutingradar2022.dbfragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,6 +27,7 @@ import org.stormroboticsnj.scoutingradar2022.BluetoothServer;
 import org.stormroboticsnj.scoutingradar2022.PermissionsFragment;
 import org.stormroboticsnj.scoutingradar2022.R;
 
+import java.io.FileNotFoundException;
 import java.util.Set;
 
 /**
@@ -33,9 +37,7 @@ import java.util.Set;
  */
 public class ExportDataFragment extends PermissionsFragment {
 
-    private static final int MODE_OBJ = 1;
-    private static final int MODE_SUB = 2;
-    private static final int MODE_PIT = 3;
+
     private SharedPreferences mSharedPreferences;
     private ActivityResultLauncher<String> fileResultLauncher;
     private Context mContext;
@@ -45,7 +47,10 @@ public class ExportDataFragment extends PermissionsFragment {
     private String[] mObjButtons;
     private String[] mSubSpinners;
     private String[] mPitSpinners;
-    private int mCsvMode = 0;
+
+    private static final String FILENAME_OBJ = "objective_data.csv";
+    private static final String FILENAME_SUB = "subjective_data.csv";
+    private static final String FILENAME_PIT = "pit_data.csv";
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -65,6 +70,7 @@ public class ExportDataFragment extends PermissionsFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+        fileResultLauncher = registerForActivityResult(new CsvFileContract(), this::writeCsv);
     }
 
     @Override
@@ -92,12 +98,13 @@ public class ExportDataFragment extends PermissionsFragment {
         mObjButtons = readPrefs(R.string.pref_key_obj_buttons, R.array.obj_buttons);
         mSubSpinners = readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners);
         mPitSpinners = readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners);
+
+        fileResultLauncher.launch(FILENAME_OBJ);
     }
 
     public void onButtonClicked(View view) {
         // if objective CSV
-        fileResultLauncher = registerForActivityResult(
-                new CsvFileContract(CsvFileContract.Type.OBJECTIVE), this::writeCsv);
+
 
 //        mCsvMode = MODE_OBJ;
 
@@ -107,8 +114,33 @@ public class ExportDataFragment extends PermissionsFragment {
 
     }
 
-    private void writeCsv(Uri uri) {
+    private void writeCsv(Intent intent) {
+        final String title = intent.getStringExtra(Intent.EXTRA_TITLE);
+        if (title == null) {
+            Log.e("Export Data", "Write CSV Fail: title of intent is null");
+            return;
+        }
 
+        Uri uri = intent.getData();
+        ParcelFileDescriptor pfd = null;
+        try {
+            pfd = mContext.getContentResolver().openFileDescriptor(uri, "w");
+        } catch (FileNotFoundException e) {
+            Log.e("Export Fragment", "writeCSV: file not found", e);
+        }
+
+        switch (title) {
+            case FILENAME_OBJ:
+                mViewModel.createObjectiveCsv(pfd, mObjButtons, mObjSpinners);
+                break;
+            case FILENAME_SUB:
+                mViewModel.createSubjectiveCsv(pfd, mSubSpinners);
+                break;
+            case FILENAME_PIT:
+                mViewModel.createPitCsv(pfd, mPitSpinners);
+                break;
+        }
+        
     }
 
     private String[] readPrefs(int prefKey, int defaultArray) {
@@ -172,27 +204,39 @@ public class ExportDataFragment extends PermissionsFragment {
         return null;
     }
 
-    private static class CsvFileContract extends ActivityResultContracts.CreateDocument {
-        public static final String EXTRA_TYPE =
-                "org.stormroboticsnj.scoutingradar2022.intent.csvfilecontract";
-        private final Type type;
+    private static class CsvFileContract extends ActivityResultContract<String, Intent> {
 
-        public CsvFileContract(Type t) {
+        public CsvFileContract() {
             super();
-            type = t;
         }
+
+        private String mInput;
 
         @NonNull
         @Override
-        public Intent createIntent(
-                @NonNull Context context, @NonNull String input) {
-            return super.createIntent(context, input).putExtra(EXTRA_TYPE, type);
+        public Intent createIntent(@NonNull Context context, @NonNull String input) {
+            mInput = input;
+            return new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .setType("*/*")
+                    .putExtra(Intent.EXTRA_TITLE, input);
         }
 
-        public enum Type {
-            OBJECTIVE,
-            SUBJECTIVE,
-            PIT
+        @Nullable
+        @Override
+        public final Intent parseResult(int resultCode, @Nullable Intent intent) {
+            if (intent == null || resultCode != Activity.RESULT_OK) {
+                return null;
+            }
+            return intent.putExtra(Intent.EXTRA_TITLE, mInput);
         }
+
+        @Nullable
+        @Override
+        public final SynchronousResult<Intent> getSynchronousResult(
+                @NonNull Context context,
+                @NonNull String input) {
+            return null;
+        }
+
     }
 }

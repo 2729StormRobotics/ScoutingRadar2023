@@ -64,9 +64,15 @@ public class BluetoothServer {
                 bluetoothManager = (BluetoothManager) context.getApplicationContext()
                                                              .getSystemService(
                                                                      Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if (bluetoothAdapter == null || bluetoothManager == null) {
+        if (bluetoothManager == null) {
+            Log.e(LOG_TAG, "Bluetooth not supported.");
+            btSupported = false;
+            return;
+        }
+        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+
+        if (bluetoothAdapter == null) {
             Log.e(LOG_TAG, "Bluetooth not supported.");
             btSupported = false;
             return;

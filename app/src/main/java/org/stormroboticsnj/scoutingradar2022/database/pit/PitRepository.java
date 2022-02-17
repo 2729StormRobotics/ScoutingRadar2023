@@ -9,6 +9,8 @@ import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+
 public class PitRepository {
 
     private final PitScoutDao mDao;
@@ -17,12 +19,14 @@ public class PitRepository {
     public PitRepository(Application app) {
         AppDatabase db = AppDatabase.getInstance(app);
         mDao = db.pitScoutDao();
-        mDataList = mDao.getAllMatches();
+        mDataList = mDao.getLiveTeams();
     }
 
     public LiveData<List<PitScoutData>> getDataList() {
         return mDataList;
     }
+
+    public Maybe<List<PitScoutData>> getAllTeams() {return mDao.getAllTeams();}
 
     public void insert(@NonNull PitScoutData data) {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(data));

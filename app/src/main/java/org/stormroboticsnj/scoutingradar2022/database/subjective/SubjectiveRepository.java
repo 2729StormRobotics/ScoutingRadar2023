@@ -9,6 +9,8 @@ import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+
 public class SubjectiveRepository {
 
     private final SubjectiveMatchDao mDao;
@@ -17,12 +19,14 @@ public class SubjectiveRepository {
     public SubjectiveRepository(Application app) {
         AppDatabase db = AppDatabase.getInstance(app);
         mDao = db.subjectiveMatchDao();
-        mDataList = mDao.getAllMatches();
+        mDataList = mDao.getLiveMatches();
     }
 
     public LiveData<List<SubjectiveMatchData>> getDataList() {
         return mDataList;
     }
+
+    public Maybe<List<SubjectiveMatchData>> getAllMatches() {return mDao.getAllMatches();}
 
     public void insert(@NonNull SubjectiveMatchData match) {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(match));
