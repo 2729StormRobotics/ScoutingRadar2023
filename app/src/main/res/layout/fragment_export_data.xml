@@ -1,15 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".dbfragments.ExportDataFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".dbfragments.ExportDataFragment">
+        android:layout_height="match_parent">
 
-    <TextView
-            android:id="@+id/export_text_test"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/data_loaded_for_exporting"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content"
+            android:id="@+id/export_layout_main">
 
-</FrameLayout>
+        <TextView
+                android:id="@+id/export_text_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:visibility="gone"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/export_text_header_scout"
+                android:layout_marginStart="16dp"
+                style="?textAppearanceButton"
+                android:layout_marginTop="16dp"
+                android:text="@string/export_send_scout"
+                app:layout_constraintTop_toBottomOf="@id/export_text_status" />
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/export_text_header_scout"
+                app:layout_constraintTop_toBottomOf="@id/export_text_header_scout"
+                android:text="@string/export_button_bluetooth"
+                app:layout_constraintEnd_toEndOf="@id/barrier_column_1"
+                app:layout_constraintWidth_min="wrap"
+                android:layout_marginTop="8dp"
+                android:id="@+id/export_button_bluetooth" />
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/barrier_column_1"
+                android:id="@+id/export_button_qr"
+                app:layout_constraintEnd_toEndOf="@id/barrier_column_2"
+                android:text="@string/export_button_qr"
+                app:layout_constraintWidth_min="wrap"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/export_button_bluetooth" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/export_button_bluetooth"
+                android:layout_marginTop="16dp"
+                android:id="@+id/export_text_header_csv"
+                android:text="@string/export_csv_file"
+                android:textAppearance="?textAppearanceButton"
+                app:layout_constraintStart_toStartOf="@id/export_button_bluetooth" />
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/export_text_header_csv"
+                app:layout_constraintTop_toBottomOf="@id/export_text_header_csv"
+                android:text="@string/export_button_csv_obj"
+                app:layout_constraintEnd_toEndOf="@id/barrier_column_1"
+                android:layout_marginTop="8dp"
+                app:layout_constraintWidth_min="wrap"
+                android:id="@+id/export_button_csv_obj" />
+
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/barrier_column_1"
+                android:id="@+id/export_button_csv_sub"
+                android:text="@string/export_button_csv_sub"
+                app:layout_constraintWidth_min="wrap"
+                app:layout_constraintEnd_toEndOf="@id/barrier_column_2"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/export_button_csv_obj" />
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/barrier_column_2"
+                android:id="@+id/export_button_csv_pit"
+                android:text="@string/export_button_csv_pit"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/export_button_csv_obj"
+                tools:ignore="TextContrastCheck" />
+
+        <androidx.constraintlayout.widget.Barrier
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                android:id="@+id/barrier_column_1"
+                app:constraint_referenced_ids="export_button_bluetooth, export_button_csv_obj" />
+
+        <androidx.constraintlayout.widget.Barrier
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                android:id="@+id/barrier_column_2"
+                app:constraint_referenced_ids="export_button_qr, export_button_csv_sub" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/export_button_csv_obj"
+                android:layout_marginTop="32dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintWidth_max="256dp"
+                android:src="@drawable/app_logo"
+                android:contentDescription="@string/scouting_radar_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

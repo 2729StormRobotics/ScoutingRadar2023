@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -17,6 +18,8 @@ public abstract class PermissionsFragment extends Fragment {
                     new ActivityResultContracts.RequestMultiplePermissions(), (isGranted) -> {
                         if (!isGranted.containsValue(false)) {
                             onPermissionsGranted();
+                        } else {
+                            onPermissionsDenied();
                         }
                     }
             );
@@ -88,4 +91,8 @@ public abstract class PermissionsFragment extends Fragment {
     protected abstract String getExplanationDialogTitle();
 
     protected abstract String getExplanationDialogMessage();
+
+    protected void onPermissionsDenied() {
+        Log.e("PermissionsFragment", "Permissions not granted");
+    }
 }

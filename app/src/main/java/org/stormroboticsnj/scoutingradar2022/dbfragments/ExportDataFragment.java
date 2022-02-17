@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -38,6 +39,9 @@ import java.util.Set;
 public class ExportDataFragment extends PermissionsFragment {
 
 
+    private static final String FILENAME_OBJ = "objective_data.csv";
+    private static final String FILENAME_SUB = "subjective_data.csv";
+    private static final String FILENAME_PIT = "pit_data.csv";
     private SharedPreferences mSharedPreferences;
     private ActivityResultLauncher<String> fileResultLauncher;
     private Context mContext;
@@ -47,10 +51,6 @@ public class ExportDataFragment extends PermissionsFragment {
     private String[] mObjButtons;
     private String[] mSubSpinners;
     private String[] mPitSpinners;
-
-    private static final String FILENAME_OBJ = "objective_data.csv";
-    private static final String FILENAME_SUB = "subjective_data.csv";
-    private static final String FILENAME_PIT = "pit_data.csv";
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -91,7 +91,7 @@ public class ExportDataFragment extends PermissionsFragment {
     public void onViewCreated(
             @NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTextView = view.findViewById(R.id.export_text_test);
+        mTextView = view.findViewById(R.id.export_text_status);
         mViewModel = new ViewModelProvider(this).get(ExportViewModel.class);
 
         mObjSpinners = readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners);
@@ -99,19 +99,24 @@ public class ExportDataFragment extends PermissionsFragment {
         mSubSpinners = readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners);
         mPitSpinners = readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners);
 
-        fileResultLauncher.launch(FILENAME_OBJ);
+        view.findViewById(R.id.export_button_bluetooth).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_qr).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_csv_obj).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_csv_sub).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_csv_pit).setOnClickListener(this::onButtonClicked);
     }
 
     public void onButtonClicked(View view) {
-        // if objective CSV
-
-
-//        mCsvMode = MODE_OBJ;
-
-        // if BT transfer
-        // checkPermissionsAndAct(mContext);
-
-
+        final int id = view.getId();
+        if (id == R.id.export_button_csv_obj) {
+            fileResultLauncher.launch(FILENAME_OBJ);
+        } else if (id == R.id.export_button_csv_sub) {
+            fileResultLauncher.launch(FILENAME_SUB);
+        } else if (id == R.id.export_button_csv_pit) {
+            fileResultLauncher.launch(FILENAME_PIT);
+        } else if (id == R.id.export_button_bluetooth) {
+            checkPermissionsAndAct(mContext);
+        }
     }
 
     private void writeCsv(Intent intent) {
@@ -140,7 +145,7 @@ public class ExportDataFragment extends PermissionsFragment {
                 mViewModel.createPitCsv(pfd, mPitSpinners);
                 break;
         }
-        
+
     }
 
     private String[] readPrefs(int prefKey, int defaultArray) {
@@ -177,40 +182,48 @@ public class ExportDataFragment extends PermissionsFragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BluetoothServer bluetoothServer = BluetoothServer.getInstance(mContext);
             if (bluetoothServer.isBtSupported()) {
+                mTextView.setText(R.string.data_loaded_for_exporting);
                 mViewModel.getmObjectiveLiveData().observe(this, (data) -> {
-                    mTextView.setText(mTextView.getText() + "\n Objective data loaded...");
+                    mTextView.append("\n Objective data loaded...");
                     bluetoothServer.setObjectiveData(data);
                 });
                 mViewModel.getmSubjectiveLiveData().observe(this, (data) -> {
-                    mTextView.setText(mTextView.getText() + "\n Subjective data loaded...");
+                    mTextView.append("\n Subjective data loaded...");
                     bluetoothServer.setSubjectiveData(data);
                 });
                 mViewModel.getmPitScoutData().observe(this, (data) -> {
-                    mTextView.setText(mTextView.getText() + "\n Pit data loaded...");
+                    mTextView.append("\n Pit data loaded...");
                     bluetoothServer.setPitData(data);
                 });
                 bluetoothServer.startAdvertising();
+            } else {
+                Toast.makeText(mContext, R.string.bt_not_supported, Toast.LENGTH_LONG).show();
             }
         }
     }
 
     @Override
     protected String getExplanationDialogTitle() {
-        return null;
+        return getString(R.string.bt_perms_header);
     }
 
     @Override
     protected String getExplanationDialogMessage() {
-        return null;
+        return getString(R.string.bt_perms_message);
+    }
+
+    @Override
+    protected void onPermissionsDenied() {
+        Toast.makeText(mContext, "Insufficient Bluetooth Permissions", Toast.LENGTH_SHORT).show();
     }
 
     private static class CsvFileContract extends ActivityResultContract<String, Intent> {
 
+        private String mInput;
+
         public CsvFileContract() {
             super();
         }
-
-        private String mInput;
 
         @NonNull
         @Override

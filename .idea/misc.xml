@@ -24,7 +24,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.211" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.211" />
         <entry key="app/src/main/res/layout/fragment_configure_scouting.xml" value="0.5247524752475248" />
-        <entry key="app/src/main/res/layout/fragment_export_data.xml" value="0.12863247863247862" />
+        <entry key="app/src/main/res/layout/fragment_export_data.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_import_data.xml" value="0.24188034188034188" />
         <entry key="app/src/main/res/layout/fragment_match_record_list.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_speed_dial.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_top_app_bar.xml" value="0.2947916666666667" />

@@ -17,7 +17,7 @@
             android:contentDescription="@string/scouting_radar_logo"
             android:adjustViewBounds="true"
             android:maxWidth="150dp"
-            android:src="@drawable/ic_app_logo"
+            android:src="@drawable/app_logo"
             app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

@@ -72,11 +72,8 @@
     <string name="upload_config_file">Choose File…</string>
     <string name="error_reading_file">Error reading file.</string>
     <string name="button_submit">Submit</string>
-    <string name="record_text_match">Match %1$d</string>
-    <string name="record_text_team">Team %1$d</string>
     <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
     <string name="scouting_radar_logo">Scouting Radar Logo</string>
-    <string name="data_loaded_for_exporting">Data loaded for exporting:</string>
     <string name="fab_title_pit">Pit Scout</string>
     <string name="fab_title_sub">Subjective Match Scout</string>
     <string name="fab_title_obj">Objective Match Scout</string>
@@ -84,5 +81,15 @@
     <string name="configure_current_header"><b>Current Configuration: \n</b></string>
     <string name="configure_update_label">Update Configuration:</string>
     <string name="short_app_name">Scout</string>
+    <string name="export_send_scout">Send all data to other Scout:</string>
+    <string name="export_button_bluetooth">Bluetooth</string>
+    <string name="export_button_qr">QR Code</string>
+    <string name="export_csv_file">Export to CSV File:</string>
+    <string name="export_button_csv_obj">Objective</string>
+    <string name="export_button_csv_sub">Subjective</string>
+    <string name="export_button_csv_pit">Pit</string>
+    <string name="bt_perms_header">Bluetooth Permissions</string>
+    <string name="bt_perms_message">We request Bluetooth permissions in order to transfer data to other instances of this app. These include location permissions, though we promise not to identify or record your location.</string>
+    <string name="bt_not_supported">Bluetooth is not supported.</string>
 
 </resources>
