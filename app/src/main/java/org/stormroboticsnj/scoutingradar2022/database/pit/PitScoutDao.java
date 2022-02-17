@@ -8,6 +8,8 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
+
 //adds data to database
 @Dao
 public interface PitScoutDao {
@@ -24,9 +26,12 @@ public interface PitScoutDao {
     void insertAll (PitScoutData... pitScoutData);
 
     //gets all entries in table
-    @Query("SELECT * FROM pit_scout_matches")
-    LiveData<List<PitScoutData>> getAllMatches();
+    @Query("SELECT * FROM pit_scout")
+    LiveData<List<PitScoutData>> getLiveTeams();
 
-    @Query("DELETE FROM pit_scout_matches")
+    @Query("SELECT * FROM pit_scout")
+    Maybe<List<PitScoutData>> getAllTeams();
+
+    @Query("DELETE FROM pit_scout")
     void deleteAll();
 }

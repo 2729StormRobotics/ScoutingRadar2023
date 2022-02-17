@@ -18,7 +18,7 @@ public class MatchViewModel extends AndroidViewModel {
     public MatchViewModel (Application app) {
         super(app);
         mRepository = new ObjectiveRepository(app);
-        mDataList = mRepository.getDataList();
+        mDataList = mRepository.getLiveMatches();
     }
 
     public LiveData<List<ObjectiveMatchData>> getDataList() {
