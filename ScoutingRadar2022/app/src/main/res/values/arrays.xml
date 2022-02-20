@@ -41,7 +41,6 @@
     <string-array name="sub_spinners">
         <item>Driver Skill:1,2,3,4,5</item>
         <item>Defense Skill:1,2,6,4,5</item>
-        <item>Biggest Flaw:Auto,Defense,Driving,Shooting Lower,Shooting Upper,Climbing</item>
     </string-array>
 
     <string-array name="obj_spinners">
@@ -51,6 +50,7 @@
     <string-array name="obj_buttons">
         <item>Acquire:AQ</item>
         <item>Lower Hub:LH</item>
+        <item>Upper Hub:UH</item>
         <item>Miss:MS</item>
         <item>Start Climb:SC</item>
         <item>End Climb:EC</item>
