@@ -30,87 +30,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44cdb889-99f6-43a2-b14f-27c854253d5e" name="Default Changelist" comment="Final bug fixes">
-      <change beforePath="$PROJECT_DIR$/../android/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/.idea/other.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/proguard-rules.pro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/androidTest/java/org/stormroboticsnj/scoutingradar2022/ExampleInstrumentedTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/BluetoothReader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/BluetoothServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/ConfigureScoutingFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/Constants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/MainActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/PermissionsFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/PermissionsManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/SettingsFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/UiUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/AppDatabase.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/CSVCreator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/DataUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/StringDecoder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/objective/ObjectiveMatchDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/objective/ObjectiveMatchData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/objective/ObjectiveRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/pit/PitRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/pit/PitScoutDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/pit/PitScoutData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/subjective/SubjectiveMatchDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/subjective/SubjectiveMatchData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/subjective/SubjectiveRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportDataFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportViewModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ImportDataFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ImportViewModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/homefragment/MatchRecordFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/homefragment/MatchRecordRecyclerViewAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/homefragment/MatchViewModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/ObjectiveMatchFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/ObjectiveScoutingViewModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutViewModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/SmallerTextWatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/SubjectiveMatchFragment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/SubjectiveScoutingViewModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/drawable/app_logo.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/drawable/ic_baseline_add_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/drawable/ic_outline_clock.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/drawable/ic_outline_rate_review_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_configure_scouting.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_export_data.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_import_data.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_match_record.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_match_record_list.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_objective_match.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_pit_scout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/layout/fragment_subjective_match.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/menu/menu_speed_dial.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/menu/menu_top_app_bar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/navigation/nav_graph.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values-night/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values/arrays.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values/colors.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values/dimens.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values/strings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values/styles.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/values/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/main/res/xml/root_preferences.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/app/src/test/java/org/stormroboticsnj/scoutingradar2022/ExampleUnitTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../android/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/fingerprint.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/work.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/work.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,7 +238,7 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="ScoutingRadar2022.app" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
