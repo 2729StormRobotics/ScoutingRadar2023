@@ -21,8 +21,8 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
-      working-directory: ./android
+      working-directory: ./ScoutingRadar2022
       run: chmod +x gradlew
     - name: Build with Gradle
-      working-directory: ./android
+      working-directory: ./ScoutingRadar2022
       run: ./gradlew build
