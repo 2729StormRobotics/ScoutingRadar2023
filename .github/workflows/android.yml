@@ -12,10 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: enter folder
-      run: cd android
     - uses: actions/checkout@v2
     - name: set up JDK 11
+      working-directory: ./android
       uses: actions/setup-java@v2
       with:
         java-version: '11'
@@ -23,6 +22,8 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
+      working-directory: ./android
       run: chmod +x gradlew
     - name: Build with Gradle
+      working-directory: ./android
       run: ./gradlew build
