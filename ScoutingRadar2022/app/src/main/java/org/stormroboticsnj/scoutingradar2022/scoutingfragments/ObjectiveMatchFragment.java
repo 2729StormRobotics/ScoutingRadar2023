@@ -13,13 +13,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -32,7 +30,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintProperties;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -578,19 +575,6 @@ public class ObjectiveMatchFragment extends Fragment {
         } else {
             // The only option is submit
             endMatch();
-        }
-    }
-
-    /**
-     * Handles spinner selections
-     */
-    private void onSpinnerSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        for (SpinnerInfo si : mSpinnerInfos) {
-            if (si.id == view.getId()) {
-                mViewModel.addAction(
-                        new Action(si.name, si.contents[si.spinner.getSelectedItemPosition()]));
-                return;
-            }
         }
     }
 
