@@ -77,7 +77,7 @@
     <string name="fab_title_pit">Pit Scout</string>
     <string name="fab_title_sub">Subjective Match Scout</string>
     <string name="fab_title_obj">Objective Match Scout</string>
-    <string name="configure_message">The data collected by Scouting Radar is configurable. You can make sure the same data is collected across all your devices by creating a configuration file. For instructions on how to do this, visit <a href="https://github.com/2729StormRobotics/ScoutingRadar2022">our Github.</a></string>
+    <string name="configure_message">The data collected by Scouting Radar is configurable. You can make sure the same data is collected across all your devices by creating a configuration file. For instructions on how to do this, visit <a href="https://github.com/2729StormRobotics/ScoutingRadar2022/tree/main">our Github.</a></string>
     <string name="configure_current_header"><b>Current Configuration: \n</b></string>
     <string name="configure_update_label">Update Configuration:</string>
     <string name="short_app_name">Scout</string>
