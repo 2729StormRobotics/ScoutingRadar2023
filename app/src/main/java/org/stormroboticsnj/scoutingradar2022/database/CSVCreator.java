@@ -24,52 +24,50 @@ public class CSVCreator {
     public static void createObjectiveCsv(
             ParcelFileDescriptor pfd, String[] buttons,
             String[] spinners, List<ObjectiveMatchData> data) {
-        new Thread(() -> {
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-                objCsv(fileOutputStream, buttons, spinners, data);
 
-                // Let the document provider know you're done by closing the stream.
-                fileOutputStream.close();
-                pfd.close();
-            } catch (IOException e) {
-                Log.e("Export Data", "CSV Writing fail", e);
-            }
-        }).start();
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+            objCsv(fileOutputStream, buttons, spinners, data);
+
+            // Let the document provider know you're done by closing the stream.
+            fileOutputStream.close();
+            pfd.close();
+        } catch (IOException e) {
+            Log.e("Export Data", "CSV Writing fail", e);
+        }
+
     }
 
     public static void createSubjectiveCsv(
             ParcelFileDescriptor pfd,
             String[] spinners, List<SubjectiveMatchData> data) {
-        new Thread(() -> {
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-                subCsv(fileOutputStream, spinners, data);
 
-                // Let the document provider know you're done by closing the stream.
-                fileOutputStream.close();
-                pfd.close();
-            } catch (IOException e) {
-                Log.e("Export Data", "CSV Writing fail", e);
-            }
-        }).start();
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+            subCsv(fileOutputStream, spinners, data);
+
+            // Let the document provider know you're done by closing the stream.
+            fileOutputStream.close();
+            pfd.close();
+        } catch (IOException e) {
+            Log.e("Export Data", "CSV Writing fail", e);
+        }
+
     }
 
     public static void createPitCsv(
             ParcelFileDescriptor pfd,
             String[] spinners, List<PitScoutData> data) {
-        new Thread(() -> {
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-                pitCsv(fileOutputStream, spinners, data);
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+            pitCsv(fileOutputStream, spinners, data);
 
-                // Let the document provider know you're done by closing the stream.
-                fileOutputStream.close();
-                pfd.close();
-            } catch (IOException e) {
-                Log.e("Export Data", "CSV Writing fail", e);
-            }
-        }).start();
+            // Let the document provider know you're done by closing the stream.
+            fileOutputStream.close();
+            pfd.close();
+        } catch (IOException e) {
+            Log.e("Export Data", "CSV Writing fail", e);
+        }
     }
 
     private static CSVWriter getCsvWriter(FileOutputStream output) {
@@ -87,7 +85,7 @@ public class CSVCreator {
             String[] objectiveButtons, String[] objectiveSpinners,
             List<ObjectiveMatchData> dataList) throws IOException {
 
-       CSVWriter csvWriter = getCsvWriter(output);
+        CSVWriter csvWriter = getCsvWriter(output);
 
         // Create Column Names
         List<String> columnNames = new ArrayList<>();

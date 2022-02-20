@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +29,14 @@ import androidx.preference.PreferenceManager;
 import org.stormroboticsnj.scoutingradar2022.BluetoothServer;
 import org.stormroboticsnj.scoutingradar2022.PermissionsFragment;
 import org.stormroboticsnj.scoutingradar2022.R;
+import org.stormroboticsnj.scoutingradar2022.UiUtils;
 
 import java.io.FileNotFoundException;
 import java.util.Set;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,28 +49,35 @@ public class ExportDataFragment extends PermissionsFragment {
     private static final String FILENAME_OBJ = "objective_data.csv";
     private static final String FILENAME_SUB = "subjective_data.csv";
     private static final String FILENAME_PIT = "pit_data.csv";
+    private static final String LOG_TAG = ExportDataFragment.class.getSimpleName();
     private SharedPreferences mSharedPreferences;
     private ActivityResultLauncher<String> fileResultLauncher;
     private Context mContext;
     private TextView mTextView;
+    private ImageView mQrImageView;
     private ExportViewModel mViewModel;
     private String[] mObjSpinners;
     private String[] mObjButtons;
     private String[] mSubSpinners;
     private String[] mPitSpinners;
+    private String mTeamNumber;
+    private String mDeviceName;
 
     public ExportDataFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ExportDataFragment.
-     */
+    @SuppressWarnings("unused")
     public static ExportDataFragment newInstance() {
         return new ExportDataFragment();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BluetoothServer.getInstance(mContext).stopAndClose();
+        }
     }
 
     @Override
@@ -100,13 +114,23 @@ public class ExportDataFragment extends PermissionsFragment {
         mPitSpinners = readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners);
 
         view.findViewById(R.id.export_button_bluetooth).setOnClickListener(this::onButtonClicked);
-        view.findViewById(R.id.export_button_qr).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_qr_obj).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_qr_sub).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_qr_pit).setOnClickListener(this::onButtonClicked);
         view.findViewById(R.id.export_button_csv_obj).setOnClickListener(this::onButtonClicked);
         view.findViewById(R.id.export_button_csv_sub).setOnClickListener(this::onButtonClicked);
         view.findViewById(R.id.export_button_csv_pit).setOnClickListener(this::onButtonClicked);
+
+        mQrImageView = view.findViewById(R.id.export_imageview);
+        mQrImageView.setOnClickListener(this::onButtonClicked);
+
+        mTeamNumber = PreferenceManager.getDefaultSharedPreferences(mContext)
+                                       .getString(getString(R.string.pref_key_teamnum), "0000");
+        mDeviceName = PreferenceManager.getDefaultSharedPreferences(mContext)
+                                       .getString(getString(R.string.pref_key_device_name), "UNNAMED");
     }
 
-    public void onButtonClicked(View view) {
+    public void onButtonClicked(@NonNull View view) {
         final int id = view.getId();
         if (id == R.id.export_button_csv_obj) {
             fileResultLauncher.launch(FILENAME_OBJ);
@@ -116,10 +140,55 @@ public class ExportDataFragment extends PermissionsFragment {
             fileResultLauncher.launch(FILENAME_PIT);
         } else if (id == R.id.export_button_bluetooth) {
             checkPermissionsAndAct(mContext);
+        } else if (id == R.id.export_button_qr_obj) {
+            generateQrCode(QR.OBJ);
+        } else if (id == R.id.export_button_qr_sub) {
+            generateQrCode(QR.SUB);
+        } else if (id == R.id.export_button_qr_pit) {
+            generateQrCode(QR.PIT);
         }
     }
 
-    private void writeCsv(Intent intent) {
+    private void generateQrCode(@NonNull QR type) {
+        Maybe<Bitmap> bitmapMaybe = null;
+        switch (type) {
+            case OBJ:
+                bitmapMaybe = mViewModel.getObjectiveBitmap(mQrImageView.getWidth());
+                break;
+            case SUB:
+                bitmapMaybe = mViewModel.getSubjectiveBitmap(mQrImageView.getWidth());
+                break;
+            case PIT:
+                bitmapMaybe = mViewModel.getPitBitmap(mQrImageView.getWidth());
+                break;
+        }
+        observeBitmapMaybe(bitmapMaybe);
+    }
+
+    private void observeBitmapMaybe(@NonNull Maybe<Bitmap> bitmapMaybe) {
+        bitmapMaybe
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableMaybeObserver<Bitmap>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull Bitmap bitmap) {
+                        UiUtils.imageViewAnimatedChange(mContext, mQrImageView, bitmap);
+                        mQrImageView.setContentDescription(getString(R.string.qr_code));
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.e(LOG_TAG, "QR Generation Problem", e);
+                        Toast.makeText(mContext, R.string.qr_error, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void writeCsv(@NonNull Intent intent) {
         final String title = intent.getStringExtra(Intent.EXTRA_TITLE);
         if (title == null) {
             Log.e("Export Data", "Write CSV Fail: title of intent is null");
@@ -170,11 +239,12 @@ public class ExportDataFragment extends PermissionsFragment {
                        Manifest.permission.ACCESS_FINE_LOCATION,
                        Manifest.permission.BLUETOOTH_CONNECT,
                        Manifest.permission.BLUETOOTH_ADVERTISE
-               } : new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                };
+               } :
+               new String[]{
+                       Manifest.permission.ACCESS_FINE_LOCATION,
+                       Manifest.permission.BLUETOOTH,
+                       Manifest.permission.BLUETOOTH_ADMIN,
+                       };
     }
 
     @Override
@@ -183,19 +253,20 @@ public class ExportDataFragment extends PermissionsFragment {
             BluetoothServer bluetoothServer = BluetoothServer.getInstance(mContext);
             if (bluetoothServer.isBtSupported()) {
                 mTextView.setText(R.string.data_loaded_for_exporting);
-                mViewModel.getmObjectiveLiveData().observe(this, (data) -> {
+                mTextView.setVisibility(View.VISIBLE);
+                mViewModel.getObjectiveLiveData().observe(this, (data) -> {
                     mTextView.append("\n Objective data loaded...");
                     bluetoothServer.setObjectiveData(data);
                 });
-                mViewModel.getmSubjectiveLiveData().observe(this, (data) -> {
+                mViewModel.getSubjectiveLiveData().observe(this, (data) -> {
                     mTextView.append("\n Subjective data loaded...");
                     bluetoothServer.setSubjectiveData(data);
                 });
-                mViewModel.getmPitScoutData().observe(this, (data) -> {
+                mViewModel.getPitScoutData().observe(this, (data) -> {
                     mTextView.append("\n Pit data loaded...");
                     bluetoothServer.setPitData(data);
                 });
-                bluetoothServer.startAdvertising();
+                bluetoothServer.startAdvertising(mTeamNumber, mDeviceName);
             } else {
                 Toast.makeText(mContext, R.string.bt_not_supported, Toast.LENGTH_LONG).show();
             }
@@ -215,6 +286,12 @@ public class ExportDataFragment extends PermissionsFragment {
     @Override
     protected void onPermissionsDenied() {
         Toast.makeText(mContext, "Insufficient Bluetooth Permissions", Toast.LENGTH_SHORT).show();
+    }
+
+    private enum QR {
+        OBJ,
+        SUB,
+        PIT
     }
 
     private static class CsvFileContract extends ActivityResultContract<String, Intent> {

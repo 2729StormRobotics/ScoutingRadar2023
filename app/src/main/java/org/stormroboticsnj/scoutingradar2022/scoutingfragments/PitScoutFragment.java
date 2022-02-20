@@ -1,6 +1,6 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -30,6 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.stormroboticsnj.scoutingradar2022.R;
+import org.stormroboticsnj.scoutingradar2022.UiUtils;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
 import java.util.Objects;

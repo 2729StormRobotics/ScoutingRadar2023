@@ -1,6 +1,7 @@
 package org.stormroboticsnj.scoutingradar2022.dbfragments;
 
 import android.app.Application;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -67,6 +68,26 @@ public class ImportViewModel extends AndroidViewModel {
             }
 
         }).start();
+    }
+
+    public void saveQrData(final String res) {
+        new Thread(() -> {
+            switch (res.substring(0, 3)) {
+                case "OBJ":
+                    saveObjectiveData(
+                            Base64.decode(res.substring(3), Base64.NO_WRAP));
+                    break;
+                case "SUB":
+                    saveSubjectiveData(
+                            Base64.decode(res.substring(3), Base64.NO_WRAP));
+                    break;
+                case "PIT":
+                    savePitData(
+                            Base64.decode(res.substring(3), Base64.NO_WRAP));
+                    break;
+            }
+        }).start();
+
     }
 
 }

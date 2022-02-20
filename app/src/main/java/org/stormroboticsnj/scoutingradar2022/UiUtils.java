@@ -1,8 +1,13 @@
-package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
+package org.stormroboticsnj.scoutingradar2022;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextWatcher;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -14,11 +19,40 @@ import java.util.Objects;
 
 public class UiUtils {
 
-    static class ButtonInfo {
-        String name;
-        String abbreviation;
-        int id;
-        Button button;
+    public static void imageViewAnimatedChange(Context c, final ImageView v, final Bitmap new_image) {
+        final Animation anim_out = AnimationUtils.loadAnimation(c, android.R.anim.fade_out);
+        final Animation anim_in = AnimationUtils.loadAnimation(c, android.R.anim.fade_in);
+        anim_out.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setImageBitmap(new_image);
+                anim_in.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+                v.startAnimation(anim_in);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        v.startAnimation(anim_out);
+    }
+
+    public static class ButtonInfo {
+        public String name;
+        public String abbreviation;
+        public int id;
+        public Button button;
 
         public ButtonInfo(String name, String abbreviation, int id, Button button) {
             this.name = name;
@@ -28,14 +62,14 @@ public class UiUtils {
         }
     }
 
-    static class SpinnerInfo {
-        String name;
-        String[] contents;
-        int id;
-        Spinner spinner;
+    public static class SpinnerInfo {
+        public String name;
+        public String[] contents;
+        public int id;
+        public Spinner spinner;
 
         public SpinnerInfo(
-                String name,  String[] contents, int id, Spinner spinner) {
+                String name, String[] contents, int id, Spinner spinner) {
             this.name = name;
             this.contents = contents;
             this.id = id;

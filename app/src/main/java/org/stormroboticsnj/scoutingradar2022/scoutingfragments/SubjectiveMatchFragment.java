@@ -1,8 +1,8 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.TextInputWrapper;
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.ToggleGroupWrapper;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.TextInputWrapper;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.ToggleGroupWrapper;
 
 import android.content.Context;
 import android.content.SharedPreferences;

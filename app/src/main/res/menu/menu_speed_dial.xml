@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/item_pitscout" android:icon="@drawable/ic_outline_clock" android:title="@string/fab_title_pit"/>
+    <item android:id="@+id/item_pitscout" android:icon="@drawable/ic_baseline_person_outline_24" android:title="@string/fab_title_pit"/>
     <item android:id="@+id/item_subjective" android:icon="@drawable/ic_outline_rate_review_24" android:title="@string/fab_title_sub" />
-    <item android:id="@+id/item_objective" android:icon="@drawable/ic_baseline_person_outline_24" android:title="@string/fab_title_obj"/>
+    <item android:id="@+id/item_objective" android:icon="@drawable/ic_outline_clock" android:title="@string/fab_title_obj"/>
 
 </menu>

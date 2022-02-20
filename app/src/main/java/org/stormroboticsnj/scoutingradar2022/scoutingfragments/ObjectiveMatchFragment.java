@@ -1,10 +1,10 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.ButtonInfo;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.TextInputWrapper;
+import static org.stormroboticsnj.scoutingradar2022.UiUtils.ToggleGroupWrapper;
 import static org.stormroboticsnj.scoutingradar2022.database.DataUtils.Action;
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.ButtonInfo;
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.SpinnerInfo;
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.TextInputWrapper;
-import static org.stormroboticsnj.scoutingradar2022.scoutingfragments.UiUtils.ToggleGroupWrapper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,11 +13,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -30,6 +32,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintProperties;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -60,7 +63,7 @@ public class ObjectiveMatchFragment extends Fragment {
     private boolean hasButtons;
 
     // ViewModel :)
-    private ObjectiveScoutingViewModel mActionsViewModel;
+    private ObjectiveScoutingViewModel mViewModel;
     // Context :))
     private Context mContext;
 
@@ -80,6 +83,7 @@ public class ObjectiveMatchFragment extends Fragment {
     private MaterialButton mRedButton;
     private MaterialButton mBlueButton;
     private TextView mToggleErrorText;
+
 
     public ObjectiveMatchFragment() {
         // Required empty public constructor
@@ -147,14 +151,14 @@ public class ObjectiveMatchFragment extends Fragment {
         generateUI();
 
         // Set up the ViewModel
-        mActionsViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
         // Subscribe to the ViewModel's changes in the ActionsList.
         subscribeToActions();
-    }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+        // Check if the match is already running (based on recreation or something)
+        if (mViewModel.isMatchRunning()) {
+            startMatch();
+        }
     }
 
     /**
@@ -260,7 +264,7 @@ public class ObjectiveMatchFragment extends Fragment {
      * Sets an observer on the list of actions so that the TextView can be updated.
      */
     private void subscribeToActions() {
-        mActionsViewModel.getLiveData().observe(getViewLifecycleOwner(), (actions) -> {
+        mViewModel.getLiveData().observe(getViewLifecycleOwner(), (actions) -> {
             // Clear the TextView
             mActionsListView.setText(R.string.action_list_start_prefix);
             // Loop through the actions and add them to the TextView
@@ -278,7 +282,7 @@ public class ObjectiveMatchFragment extends Fragment {
      */
     private void startMatch() {
         // Start the chronometer
-        mChronometer.setBase(SystemClock.elapsedRealtime());
+        mChronometer.setBase(mViewModel.getChronometerBase());
         mChronometer.start();
         for (ButtonInfo buttonInfo : mButtonInfos) {
             buttonInfo.button.setEnabled(true);
@@ -307,15 +311,15 @@ public class ObjectiveMatchFragment extends Fragment {
             // Add the Spinner Info
             if (hasSpinners) {
                 for (SpinnerInfo spinnerInfo : mSpinnerInfos) {
-                    mActionsViewModel.addAction(new Action(spinnerInfo.name,
+                    mViewModel.addAction(new Action(spinnerInfo.name,
                             spinnerInfo.contents
                                     [spinnerInfo.spinner.getSelectedItemPosition()]));
                 }
             }
 
             // Save data
-            mActionsViewModel.processAndSaveMatch(
-                    Objects.requireNonNull(mActionsViewModel.getLiveData().getValue(),
+            mViewModel.processAndSaveMatch(
+                    Objects.requireNonNull(mViewModel.getLiveData().getValue(),
                             "Action list is null"),
                     Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
@@ -338,7 +342,7 @@ public class ObjectiveMatchFragment extends Fragment {
      * Undoes the most recently taken Action
      */
     private void undoAction() {
-        mActionsViewModel.removeLastAction();
+        mViewModel.removeLastAction();
     }
 
     /**
@@ -360,16 +364,25 @@ public class ObjectiveMatchFragment extends Fragment {
         }
 
         if (hasButtons) {
+
             // Button Infos saved here
             // Set up the start button
-            mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId());
+            mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId(),
+                    R.attr.materialButtonStyle);
             // Enable the start button
             mButtonInfos[0].button.setEnabled(true);
-            for (int i = 1; i < mButtonInfos.length - 1; i++) {
+            for (int i = 1; i < mButtonInfos.length - 2; i++) {
                 // Set up the user-defined buttons
                 mButtonInfos[i] =
-                        setupNewButton(i, constraintSet, mButtonInfos[i - 1].id);
+                        setupNewButton(i, constraintSet, mButtonInfos[i - 1].id,
+                                R.attr.materialButtonStyle);
             }
+
+            // Set up the user-defined buttons
+            mButtonInfos[mButtonInfos.length - 2] =
+                    setupNewButton(mButtonInfos.length - 2, constraintSet,
+                            mButtonInfos[mButtonInfos.length - 3].id,
+                            R.attr.materialButtonOutlinedStyle);
         }
 
         if (hasSpinners) {
@@ -401,7 +414,8 @@ public class ObjectiveMatchFragment extends Fragment {
 
         // Set up the submit button
         mButtonInfos[mButtonInfos.length - 1] =
-                setupNewButton(mButtonInfos.length - 1, constraintSet, lastId);
+                setupNewButton(mButtonInfos.length - 1, constraintSet, lastId,
+                        R.attr.materialButtonStyle);
 
         // Submit button is enabled if there is no start button
         mButtonInfos[mButtonInfos.length - 1].button.setEnabled(!hasButtons);
@@ -415,9 +429,9 @@ public class ObjectiveMatchFragment extends Fragment {
      * @param previousId    the id of the view that this button should be placed underneath
      * @return a ButtonInfo about the created Button
      */
-    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId) {
+    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr) {
         // Create the button
-        Button button = new MaterialButton(mContext);
+        Button button = new MaterialButton(mContext, null, styleAttr);
         // Generate a unique id for the button
         int buttonId = View.generateViewId();
         button.setId(buttonId);
@@ -436,6 +450,7 @@ public class ObjectiveMatchFragment extends Fragment {
         chainViewsVertically(constraintSet, previousId, buttonId);
         // Center the button horizontally
         centerViewHorizontally(constraintSet, buttonId);
+
         // Apply the constraints
         constraintSet.applyTo(mConstraintLayout);
 
@@ -531,7 +546,6 @@ public class ObjectiveMatchFragment extends Fragment {
      * Handles all button clicks for this Fragment
      */
     public void onButtonClick(View view) {
-
         // Check Time Buttons
         if (hasButtons) {
 
@@ -558,12 +572,25 @@ public class ObjectiveMatchFragment extends Fragment {
                 if (view.getId() == bi.id) {
                     Action a = new Action(bi.abbreviation,
                             SystemClock.elapsedRealtime() - mChronometer.getBase());
-                    mActionsViewModel.addAction(a);
+                    mViewModel.addAction(a);
                 }
             }
         } else {
             // The only option is submit
             endMatch();
+        }
+    }
+
+    /**
+     * Handles spinner selections
+     */
+    private void onSpinnerSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        for (SpinnerInfo si : mSpinnerInfos) {
+            if (si.id == view.getId()) {
+                mViewModel.addAction(
+                        new Action(si.name, si.contents[si.spinner.getSelectedItemPosition()]));
+                return;
+            }
         }
     }
 
@@ -670,5 +697,4 @@ public class ObjectiveMatchFragment extends Fragment {
 
         return !isError;
     }
-
 }

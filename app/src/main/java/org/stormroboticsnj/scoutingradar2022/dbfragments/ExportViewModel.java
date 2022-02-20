@@ -1,13 +1,18 @@
 package org.stormroboticsnj.scoutingradar2022.dbfragments;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.os.ParcelFileDescriptor;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
+
+import com.google.zxing.BarcodeFormat;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.stormroboticsnj.scoutingradar2022.database.CSVCreator;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
@@ -20,7 +25,7 @@ import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepos
 
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -31,6 +36,7 @@ public class ExportViewModel extends AndroidViewModel {
     private final ObjectiveRepository mObjectiveRepository;
     private final SubjectiveRepository mSubjectiveRepository;
     private final PitRepository mPitRepository;
+
 
     public ExportViewModel(@NonNull Application application) {
         super(application);
@@ -47,15 +53,45 @@ public class ExportViewModel extends AndroidViewModel {
 
     }
 
-    public LiveData<byte[]> getmObjectiveLiveData() {
+    public Maybe<Bitmap> getObjectiveBitmap(int size) {
+        return mObjectiveRepository
+                .getAllMatches()
+                .subscribeOn(Schedulers.io())
+                .map(DataUtils::compressData)
+                .map((arr) -> (new BarcodeEncoder()).encodeBitmap(
+                        "OBJ" + Base64.encodeToString(arr, Base64.DEFAULT),
+                        BarcodeFormat.QR_CODE, size, size));
+    }
+
+    public Maybe<Bitmap> getSubjectiveBitmap(int size) {
+        return mSubjectiveRepository
+                .getAllMatches()
+                .subscribeOn(Schedulers.io())
+                .map(DataUtils::compressData)
+                .map((arr) -> (new BarcodeEncoder()).encodeBitmap(
+                        "SUB" + Base64.encodeToString(arr, Base64.NO_WRAP),
+                        BarcodeFormat.QR_CODE, size, size));
+    }
+
+    public Maybe<Bitmap> getPitBitmap(int size) {
+        return mPitRepository
+                .getAllTeams()
+                .subscribeOn(Schedulers.io())
+                .map(DataUtils::compressData)
+                .map((arr) -> (new BarcodeEncoder()).encodeBitmap(
+                        "PIT" + Base64.encodeToString(arr, Base64.NO_WRAP),
+                        BarcodeFormat.QR_CODE, size, size));
+    }
+
+    public LiveData<byte[]> getObjectiveLiveData() {
         return mObjectiveLiveData;
     }
 
-    public LiveData<byte[]> getmSubjectiveLiveData() {
+    public LiveData<byte[]> getSubjectiveLiveData() {
         return mSubjectiveLiveData;
     }
 
-    public LiveData<byte[]> getmPitScoutData() {
+    public LiveData<byte[]> getPitScoutData() {
         return mPitScoutData;
     }
 
@@ -63,7 +99,7 @@ public class ExportViewModel extends AndroidViewModel {
         mObjectiveRepository
                 .getAllMatches()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
                 .subscribe(new DisposableMaybeObserver<List<ObjectiveMatchData>>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<ObjectiveMatchData> objectiveMatchData) {
@@ -87,7 +123,7 @@ public class ExportViewModel extends AndroidViewModel {
         mPitRepository
                 .getAllTeams()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
                 .subscribe(new DisposableMaybeObserver<List<PitScoutData>>() {
 
                     @Override
@@ -111,7 +147,7 @@ public class ExportViewModel extends AndroidViewModel {
         mSubjectiveRepository
                 .getAllMatches()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
                 .subscribe(new DisposableMaybeObserver<List<SubjectiveMatchData>>() {
 
                     @Override

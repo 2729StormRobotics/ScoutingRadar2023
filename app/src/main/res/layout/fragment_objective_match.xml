@@ -28,6 +28,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
+                    android:id="@+id/objective_edit_team_number"
                     android:layout_height="wrap_content"
                     android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -50,6 +51,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/objective_edit_match_number"
                     android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 

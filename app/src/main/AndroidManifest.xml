@@ -21,17 +21,22 @@
 
     <uses-feature
             android:name="android.hardware.bluetooth_le"
-            android:required="true" />
+            android:required="false" />
+
+    <uses-feature android:name="android.hardware.screen.portrait" />
 
     <application
             android:allowBackup="true"
             android:icon="@drawable/app_logo"
             android:label="@string/short_app_name"
             android:supportsRtl="true"
+            android:hardwareAccelerated="true"
             android:theme="@style/Theme.ScoutingRadar2022.Charge">
         <activity
                 android:name="org.stormroboticsnj.scoutingradar2022.MainActivity"
-                android:exported="true">
+                android:screenOrientation="sensorPortrait"
+                android:exported="true"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

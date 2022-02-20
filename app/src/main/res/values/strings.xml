@@ -85,11 +85,31 @@
     <string name="export_button_bluetooth">Bluetooth</string>
     <string name="export_button_qr">QR Code</string>
     <string name="export_csv_file">Export to CSV File:</string>
-    <string name="export_button_csv_obj">Objective</string>
-    <string name="export_button_csv_sub">Subjective</string>
-    <string name="export_button_csv_pit">Pit</string>
+    <string name="objective">Objective</string>
+    <string name="subjective">Subjective</string>
+    <string name="pit">Pit</string>
     <string name="bt_perms_header">Bluetooth Permissions</string>
     <string name="bt_perms_message">We request Bluetooth permissions in order to transfer data to other instances of this app. These include location permissions, though we promise not to identify or record your location.</string>
     <string name="bt_not_supported">Bluetooth is not supported.</string>
+    <string name="qr_code">QR Code</string>
+    <string name="generate_qr_header">Generate QR Code for other Scout:</string>
+    <string name="qr_error">QR Generation Error</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="import_data_header">Import Data From Other Scout</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="scan_bluetooth">Scan Bluetooth</string>
+    <string name="import_data_details_top">Imported Data:\n</string>
+    <string name="import_subjective">Subjective\n</string>
+    <string name="import_objective">"Objective, "</string>
+    <string name="scanning">Scanning…</string>
+    <string name="no_camera_perms">Missing camera permission</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="scanned">Scanned</string>
+    <string name="no_bt_perms">Missing Bluetooth permissions</string>
+    <string name="not_lollipop">Bluetooth requires Android Lollipop or newer</string>
+    <string name="objective_space">"Objective "</string>
+    <string name="subjective_space">"Subjective "</string>
+    <string name="pit_space">"Pit "</string>
+    <string name="data_recieved_name">"\nData received from "</string>
 
 </resources>

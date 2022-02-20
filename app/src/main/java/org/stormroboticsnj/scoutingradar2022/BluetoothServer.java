@@ -30,33 +30,11 @@ public class BluetoothServer {
     private static final String LOG_TAG = BluetoothServer.class.getSimpleName();
     private static BluetoothServer instance = null;
     private final boolean btSupported;
-    private final BluetoothPeripheralManagerCallback peripheralManagerCallback =
-            new BluetoothPeripheralManagerCallback() {
-
-                @Override
-                public void onCentralConnected(@NonNull BluetoothCentral bluetoothCentral) {
-                    super.onCentralConnected(bluetoothCentral);
-                }
-
-                @Override
-                public void onCharacteristicRead(
-                        @NonNull BluetoothCentral bluetoothCentral,
-                        @NonNull BluetoothGattCharacteristic characteristic) {
-                    super.onCharacteristicRead(bluetoothCentral, characteristic);
-                }
-
-                @Override
-                public GattStatus onCharacteristicWrite(
-                        @NonNull BluetoothCentral bluetoothCentral,
-                        @NonNull BluetoothGattCharacteristic characteristic,
-                        @NonNull byte[] value) {
-                    return super.onCharacteristicWrite(bluetoothCentral, characteristic, value);
-                }
-            };
     private BluetoothPeripheralManager peripheralManager = null;
     private BluetoothGattCharacteristic pitData = null;
     private BluetoothGattCharacteristic objectiveData = null;
     private BluetoothGattCharacteristic subjectiveData = null;
+    private BluetoothAdapter mBluetoothAdapter = null;
 
     @SuppressLint("MissingPermission")
     public BluetoothServer(Context context) {
@@ -70,22 +48,43 @@ public class BluetoothServer {
             btSupported = false;
             return;
         }
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        mBluetoothAdapter = bluetoothManager.getAdapter();
 
-        if (bluetoothAdapter == null) {
+        if (mBluetoothAdapter == null) {
             Log.e(LOG_TAG, "Bluetooth not supported.");
             btSupported = false;
             return;
         }
 
-        if (!bluetoothAdapter.isMultipleAdvertisementSupported()) {
+        if (!mBluetoothAdapter.isMultipleAdvertisementSupported()) {
             Log.e(LOG_TAG, "Advertising not supported.");
             btSupported = false;
             return;
         }
 
-        bluetoothAdapter.setName("Scouting test");
+        BluetoothPeripheralManagerCallback peripheralManagerCallback =
+                new BluetoothPeripheralManagerCallback() {
 
+                    @Override
+                    public void onCentralConnected(@NonNull BluetoothCentral bluetoothCentral) {
+                        super.onCentralConnected(bluetoothCentral);
+                    }
+
+                    @Override
+                    public void onCharacteristicRead(
+                            @NonNull BluetoothCentral bluetoothCentral,
+                            @NonNull BluetoothGattCharacteristic characteristic) {
+                        super.onCharacteristicRead(bluetoothCentral, characteristic);
+                    }
+
+                    @Override
+                    public GattStatus onCharacteristicWrite(
+                            @NonNull BluetoothCentral bluetoothCentral,
+                            @NonNull BluetoothGattCharacteristic characteristic,
+                            @NonNull byte[] value) {
+                        return super.onCharacteristicWrite(bluetoothCentral, characteristic, value);
+                    }
+                };
         this.peripheralManager = new BluetoothPeripheralManager(context, bluetoothManager,
                 peripheralManagerCallback);
 
@@ -123,8 +122,9 @@ public class BluetoothServer {
     }
 
     @SuppressLint("MissingPermission")
-    public void startAdvertising() {
+    public void startAdvertising(String teamNumber, String deviceName) {
         if (btSupported) {
+            mBluetoothAdapter.setName(teamNumber + ":" + deviceName);
             peripheralManager.startAdvertising(buildAdvertiseSettings(), buildAdvertiseData(),
                     buildScanResponse());
         }
@@ -155,21 +155,9 @@ public class BluetoothServer {
      */
     private AdvertiseData buildAdvertiseData() {
 
-        /**
-         * Note: There is a strict limit of 31 Bytes on packets sent over BLE Advertisements.
-         *  This includes everything put into AdvertiseData including UUIDs, device info, &
-         *  arbitrary service or manufacturer data.
-         *  Attempting to send packets over this limit will result in a failure with error code
-         *  AdvertiseCallback.ADVERTISE_FAILED_DATA_TOO_LARGE. Catch this error in the
-         *  onStartFailure() method of an AdvertiseCallback implementation.
-         */
 
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
         dataBuilder.addServiceUuid(Service_UUID);
-
-        /* For example - this will cause advertising to fail (exceeds size limit) */
-        //String failureData = "asdghkajsghalkxcjhfa;sghtalksjcfhalskfjhasldkjfhdskf";
-        //dataBuilder.addServiceData(Constants.Service_UUID, failureData.getBytes());
 
         return dataBuilder.build();
     }
@@ -178,6 +166,12 @@ public class BluetoothServer {
         return new AdvertiseData.Builder()
                 .setIncludeDeviceName(true)
                 .build();
+    }
+
+    public void stopAndClose() {
+        peripheralManager.stopAdvertising();
+        peripheralManager.close();
+        instance = null;
     }
 
 
