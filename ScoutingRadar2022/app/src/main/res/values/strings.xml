@@ -1,0 +1,115 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Scouting Radar</string>
+    <string name="add_word">Scout new match</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="record_text_match">Match %1$d</string>
+    <string name="record_text_team">Team %1$d</string>
+    <string name="field_text_cat">Category: %1$s</string>
+
+    <string name="field_text_name">Name: %1$s</string>
+    <string name="field_text_abbr">Abbreviation: %1$s</string>
+
+    <string name="data_loaded_for_exporting">&#160;Data loaded for exporting:</string>
+    <string name="label_fragment_objective">Objective Match Scouting</string>
+    <string name="label_fragment_subjective">Subjective Match Scouting</string>
+    <string name="label_fragment_pit_scout">Pit Scout</string>
+    <string name="label_fragment_import_data">Import Data</string>
+    <string name="label_fragment_export_data">Export Data</string>
+    <string name="import_data">Import Data</string>
+    <string name="export_data">Export Data</string>
+    <string name="settings">Settings</string>
+
+    <string name="recycler_title">Previously Scouted Matches (Objective)</string>
+    <string name="team_number">Team Number</string>
+    <string name="match_number">Match Number</string>
+    <string name="action_list_start_prefix">START\ </string>
+    <string name="error_no_teamnum">Team Number is required</string>
+    <string name="error_toolong_teamnum">Team Number must be 1–4 digits</string>
+    <string name="error_notnumber_teamnum">Team Number must be a number</string>
+    <string name="error_no_matchnum">Match Number is required</string>
+    <string name="error_notnumber_matchnum">Match Number must be a number</string>
+    <string name="error_toolong_matchnum">Match Number must be 1–3 digits</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="error_alliance_missing">Alliance is required.</string>
+    <string name="empty" />
+
+    <string name="bluetooth_permission_explanation">We require Bluetooth permission in order to connect to other instances of the Scouting App to share data. \n This permission is required.</string>
+    <string name="bluetooth_permission_explanation_title">Bluetooth Permission</string>
+    <string name="proceed">Grant</string>
+    <string name="cancel">Cancel</string>
+    <string name="send_data">Send Data</string>
+    <string name="receive_data">Receive Data</string>
+    <string name="receive">Receive</string>
+    <string name="imported_data">Imported Data:</string>
+    <string name="start_bluetooth_scan">Start Bluetooth Scan</string>
+    <string name="stop_bluetooth_scan">Stop Bluetooth Scan</string>
+    <string name="notes">Notes</string>
+
+    <string name="pref_key_dark">dark_mode_key</string>
+    <string name="pref_value_dark_dark">dark</string>
+    <string name="pref_value_dark_light">light</string>
+    <string name="pref_value_dark_system">system</string>
+    <string name="light_dark_mode">Light/Dark Mode</string>
+
+    <string name="pref_key_team">team_theme_key</string>
+    <string name="pref_value_team_charge">2722</string>
+    <string name="pref_value_team_redwatch">2720</string>
+    <string name="team_themes_title">Team Colors</string>
+    <string name="appearance">Appearance</string>
+    <string name="btsettings">btsettings</string>
+    <string name="bt_settings_title">Bluetooth Settings</string>
+    <string name="pref_key_teamnum">team_num_pref_key</string>
+    <string name="pref_key_device_name">device_name_key</string>
+
+    <string name="pref_key_pit_spinner">pit_spinner_key</string>
+    <string name="pref_key_sub_spinner">sub_spinner_key</string>
+    <string name="pref_key_obj_spinner">obj_spinner_key</string>
+    <string name="pref_key_obj_buttons">obj_buttons_key</string>
+
+    <string name="configure_scouting">Configure Scouting</string>
+    <string name="upload_config_file">Choose File…</string>
+    <string name="error_reading_file">Error reading file.</string>
+    <string name="button_submit">Submit</string>
+    <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
+    <string name="scouting_radar_logo">Scouting Radar Logo</string>
+    <string name="fab_title_pit">Pit Scout</string>
+    <string name="fab_title_sub">Subjective Match Scout</string>
+    <string name="fab_title_obj">Objective Match Scout</string>
+    <string name="configure_message">The data collected by Scouting Radar is configurable. You can make sure the same data is collected across all your devices by creating a configuration file. For instructions on how to do this, visit <a href="https://github.com/2729StormRobotics/ScoutingRadar2022">our Github.</a></string>
+    <string name="configure_current_header"><b>Current Configuration: \n</b></string>
+    <string name="configure_update_label">Update Configuration:</string>
+    <string name="short_app_name">Scout</string>
+    <string name="export_send_scout">Send all data to other Scout:</string>
+    <string name="export_button_bluetooth">Bluetooth</string>
+    <string name="export_button_qr">QR Code</string>
+    <string name="export_csv_file">Export to CSV File:</string>
+    <string name="objective">Objective</string>
+    <string name="subjective">Subjective</string>
+    <string name="pit">Pit</string>
+    <string name="bt_perms_header">Bluetooth Permissions</string>
+    <string name="bt_perms_message">We request Bluetooth permissions in order to transfer data to other instances of this app. These include location permissions, though we promise not to identify or record your location.</string>
+    <string name="bt_not_supported">Bluetooth is not supported.</string>
+    <string name="qr_code">QR Code</string>
+    <string name="generate_qr_header">Generate QR Code for other Scout:</string>
+    <string name="qr_error">QR Generation Error</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="import_data_header">Import Data From Other Scout</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="scan_bluetooth">Scan Bluetooth</string>
+    <string name="import_data_details_top">Imported Data:\n</string>
+    <string name="import_subjective">Subjective\n</string>
+    <string name="import_objective">"Objective, "</string>
+    <string name="scanning">Scanning…</string>
+    <string name="no_camera_perms">Missing camera permission</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="scanned">Scanned</string>
+    <string name="no_bt_perms">Missing Bluetooth permissions</string>
+    <string name="not_lollipop">Bluetooth requires Android Lollipop or newer</string>
+    <string name="objective_space">"Objective "</string>
+    <string name="subjective_space">"Subjective "</string>
+    <string name="pit_space">"Pit "</string>
+    <string name="data_recieved_name">"\nData received from "</string>
+
+</resources>

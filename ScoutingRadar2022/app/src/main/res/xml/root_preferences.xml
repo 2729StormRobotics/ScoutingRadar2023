@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+            app:title="@string/appearance"
+            app:key="@string/appearance">
+        <ListPreference
+                app:key="@string/pref_key_dark"
+                app:title="@string/light_dark_mode"
+                app:entries="@array/dark_entries"
+                app:entryValues="@array/dark_values"
+                app:defaultValue="@string/pref_value_dark_system"
+                app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+                app:key="@string/pref_key_team"
+                app:title="@string/team_themes_title"
+                app:entries="@array/team_entries"
+                app:entryValues="@array/team_values"
+                app:defaultValue="@string/pref_value_team_charge"
+                app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:title="@string/bt_settings_title"
+            app:key="@string/btsettings">
+
+        <EditTextPreference
+                app:key="@string/pref_key_teamnum"
+                app:title="Team Number"
+                app:defaultValue="2729"
+                app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+                app:key="@string/pref_key_device_name"
+                app:title="Device Name"
+                app:defaultValue="Red 1"
+                app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

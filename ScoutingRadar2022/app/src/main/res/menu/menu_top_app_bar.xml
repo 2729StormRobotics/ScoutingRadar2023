@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/import_data_fragment"
+        android:title="@string/import_data"
+        android:contentDescription="@string/import_data"
+        app:showAsAction="never" />
+    <item android:id="@+id/export_data_fragment"
+        android:title="@string/export_data"
+        android:contentDescription="@string/export_data"
+        app:showAsAction="never" />
+    <item android:id="@+id/settings_fragment"
+        android:title="@string/settings"
+        android:contentDescription="@string/settings"
+        app:showAsAction="never" />
+    <item android:id="@+id/configure_scouting_fragment"
+            android:title="@string/configure_scouting"
+            android:contentDescription="@string/configure_scouting"
+            app:showAsAction="never" />
+
+</menu>

@@ -1,9 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.ScoutingRadar2022.Charge" parent="Base.Theme.ScoutingRadar2022.Charge">
-
-    </style>
-    <style name="Theme.ScoutingRadar2022.RedWatch" parent="Base.Theme.ScoutingRadar2022.RedWatch">
-
-    </style>
-</resources>
