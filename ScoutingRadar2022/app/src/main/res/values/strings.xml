@@ -66,7 +66,7 @@
     <string name="pref_key_pit_spinner">pit_spinner_key</string>
     <string name="pref_key_sub_spinner">sub_spinner_key</string>
     <string name="pref_key_obj_spinner">obj_spinner_key</string>
-    <string name="pref_key_obj_buttons">obj_buttons_key</string>
+    <string name="pref_key_obj_buttons">obj_buttons_2_key</string>
 
     <string name="configure_scouting">Configure Scouting</string>
     <string name="upload_config_file">Choose File…</string>
@@ -111,5 +111,8 @@
     <string name="subjective_space">"Subjective "</string>
     <string name="pit_space">"Pit "</string>
     <string name="data_recieved_name">"\nData received from "</string>
+    <string name="pref_key_obj_abbrs">obj_button_abbreviations_key</string>
+    <string name="obj_buttons_default" />
+    <string name="obj_abbrs_default" />
 
 </resources>
