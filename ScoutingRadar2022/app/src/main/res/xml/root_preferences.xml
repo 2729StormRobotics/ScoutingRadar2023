@@ -27,7 +27,7 @@
         <EditTextPreference
                 app:key="@string/pref_key_teamnum"
                 app:title="Team Number"
-                app:defaultValue="2729"
+                app:defaultValue="0000"
                 app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference

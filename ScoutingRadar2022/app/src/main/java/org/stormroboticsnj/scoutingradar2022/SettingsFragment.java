@@ -1,7 +1,9 @@
 package org.stormroboticsnj.scoutingradar2022;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
@@ -27,8 +29,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
             }
         }
-        if (key.equals(getString(R.string.pref_key_team))) {
+        else if (key.equals(getString(R.string.pref_key_team))) {
             requireActivity().recreate();
+        }
+        else if (key.equals(getString(R.string.pref_key_teamnum))) {
+            if (sharedPreferences.getString(key, "").equals("2729")) {
+                Activity a = getActivity();
+                if (a != null) {
+                    Toast.makeText(a, "Clap Clap Whoosh!", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 
