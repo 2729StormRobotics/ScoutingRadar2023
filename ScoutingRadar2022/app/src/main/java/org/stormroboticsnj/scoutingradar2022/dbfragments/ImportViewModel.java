@@ -35,7 +35,7 @@ public class ImportViewModel extends AndroidViewModel {
             for (String s : uncompressedData) {
                 ObjectiveMatchData obj = ObjectiveMatchData.valueOf(s);
                 if (obj != null) {
-                    mObjectiveRepository.insert(ObjectiveMatchData.valueOf(s));
+                    mObjectiveRepository.insert(obj);
                 }
             }
 

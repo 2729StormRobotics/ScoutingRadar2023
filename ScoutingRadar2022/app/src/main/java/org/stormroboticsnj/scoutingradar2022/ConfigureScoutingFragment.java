@@ -22,13 +22,9 @@ import androidx.preference.PreferenceManager;
 
 import org.ini4j.Ini;
 import org.ini4j.Profile;
-import org.stormroboticsnj.scoutingradar2022.database.CSVCreator;
-import org.stormroboticsnj.scoutingradar2022.database.objective.ObjectiveMatchData;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,6 +42,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
 
     // Cache current configuration
     private String mObjButtons = "";
+    private String mObjAbbreviations = "";
     private String mObjSpinners = "";
     private String mSubSpinners = "";
     private String mPitSpinners = "";
@@ -108,6 +105,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         uploadButton.setOnClickListener((v) -> fileResultLauncher.launch("*/*"));
 
         TextView messageTextView = view.findViewById(R.id.configure_text_message);
+        // Activate URL within this TextView
         messageTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
         mCurrentPrefsTextView = view.findViewById(R.id.configure_text_current);
@@ -133,6 +131,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         mCurrentPrefsTextView.setText(R.string.configure_current_header);
         mCurrentPrefsTextView.append("\nObjective Buttons\n");
         mCurrentPrefsTextView.append(mObjButtons);
+        mCurrentPrefsTextView.append("\n" + mObjAbbreviations + "\n");
         mCurrentPrefsTextView.append("\nObjective Spinners\n");
         mCurrentPrefsTextView.append(mObjSpinners);
         mCurrentPrefsTextView.append("\nSubjective Spinners\n");
@@ -141,12 +140,20 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         mCurrentPrefsTextView.append(mPitSpinners);
     }
 
-
     private void readAllPrefs() {
-        mObjButtons = formatArray(readPrefs(R.string.pref_key_obj_buttons, R.array.obj_buttons));
+        mObjButtons = formatPrefString(
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_buttons),
+                        getString(R.string.obj_buttons_default)));
+        mObjAbbreviations = formatPrefString(
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
+                        getString(R.string.obj_buttons_default)));
         mObjSpinners = formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));
         mSubSpinners = formatArray(readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners));
         mPitSpinners = formatArray(readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners));
+    }
+
+    private String formatPrefString(String s) {
+        return s.replace(",", ", ").replace('_', ' ');
     }
 
     private String[] readPrefs(int prefKey, int defaultArray) {
@@ -171,7 +178,8 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                 Set<String> subSpinners = new HashSet<>();
                 Set<String> pitSpinners = new HashSet<>();
                 Set<String> objSpinners = new HashSet<>();
-                Set<String> objButtons = new HashSet<>();
+                String objButtons = "";
+                String objAbbreviations = "";
 
                 // This warning is because Ini implements Map and the linter doesn't realize that
                 // the constructor builds data
@@ -228,29 +236,27 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                 if (section != null) {
                     // Given format:
                     // key:value is [button name]:[button abbreviation]
-                    Set<String> keys = section.keySet();
-                    for (String s : keys) {
-                        // Replace underscores with spaces to display cleanly
-                        String name = s.replace('_', ' ');
-                        String abbreivation = section.get(s);
+                    // But this needs to be ordered
 
-                        // Store in the same aforementioned format
-                        objButtons.add(name + ":" + abbreivation);
-                    }
+                    objButtons = section.get("Names");
+
+                    objAbbreviations = section.get("Abbreviations");
                 }
 
-                mSharedPreferences.edit()
-                                  .putStringSet(getString(R.string.pref_key_sub_spinner),
-                                          subSpinners)
-                                  .putStringSet(getString(R.string.pref_key_pit_spinner),
-                                          pitSpinners)
-                                  .putStringSet(getString(R.string.pref_key_obj_spinner),
-                                          objSpinners)
-                                  .putStringSet(getString(R.string.pref_key_obj_buttons),
-                                          objButtons)
-                                  .apply();
+                SharedPreferences.Editor e = mSharedPreferences.edit();
+                e.putStringSet(getString(R.string.pref_key_sub_spinner), subSpinners)
+                 .putStringSet(getString(R.string.pref_key_pit_spinner), pitSpinners)
+                 .putStringSet(getString(R.string.pref_key_obj_spinner), objSpinners);
 
+                if (objAbbreviations != null) {
+                    e.putString(getString(R.string.pref_key_obj_abbrs), objAbbreviations);
+                }
 
+                if (objButtons != null) {
+                    e.putString(getString(R.string.pref_key_obj_buttons), objButtons);
+                }
+
+                e.apply();
             } catch (IOException e) {
                 MainActivity a = (MainActivity) getActivity();
                 if (a != null) {
@@ -265,8 +271,13 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (getString(R.string.pref_key_obj_buttons).equals(key)) {
-            mObjButtons =
-                    formatArray(readPrefs(R.string.pref_key_obj_buttons, R.array.obj_buttons));
+            mObjButtons = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_obj_buttons),
+                            getString(R.string.obj_buttons_default)));
+        } else if (getString(R.string.pref_key_obj_abbrs).equals(key)) {
+            mObjAbbreviations = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
+                            getString(R.string.obj_abbrs_default)));
         } else if (getString(R.string.pref_key_obj_spinner).equals(key)) {
             mObjSpinners =
                     formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));
@@ -277,6 +288,8 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
             mPitSpinners =
                     formatArray(readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners));
         }
+
         updateConfigTextView();
     }
+
 }
