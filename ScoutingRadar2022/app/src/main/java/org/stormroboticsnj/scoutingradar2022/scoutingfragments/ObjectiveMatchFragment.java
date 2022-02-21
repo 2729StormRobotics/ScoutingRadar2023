@@ -200,38 +200,28 @@ public class ObjectiveMatchFragment extends Fragment {
             hasSpinners = true;
         }
 
-        // Get all of the button contents
-        set = sharedPreferences.getStringSet(getString(R.string.pref_key_obj_buttons), null);
-        if (set != null) {
-            mButtonNames = new String[set.size()];
-            mButtonAbbreviations = new String[set.size()];
-
-            // Split the button contents into names and abbreviations
-            int i = 0;
-            for (String s : set) {
-                String[] split = s.split(":");
-                mButtonNames[i] = split[0];
-                mButtonAbbreviations[i] = split[1];
-                i++;
-            }
-
+        // Get all of the button names
+        String buttonNames =
+                sharedPreferences.getString(getString(R.string.pref_key_obj_buttons), null);
+        if (buttonNames != null) {
+            mButtonNames = buttonNames.replace('_', ' ').split(",");
             hasButtons = mButtonNames.length > 0;
         } else {
             // Preference has never been set; use default options.
-            String[] arr = getResources().getStringArray(R.array.obj_buttons);
-            mButtonNames = new String[arr.length];
-            mButtonAbbreviations = new String[arr.length];
+            mButtonNames = getString(R.string.obj_buttons_default).split(",");
+            hasButtons = false;
+        }
 
-            // Split the button contents into names and abbreviations
-            int i = 0;
-            for (String s : arr) {
-                String[] split = s.split(":");
-                mButtonNames[i] = split[0];
-                mButtonAbbreviations[i] = split[1];
-                i++;
-            }
-
-            hasButtons = true;
+        // Get all of the button abbreviations
+        String buttonAbbrs =
+                sharedPreferences.getString(getString(R.string.pref_key_obj_abbrs), null);
+        if (buttonAbbrs != null) {
+            mButtonAbbreviations = buttonAbbrs.split(",");
+            hasButtons = hasButtons && (mButtonNames.length == mButtonAbbreviations.length);
+        } else {
+            // Preference has never been set; use default options.
+            mButtonAbbreviations = getString(R.string.obj_abbrs_default).split(",");
+            hasButtons = false;
         }
 
         // Set up the three special buttons
@@ -253,6 +243,9 @@ public class ObjectiveMatchFragment extends Fragment {
 
             mButtonNames = buttonNamesCopy;
             mButtonAbbreviations = buttonAbbreviationsCopy;
+        } else {
+            mButtonNames = new String[]{"Submit"};
+            mButtonAbbreviations = new String[]{"Submit"};
         }
 
     }
@@ -355,8 +348,12 @@ public class ObjectiveMatchFragment extends Fragment {
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
 
-        mButtonInfos = new ButtonInfo[mButtonNames.length];
-        if (mButtonInfos.length == 0) {
+        if (hasButtons) {
+            mButtonInfos = new ButtonInfo[mButtonNames.length];
+            if (mButtonInfos.length == 0) {
+                mButtonInfos = new ButtonInfo[1];
+            }
+        } else {
             mButtonInfos = new ButtonInfo[1];
         }
 
