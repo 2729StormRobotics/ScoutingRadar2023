@@ -62,6 +62,7 @@ public class ExportDataFragment extends PermissionsFragment {
     private String[] mPitSpinners;
     private String mTeamNumber;
     private String mDeviceName;
+    private String[] mObjAbbreviations;
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -108,8 +109,12 @@ public class ExportDataFragment extends PermissionsFragment {
         mTextView = view.findViewById(R.id.export_text_status);
         mViewModel = new ViewModelProvider(this).get(ExportViewModel.class);
 
-        mObjSpinners = readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners);
-        mObjButtons = readPrefs(R.string.pref_key_obj_buttons, R.array.obj_buttons);
+        mObjButtons =
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_buttons),
+                        getString(R.string.obj_buttons_default)).split(",");
+        mObjAbbreviations =
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
+                        getString(R.string.obj_buttons_default)).split(",");
         mSubSpinners = readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners);
         mPitSpinners = readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners);
 
