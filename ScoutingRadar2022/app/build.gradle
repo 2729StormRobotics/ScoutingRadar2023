@@ -2,7 +2,12 @@ plugins {
     id "com.android.application"
     id "androidx.navigation.safeargs"
 }
-
+configurations {
+    all {
+        exclude module: 'httpclient'
+        exclude module: 'commons-logging'
+    }
+}
 android {
     compileSdk 32
 
@@ -10,8 +15,8 @@ android {
         applicationId "org.stormroboticsnj.scoutingradar2022"
         minSdk 19
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -19,7 +24,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }

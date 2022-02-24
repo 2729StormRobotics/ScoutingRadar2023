@@ -178,7 +178,7 @@ public class PitScoutFragment extends Fragment {
                         spinnerInfo.contents[spinnerInfo.spinner.getSelectedItemPosition()]));
             }
 
-            mActionsViewModel.processAndSaveMatch(
+            mActionsViewModel.processAndSaveData(
                     Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
