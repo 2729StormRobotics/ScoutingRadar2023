@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +23,12 @@ public class CSVCreator {
 
 
     public static void createObjectiveCsv(
-            ParcelFileDescriptor pfd, String[] buttons,
+            ParcelFileDescriptor pfd, String[] buttons, String[] abbreviations,
             String[] spinners, List<ObjectiveMatchData> data) {
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-            objCsv(fileOutputStream, buttons, spinners, data);
+            objCsv(fileOutputStream, buttons, abbreviations, spinners, data);
 
             // Let the document provider know you're done by closing the stream.
             fileOutputStream.close();
@@ -73,60 +74,77 @@ public class CSVCreator {
     private static CSVWriter getCsvWriter(FileOutputStream output) {
         // Setup CSVWriter
         OutputStreamWriter osr = new OutputStreamWriter(output);
-        CSVWriter csvWriter = new CSVWriter(osr,
+        return new CSVWriter(osr,
                 CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER,
                 CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
-
-        return csvWriter;
     }
 
     private static void objCsv(
             FileOutputStream output,
-            String[] objectiveButtons, String[] objectiveSpinners,
+            String[] objectiveButtons, String[] objectiveAbbreviations, String[] objectiveSpinners,
             List<ObjectiveMatchData> dataList) throws IOException {
 
+        // Setup CSV Writer
         CSVWriter csvWriter = getCsvWriter(output);
 
         // Create Column Names
         List<String> columnNames = new ArrayList<>();
+
         columnNames.add("team");
         columnNames.add("match");
         columnNames.add("is_red");
-        for (String s : objectiveSpinners) {
-            columnNames.add(s.substring(0, s.indexOf(":")).replace(" ", "_"));
-        }
-        Map<String, String> abbreviationsToNames = new HashMap<>();
-        for (String s : objectiveButtons) {
-            String[] split = s.split(":");
-            columnNames.add(split[0]);
-            abbreviationsToNames.put(split[1], split[0]);
-        }
-        Collections.sort(columnNames);
 
+        // Add all the buttons
+        columnNames.addAll(Arrays.asList(objectiveButtons));
+
+        // Add all the spinner names, but sorted alphabetically first
+        // We need to do this because when we are not guaranteed an order for the spinners, at least
+        // we can standardize output to be alphabetical.
+        List<String> spinnerNames = new ArrayList<>();
+        for (String s : objectiveSpinners) {
+            spinnerNames.add(s.substring(0, s.indexOf(":")).replace(" ", "_"));
+        }
+        Collections.sort(spinnerNames);
+        columnNames.addAll(spinnerNames);
+
+        // Write the column names (header) to the CSV file
         csvWriter.writeNext(columnNames.toArray(new String[0]), true);
 
+        // Reverse-map column names to indices for fast lookup later
         Map<String, Integer> namesToIndices = new HashMap<>();
         for (int i = 0; i < columnNames.size(); i++) {
             namesToIndices.put(columnNames.get(i), i);
         }
 
+        // Map abbreviations to names as
+        Map<String, String> abbreviationsToNames = new HashMap<>();
+        for (int i = 0; i < objectiveButtons.length; i++) {
+            abbreviationsToNames.put(objectiveAbbreviations[i], objectiveButtons[i]);
+        }
+
         // Add the data
         for (ObjectiveMatchData data : dataList) {
+            // Build this row of data
             String[] row = new String[columnNames.size()];
 
+            // Three known columns
             row[0] = String.valueOf(data.getTeamNum());
             row[1] = String.valueOf(data.getMatchNum());
             row[2] = data.isRed() ? "T" : "F";
 
+            // The remaining user-defined columns
             String[] dataSplitIntoCols = data.getData().split("\\|");
 
             for (String col : dataSplitIntoCols) {
                 String[] split = col.split(":");
+                split[0] = split[0].replace(' ', '_');
+                // Lookup the index
                 if (namesToIndices.containsKey(split[0])) {
                     Integer in = namesToIndices.get(split[0]);
                     if (in != null) {
                         row[in] = split[1];
                     }
+                    // If the index was not found then we have an abbreviation
                 } else if (abbreviationsToNames.containsKey(split[0])) {
                     Integer in = namesToIndices.get(abbreviationsToNames.get(split[0]));
                     if (in != null) {
@@ -135,11 +153,11 @@ public class CSVCreator {
                 }
             }
 
+            // Write the row
             csvWriter.writeNext(row, true);
         }
 
         csvWriter.close();
-
     }
 
     private static void subCsv(
@@ -150,17 +168,27 @@ public class CSVCreator {
         // Setup CSVWriter
         CSVWriter csvWriter = getCsvWriter(output);
 
-
         // Create Column Names
         List<String> columnNames = new ArrayList<>();
-        columnNames.add("team");
-        columnNames.add("match");
-        columnNames.add("is_red");
+
+        // Add the spinners
         for (String s : subSpinners) {
             columnNames.add(s.substring(0, s.indexOf(":")).replace(" ", "_"));
         }
 
+        // Sort column names, but keep team, match, and alliance first
+        // We need to do this because when we are not guaranteed an order for the spinners, at least
+        // we can standardize output to be alphabetical.
+        List<String> columnNamesSorted = new ArrayList<>();
+
+        columnNamesSorted.add("team");
+        columnNamesSorted.add("match");
+        columnNamesSorted.add("is_red");
+
         Collections.sort(columnNames);
+        columnNamesSorted.addAll(columnNames);
+
+        columnNames = columnNamesSorted;
 
         csvWriter.writeNext(columnNames.toArray(new String[0]), true);
 
@@ -181,6 +209,7 @@ public class CSVCreator {
 
             for (String col : dataSplitIntoCols) {
                 String[] split = col.split(":");
+                split[0] = split[0].replace(' ', '_');
                 if (namesToIndices.containsKey(split[0])) {
                     Integer in = namesToIndices.get(split[0]);
                     if (in != null) {
@@ -206,12 +235,23 @@ public class CSVCreator {
 
         // Create Column Names
         List<String> columnNames = new ArrayList<>();
-        columnNames.add("team");
+
+        // Add spinners
         for (String s : pitSpinners) {
             columnNames.add(s.substring(0, s.indexOf(":")).replace(" ", "_"));
         }
 
+        // Sort column names, but keep team first
+        List<String> columnNamesSorted = new ArrayList<>();
+
+        columnNamesSorted.add("team");
+
         Collections.sort(columnNames);
+        columnNamesSorted.addAll(columnNames);
+
+        columnNamesSorted.add("Notes");
+
+        columnNames = columnNamesSorted;
 
         csvWriter.writeNext(columnNames.toArray(new String[0]), true);
 
@@ -230,6 +270,7 @@ public class CSVCreator {
 
             for (String col : dataSplitIntoCols) {
                 String[] split = col.split(":");
+                split[0] = split[0].replace(' ', '_');
                 if (namesToIndices.containsKey(split[0])) {
                     Integer in = namesToIndices.get(split[0]);
                     if (in != null) {

@@ -29,18 +29,9 @@
     </loaded-modules>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cdb889-99f6-43a2-b14f-27c854253d5e" name="Default Changelist" comment="Final bug fixes 3">
+    <list default="true" id="44cdb889-99f6-43a2-b14f-27c854253d5e" name="Default Changelist" comment="Pictures">
+      <change afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/release/app-release.aab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/bigtablet_export.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/bigtablet_home.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/bigtablet_objective.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/bigtablet_pit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/bigtablet_subjective.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/tablet_export.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/tablet_home.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/tablet_objective.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/tablet_pit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/tablet_subjective.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" afterDir="false" />
@@ -53,10 +44,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/fingerprint.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/work.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/work.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/BluetoothServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/BluetoothServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/CSVCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/CSVCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportDataFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportDataFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutViewModel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +87,12 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="ScoutingRadar2022" type="f1a62948:ProjectNode" />
                 <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ScoutingRadar2022" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
             </expand>
             <select />
@@ -173,13 +175,15 @@
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="memory.settings.postsync.last.time.stamp" value="1645033949412" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="Settings.Markdown" />
   </component>
   <component name="PsdUISettings">
-    <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+    <option name="MODULE_TAB" value="Signing Configs" />
+    <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
+    <option name="LAST_EDITED_BUILD_TYPE" value="debug" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -460,7 +464,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645402205101</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Pictures">
+      <created>1645405240277</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1645405240277</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="UnloadedModulesList">
@@ -491,7 +502,8 @@
     <MESSAGE value="Improve export fragment" />
     <MESSAGE value="Final bug fixes" />
     <MESSAGE value="Final bug fixes 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Final bug fixes 3" />
+    <MESSAGE value="Pictures" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pictures" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

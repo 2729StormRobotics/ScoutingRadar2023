@@ -169,8 +169,10 @@ public class BluetoothServer {
     }
 
     public void stopAndClose() {
-        peripheralManager.stopAdvertising();
-        peripheralManager.close();
+        if (peripheralManager != null) {
+            peripheralManager.stopAdvertising();
+            peripheralManager.close();
+        }
         instance = null;
     }
 
