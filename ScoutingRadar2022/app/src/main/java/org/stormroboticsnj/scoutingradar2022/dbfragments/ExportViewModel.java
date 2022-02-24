@@ -95,7 +95,7 @@ public class ExportViewModel extends AndroidViewModel {
         return mPitScoutData;
     }
 
-    public void createObjectiveCsv(ParcelFileDescriptor pfd, String[] buttons, String[] spinners) {
+    public void createObjectiveCsv(ParcelFileDescriptor pfd, String[] buttons, String[] abbreviations, String[] spinners) {
         mObjectiveRepository
                 .getAllMatches()
                 .subscribeOn(Schedulers.io())
@@ -103,7 +103,7 @@ public class ExportViewModel extends AndroidViewModel {
                 .subscribe(new DisposableMaybeObserver<List<ObjectiveMatchData>>() {
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<ObjectiveMatchData> objectiveMatchData) {
-                        CSVCreator.createObjectiveCsv(pfd, buttons, spinners, objectiveMatchData);
+                        CSVCreator.createObjectiveCsv(pfd, buttons, abbreviations, spinners, objectiveMatchData);
                     }
 
                     @Override

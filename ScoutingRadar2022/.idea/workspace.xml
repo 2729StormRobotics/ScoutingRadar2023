@@ -29,23 +29,30 @@
     </loaded-modules>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cdb889-99f6-43a2-b14f-27c854253d5e" name="Default Changelist" comment="Final bug fixes">
-      <change afterPath="$PROJECT_DIR$/../screenshots/pit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../screenshots/subjective.png" afterDir="false" />
+    <list default="true" id="44cdb889-99f6-43a2-b14f-27c854253d5e" name="Default Changelist" comment="Pictures">
+      <change afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/release/app-release.aab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/fingerprint.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/work.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/7xyd22123x82emptpykulotil/work.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/BluetoothServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/BluetoothServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/CSVCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/database/CSVCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportDataFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportDataFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ImportViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ImportViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/ObjectiveMatchFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/ObjectiveMatchFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screenshots/Configure.png" beforeDir="false" afterPath="$PROJECT_DIR$/../screenshots/Configure.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../screenshots/objective.png" beforeDir="false" afterPath="$PROJECT_DIR$/../screenshots/objective.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/dbfragments/ExportViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/stormroboticsnj/scoutingradar2022/scoutingfragments/PitScoutViewModel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,16 +76,21 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Scouting Radar 2022" type="f1a62948:ProjectNode" />
+                <item name="ScoutingRadar2022" type="f1a62948:ProjectNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Scouting Radar 2022" type="f1a62948:ProjectNode" />
+                <item name="ScoutingRadar2022" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ScoutingRadar2022" type="f1a62948:ProjectNode" />
                 <item name="app" type="2d1252cf:ModuleNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Scouting Radar 2022" type="f1a62948:ProjectNode" />
+                <item name="ScoutingRadar2022" type="f1a62948:ProjectNode" />
                 <item name="app" type="2d1252cf:ModuleNode" />
                 <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
@@ -95,6 +107,12 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="EXPORT_PRIVATE_KEY" value="false" />
+    <option name="KEY_STORE_PATH" value="$USER_HOME$/Downloads/android_app_key" />
+    <option name="KEY_ALIAS" value="stormKey" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
   </component>
   <component name="Git.Merge.Settings">
     <option name="BRANCH" value="origin/uiCleanup" />
@@ -138,9 +156,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="BundleExportedModule" value="ScoutingRadar2022.app" />
     <property name="DEBUGGABLE_DEVICE" value="samsung-sm_t220-R9PR80KSSDW" />
     <property name="DEBUGGABLE_PROCESS" value="org.stormroboticsnj.scoutingradar2022" />
     <property name="DEBUGGER_ID" value="Auto" />
+    <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
+    <property name="ExportApk.BuildVariants" value="release" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="ResourceManagerPrefKey.ResourceType" value="LAYOUT" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -154,13 +175,15 @@
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="memory.settings.postsync.last.time.stamp" value="1645033949412" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="Settings.Markdown" />
   </component>
   <component name="PsdUISettings">
-    <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+    <option name="MODULE_TAB" value="Signing Configs" />
+    <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
+    <option name="LAST_EDITED_BUILD_TYPE" value="debug" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -434,7 +457,21 @@
       <option name="project" value="LOCAL" />
       <updated>1645399485409</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Final bug fixes 3">
+      <created>1645402205101</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1645402205101</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Pictures">
+      <created>1645405240277</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1645405240277</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="UnloadedModulesList">
@@ -464,7 +501,9 @@
     <MESSAGE value="Add RxJava methods to get data once" />
     <MESSAGE value="Improve export fragment" />
     <MESSAGE value="Final bug fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Final bug fixes" />
+    <MESSAGE value="Final bug fixes 3" />
+    <MESSAGE value="Pictures" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pictures" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
