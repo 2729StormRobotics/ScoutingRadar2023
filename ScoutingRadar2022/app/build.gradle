@@ -9,14 +9,6 @@ configurations {
     }
 }
 android {
-    signingConfigs {
-        releaseThing {
-            storeFile file('/Users/sidparikh/Downloads/android_app_key')
-            storePassword 'Storm2729'
-            keyAlias 'stormKey'
-            keyPassword 'Storm2729'
-        }
-    }
     compileSdk 32
 
     defaultConfig {
