@@ -146,7 +146,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                         getString(R.string.obj_buttons_default)));
         mObjAbbreviations = formatPrefString(
                 mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
-                        getString(R.string.obj_buttons_default)));
+                        getString(R.string.obj_abbrs_default)));
         mObjSpinners = formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));
         mSubSpinners = formatArray(readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners));
         mPitSpinners = formatArray(readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners));
