@@ -114,7 +114,7 @@ public class ExportDataFragment extends PermissionsFragment {
                         getString(R.string.obj_buttons_default)).split(",");
         mObjAbbreviations =
                 mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
-                        getString(R.string.obj_buttons_default)).split(",");
+                        getString(R.string.obj_abbrs_default)).split(",");
         mObjSpinners = readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners);
         mSubSpinners = readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners);
         mPitSpinners = readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners);

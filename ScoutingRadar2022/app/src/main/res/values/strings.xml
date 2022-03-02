@@ -112,7 +112,7 @@
     <string name="pit_space">"Pit "</string>
     <string name="data_recieved_name">"\nData received from "</string>
     <string name="pref_key_obj_abbrs">obj_button_abbreviations_key</string>
-    <string name="obj_buttons_default" />
-    <string name="obj_abbrs_default" />
+    <string name="obj_buttons_default" >Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
+    <string name="obj_abbrs_default" >AQ,UH,LH,MS,SC,EC</string>
 
 </resources>
