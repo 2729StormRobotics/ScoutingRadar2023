@@ -35,8 +35,11 @@ import java.io.FileNotFoundException;
 import java.util.Set;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,14 +74,6 @@ public class ExportDataFragment extends PermissionsFragment {
     @SuppressWarnings("unused")
     public static ExportDataFragment newInstance() {
         return new ExportDataFragment();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BluetoothServer.getInstance(mContext).stopAndClose();
-        }
     }
 
     @Override
@@ -126,6 +121,9 @@ public class ExportDataFragment extends PermissionsFragment {
         view.findViewById(R.id.export_button_csv_obj).setOnClickListener(this::onButtonClicked);
         view.findViewById(R.id.export_button_csv_sub).setOnClickListener(this::onButtonClicked);
         view.findViewById(R.id.export_button_csv_pit).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_delete_obj).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_delete_sub).setOnClickListener(this::onButtonClicked);
+        view.findViewById(R.id.export_button_delete_pit).setOnClickListener(this::onButtonClicked);
 
         mQrImageView = view.findViewById(R.id.export_imageview);
         mQrImageView.setOnClickListener(this::onButtonClicked);
@@ -133,7 +131,16 @@ public class ExportDataFragment extends PermissionsFragment {
         mTeamNumber = PreferenceManager.getDefaultSharedPreferences(mContext)
                                        .getString(getString(R.string.pref_key_teamnum), "0000");
         mDeviceName = PreferenceManager.getDefaultSharedPreferences(mContext)
-                                       .getString(getString(R.string.pref_key_device_name), "UNNAMED");
+                                       .getString(getString(R.string.pref_key_device_name),
+                                               "UNNAMED");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BluetoothServer.getInstance(mContext).stopAndClose();
+        }
     }
 
     public void onButtonClicked(@NonNull View view) {
@@ -147,31 +154,41 @@ public class ExportDataFragment extends PermissionsFragment {
         } else if (id == R.id.export_button_bluetooth) {
             checkPermissionsAndAct(mContext);
         } else if (id == R.id.export_button_qr_obj) {
-            generateQrCode(QR.OBJ);
+            generateQrFromBitmap(mViewModel.getObjectiveBitmap(mQrImageView.getWidth()));
         } else if (id == R.id.export_button_qr_sub) {
-            generateQrCode(QR.SUB);
+            generateQrFromBitmap(mViewModel.getSubjectiveBitmap(mQrImageView.getWidth()));
         } else if (id == R.id.export_button_qr_pit) {
-            generateQrCode(QR.PIT);
+            generateQrFromBitmap(mViewModel.getPitBitmap(mQrImageView.getWidth()));
+        } else if (id == R.id.export_button_delete_obj) {
+            deleteWithCompletable(mViewModel.deleteObjectiveData());
+        } else if (id == R.id.export_button_delete_sub) {
+            deleteWithCompletable(mViewModel.deleteSubjectiveData());
+        } else if (id == R.id.export_button_delete_pit) {
+            deleteWithCompletable(mViewModel.deletePitData());
         }
     }
 
-    private void generateQrCode(@NonNull QR type) {
-        Maybe<Bitmap> bitmapMaybe = null;
-        switch (type) {
-            case OBJ:
-                bitmapMaybe = mViewModel.getObjectiveBitmap(mQrImageView.getWidth());
-                break;
-            case SUB:
-                bitmapMaybe = mViewModel.getSubjectiveBitmap(mQrImageView.getWidth());
-                break;
-            case PIT:
-                bitmapMaybe = mViewModel.getPitBitmap(mQrImageView.getWidth());
-                break;
+    private void deleteWithCompletable(Completable c) {
+        if (c != null) {
+            c.observeOn(AndroidSchedulers.mainThread())
+             .subscribeOn(Schedulers.io())
+             .subscribe(new DisposableCompletableObserver() {
+                 @Override
+                 public void onComplete() {
+                     Toast.makeText(mContext, R.string.toast_data_deleted, Toast.LENGTH_SHORT).show();
+                 }
+
+                 @Override
+                 public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                     Toast.makeText(mContext, R.string.toast_deleting_error, Toast.LENGTH_SHORT)
+                          .show();
+                     Log.e(LOG_TAG, "Error Deleting Data", e);
+                 }
+             });
         }
-        observeBitmapMaybe(bitmapMaybe);
     }
 
-    private void observeBitmapMaybe(@NonNull Maybe<Bitmap> bitmapMaybe) {
+    private void generateQrFromBitmap(@NonNull Maybe<Bitmap> bitmapMaybe) {
         bitmapMaybe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableMaybeObserver<Bitmap>() {
@@ -183,7 +200,7 @@ public class ExportDataFragment extends PermissionsFragment {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Log.e(LOG_TAG, "QR Generation Problem", e);
+                        Log.e(LOG_TAG, "DataTypes Generation Problem", e);
                         Toast.makeText(mContext, R.string.qr_error, Toast.LENGTH_LONG).show();
                     }
 
@@ -294,7 +311,7 @@ public class ExportDataFragment extends PermissionsFragment {
         Toast.makeText(mContext, "Insufficient Bluetooth Permissions", Toast.LENGTH_SHORT).show();
     }
 
-    private enum QR {
+    private enum DataTypes {
         OBJ,
         SUB,
         PIT

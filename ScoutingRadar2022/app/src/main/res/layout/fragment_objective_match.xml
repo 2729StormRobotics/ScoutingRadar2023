@@ -101,6 +101,25 @@
                 app:layout_constraintTop_toBottomOf="@id/objective_togglegroup_alliance"
                 app:layout_constraintVertical_bias="0.0" />
 
+        <com.google.android.material.textfield.TextInputLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/objective_togglegroup_alliance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/notes"
+                android:id="@+id/objective_text_input_notes"
+                android:layout_margin="16dp"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/objective_edit_notes"
+                    android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
                 android:id="@+id/objective_text_actions"
                 android:layout_width="0dp"
@@ -112,7 +131,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/objective_togglegroup_alliance" />
+                app:layout_constraintTop_toBottomOf="@id/objective_text_input_notes" />
 
         <Chronometer
                 android:id="@+id/objective_chronometer"

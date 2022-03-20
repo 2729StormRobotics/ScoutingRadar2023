@@ -37,4 +37,15 @@
                 app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/scouting_settings_title"
+        app:key="@string/scouting_settings_key">
+
+        <SwitchPreference
+            app:key="@string/pref_key_obj_notes"
+            app:title="Objective Scouting Notes Field"
+            app:defaultValue="false" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

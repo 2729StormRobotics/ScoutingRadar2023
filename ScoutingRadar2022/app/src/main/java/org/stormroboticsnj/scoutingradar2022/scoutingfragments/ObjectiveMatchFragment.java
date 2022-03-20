@@ -75,6 +75,7 @@ public class ObjectiveMatchFragment extends Fragment {
     // Input Views
     private TextInputWrapper mTeamNumTextInput;
     private TextInputWrapper mMatchNumTextInput;
+    private TextInputWrapper mNotesTextInput;
 
     private ToggleGroupWrapper mAllianceToggleGroup;
     private MaterialButton mRedButton;
@@ -123,11 +124,11 @@ public class ObjectiveMatchFragment extends Fragment {
 
         // TextInputLayouts go in a wrapper so we can handle their Watchers (avoids scary crashes)
         mTeamNumTextInput =
-                new TextInputWrapper(
-                        v.findViewById(R.id.objective_text_input_team_number));
+                new TextInputWrapper(v.findViewById(R.id.objective_text_input_team_number));
         mMatchNumTextInput =
-                new TextInputWrapper(
-                        v.findViewById(R.id.objective_text_input_match_number));
+                new TextInputWrapper(v.findViewById(R.id.objective_text_input_match_number));
+        mNotesTextInput =
+                new TextInputWrapper(v.findViewById(R.id.objective_text_input_notes));
 
         // Toggle Groups also go in a wrapper because multiple watchers causes problems
         mAllianceToggleGroup =
@@ -218,10 +219,10 @@ public class ObjectiveMatchFragment extends Fragment {
             // Preference has never been set; use default options.
             mButtonNames = getString(R.string.obj_buttons_default).replace('_', ' ').split(",");
             // Preference has never been set; use default options.
-            mButtonAbbreviations = getString(R.string.obj_abbrs_default).replace('_', ' ').split(",");
+            mButtonAbbreviations =
+                    getString(R.string.obj_abbrs_default).replace('_', ' ').split(",");
             hasButtons = true;
         }
-
 
 
         // Set up the three special buttons
@@ -248,13 +249,17 @@ public class ObjectiveMatchFragment extends Fragment {
             mButtonAbbreviations = new String[]{"Submit"};
         }
 
+        if (!sharedPreferences.getBoolean(getString(R.string.pref_key_obj_notes), false)) {
+            mNotesTextInput.getInputLayout().setVisibility(View.GONE);
+        }
+
     }
 
     /**
      * Sets an observer on the list of actions so that the TextView can be updated.
      */
     private void subscribeToActions() {
-        mViewModel.getLiveData().observe(getViewLifecycleOwner(), (actions) -> {
+        mViewModel.getActionsLiveData().observe(getViewLifecycleOwner(), (actions) -> {
             // Clear the TextView
             mActionsListView.setText(R.string.action_list_start_prefix);
             // Loop through the actions and add them to the TextView
@@ -285,6 +290,9 @@ public class ObjectiveMatchFragment extends Fragment {
      * Ends the live match and submits the collected data
      */
     private void endMatch() {
+        // Using single & as a (slightly) hacky way to disable lazy execution, because we want all
+        // the side-effects: we want every validate() to be executed even if an earlier one returns
+        // false; this way all errors are displayed to the user the first time.
         if (validateNumberTextInput(mTeamNumTextInput,
                 getString(R.string.error_no_teamnum),
                 getString(R.string.error_notnumber_teamnum),
@@ -308,22 +316,23 @@ public class ObjectiveMatchFragment extends Fragment {
             }
 
             // Save data
+            // TextInputLayout.getEditText
             mViewModel.processAndSaveMatch(
-                    Objects.requireNonNull(mViewModel.getLiveData().getValue(),
+                    Objects.requireNonNull(mViewModel.getActionsLiveData().getValue(),
                             "Action list is null"),
-                    Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
-                            "NO TEAM NUM EDIT TEXT").getText().toString()),
-                    Integer.parseInt(Objects.requireNonNull(mMatchNumTextInput.getEditText(),
-                            "NO MATCH NUM EDIT TEXT").getText().toString()),
+                    Integer.parseInt(mTeamNumTextInput.getEditText().getText().toString()),
+                    Integer.parseInt(mMatchNumTextInput.getEditText().getText().toString()),
+                    mNotesTextInput.getEditText().getText().toString(),
+                    // isRed boolean: check if the checked button == red
                     mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() ==
                     mRedButton.getId());
 
-            // Leave
+            // Return to the home fragment using the Navigation Component
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                       .navigate(R.id.action_objectiveMatchFragment_to_matchRecordFragment);
 
         } else {
-            // Toast error
+            // Errors have been found (at least one of the validate() calls returned false)
             Toast.makeText(mContext, "Errors found.", Toast.LENGTH_SHORT).show();
         }
     }
