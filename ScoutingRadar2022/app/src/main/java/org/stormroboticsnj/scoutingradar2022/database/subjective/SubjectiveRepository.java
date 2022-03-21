@@ -9,6 +9,7 @@ import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 
 public class SubjectiveRepository {
@@ -32,4 +33,7 @@ public class SubjectiveRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(match));
     }
 
+    public Completable deleteAllMatches() {
+        return mDao.deleteAll();
+    }
 }

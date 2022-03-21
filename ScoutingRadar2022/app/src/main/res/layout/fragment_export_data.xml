@@ -71,7 +71,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/export_text_header_qr"
                 app:layout_constraintWidth_max="256dp"
-                app:layout_constraintWidth_min="wrap" />
+                app:layout_constraintWidth_min="wrap"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
         <Button
                 android:id="@+id/export_button_qr_sub"
@@ -84,7 +85,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintWidth_max="256dp"
-                app:layout_constraintWidth_min="wrap" />
+                app:layout_constraintWidth_min="wrap"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
         <Button
                 android:id="@+id/export_button_qr_pit"
@@ -98,7 +100,7 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintWidth_max="256dp"
                 app:layout_constraintWidth_min="wrap"
-                tools:ignore="TextContrastCheck" />
+                tools:ignore="TextContrastCheck,DuplicateSpeakableTextCheck" />
 
         <TextView
                 android:id="@+id/export_text_header_csv"
@@ -152,6 +154,61 @@
                 app:layout_constraintWidth_min="wrap"
                 tools:ignore="TextContrastCheck" />
 
+        <TextView
+                android:id="@+id/export_text_header_delete"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:text="@string/delete_data"
+                android:textAppearance="?textAppearanceButton"
+                app:layout_constraintStart_toStartOf="@+id/export_button_delete_obj"
+                app:layout_constraintTop_toBottomOf="@+id/export_button_csv_obj" />
+
+        <Button
+                android:id="@+id/export_button_delete_obj"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="0dp"
+                android:text="@string/objective"
+                style="@style/Widget.ScoutingRadar2022.Button.Danger"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/export_text_header_delete"
+                app:layout_constraintWidth_max="256dp"
+                app:layout_constraintWidth_min="wrap" />
+
+
+        <Button
+                android:id="@+id/export_button_delete_sub"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_width="0dp"
+                android:text="@string/subjective"
+                style="@style/Widget.ScoutingRadar2022.Button.Danger"
+                app:layout_constraintBaseline_toBaselineOf="@id/export_button_delete_obj"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintWidth_max="256dp"
+                app:layout_constraintWidth_min="wrap" />
+
+        <Button
+                android:id="@+id/export_button_delete_pit"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_width="0dp"
+                android:text="@string/pit"
+                style="@style/Widget.ScoutingRadar2022.Button.Danger"
+                app:layout_constraintBaseline_toBaselineOf="@id/export_button_delete_obj"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintWidth_max="256dp"
+                app:layout_constraintWidth_min="wrap"
+                tools:ignore="TextContrastCheck" />
+
         <ImageView
                 android:contentDescription="@string/scouting_radar_logo"
                 android:id="@+id/export_imageview"
@@ -163,8 +220,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/export_button_csv_obj"
+                app:layout_constraintTop_toBottomOf="@id/export_button_delete_obj"
                 app:layout_constraintWidth_max="256dp" />
+
+
 
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"

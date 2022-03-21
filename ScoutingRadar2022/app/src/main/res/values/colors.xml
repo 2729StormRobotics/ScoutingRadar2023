@@ -9,6 +9,7 @@
     <color name="chargeSecondaryDarkColor">#491f00</color>
     <color name="chargePrimaryTextColor">#000000</color>
     <color name="chargeSecondaryTextColor">#ffffff</color>
+    <color name="chargeDangerColor">#d4493f</color>
     <!-- Red Watch Colors -->
     <color name="redWatchPrimaryColor">#9c0d17</color>
     <color name="redWatchPrimaryLightColor">#d4493f</color>
@@ -18,4 +19,6 @@
     <color name="redWatchSecondaryDarkColor">#3c3c3c</color>
     <color name="redWatchPrimaryTextColor">#ffffff</color>
     <color name="redWatchSecondaryTextColor">#ffffff</color>
+    <color name="redWatchDangerColor">#dd0000</color>
+
 </resources>

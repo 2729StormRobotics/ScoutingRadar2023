@@ -43,7 +43,7 @@ public class ObjectiveScoutingViewModel extends AndroidViewModel {
         return mChronometerBase;
     }
 
-    public LiveData<List<DataUtils.Action>> getLiveData() {
+    public LiveData<List<DataUtils.Action>> getActionsLiveData() {
         return mActionsLiveData;
     }
 
@@ -59,15 +59,15 @@ public class ObjectiveScoutingViewModel extends AndroidViewModel {
         }
     }
 
-    public void saveMatch(ObjectiveMatchData matchData) {
+    private void saveMatch(ObjectiveMatchData matchData) {
         mRepository.insert(matchData);
     }
 
-    public void processAndSaveMatch(List<DataUtils.Action> actions, int teamNumber, int matchNumber, boolean isRed) {
+    public void processAndSaveMatch(List<DataUtils.Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
         mIsMatchRunning = false;
         new Thread(() -> {
             ObjectiveMatchData data =
-                    DataUtils.processObjectiveMatchData(actions, teamNumber, matchNumber, isRed);
+                    DataUtils.processObjectiveMatchData(actions, teamNumber, matchNumber, notes, isRed);
             saveMatch(data);
         }).start();
     }

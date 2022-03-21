@@ -9,6 +9,7 @@ import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 
 public class PitRepository {
@@ -32,4 +33,7 @@ public class PitRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> mDao.insert(data));
     }
 
+    public Completable deleteAllData() {
+        return mDao.deleteAll();
+    }
 }
