@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Scouting Radar</string>
     <string name="add_word">Scout new match</string>
 
@@ -62,6 +62,7 @@
     <string name="bt_settings_title">Bluetooth Settings</string>
     <string name="pref_key_teamnum">team_num_pref_key</string>
     <string name="pref_key_device_name">device_name_key</string>
+    <string name="pref_key_obj_notes">obj_notes_field_key</string>
 
     <string name="pref_key_pit_spinner">pit_spinner_key</string>
     <string name="pref_key_sub_spinner">sub_spinner_key</string>
@@ -112,7 +113,12 @@
     <string name="pit_space">"Pit "</string>
     <string name="data_recieved_name">"\nData received from "</string>
     <string name="pref_key_obj_abbrs">obj_button_abbreviations_key</string>
-    <string name="obj_buttons_default" >Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
-    <string name="obj_abbrs_default" >AQ,UH,LH,MS,SC,EC</string>
+    <string name="obj_buttons_default">Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
+    <string name="obj_abbrs_default">AQ,UH,LH,MS,SC,EC</string>
+    <string name="delete_data">Delete Data:</string>
+    <string name="toast_data_deleted">Data Deleted.</string>
+    <string name="toast_deleting_error">Error Deleting Data.</string>
+    <string name="scouting_settings_title">Scouting Settings</string>
+    <string name="scouting_settings_key">scoutingsettings</string>
 
 </resources>

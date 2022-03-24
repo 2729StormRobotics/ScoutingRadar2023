@@ -8,6 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 
@@ -36,6 +37,6 @@ public interface ObjectiveMatchDao {
     // Deletes entire table
     /* BE CAREFUL */
     @Query("DELETE FROM objective_matches")
-    void deleteAll();
+    Completable deleteAll();
 }
 

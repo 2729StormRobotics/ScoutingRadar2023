@@ -110,7 +110,7 @@ public class PitScoutFragment extends Fragment {
             int i = 0;
             for (String s : set) {
                 String[] split = s.split(":");
-                SPINNER_CONTENTS[i] = split[1].split(",");
+                SPINNER_CONTENTS[i] = split[1].replace('_', ' ').split(",");
                 SPINNER_NAMES[i] = split[0];
                 i++;
             }
@@ -122,7 +122,7 @@ public class PitScoutFragment extends Fragment {
             int i = 0;
             for (String s : arr) {
                 String[] split = s.split(":");
-                SPINNER_CONTENTS[i] = split[1].split(",");
+                SPINNER_CONTENTS[i] = split[1].replace('_', ' ').split(",");
                 SPINNER_NAMES[i] = split[0];
                 i++;
             }

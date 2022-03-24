@@ -52,7 +52,7 @@ public class DataUtils {
         return (new String(outStream.toByteArray(), StandardCharsets.UTF_8)).split("!");
     }
 
-    public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
+    public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
         List<Action> actionsCopy = new ArrayList<>(actions);
 
         // Sort actions chronologically
@@ -79,6 +79,8 @@ public class DataUtils {
         if (stringBuilder.length() > 0) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
+
+        stringBuilder.append("|Notes: ").append(notes);
 
         return new ObjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());
@@ -108,6 +110,7 @@ public class DataUtils {
         if (stringBuilder.length() > 0) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
+
 
         return new SubjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());

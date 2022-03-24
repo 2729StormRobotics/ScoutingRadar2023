@@ -9,6 +9,7 @@ import org.stormroboticsnj.scoutingradar2022.database.AppDatabase;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 
 public class ObjectiveRepository {
@@ -32,5 +33,9 @@ public class ObjectiveRepository {
 
     public Maybe<List<ObjectiveMatchData>> getAllMatches() {
         return mDao.getAllMatches();
+    }
+
+    public Completable deleteAllMatches() {
+        return mDao.deleteAll();
     }
 }

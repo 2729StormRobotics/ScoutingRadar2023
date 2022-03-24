@@ -25,7 +25,9 @@ import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepos
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableMaybeObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -165,5 +167,17 @@ public class ExportViewModel extends AndroidViewModel {
                         Log.d("Export Maybe Observer", "Subjective Done!");
                     }
                 });
+    }
+
+    public Completable deleteObjectiveData() {
+        return mObjectiveRepository.deleteAllMatches();
+    }
+
+    public Completable deleteSubjectiveData() {
+        return mSubjectiveRepository.deleteAllMatches();
+    }
+
+    public Completable deletePitData() {
+        return mPitRepository.deleteAllData();
     }
 }

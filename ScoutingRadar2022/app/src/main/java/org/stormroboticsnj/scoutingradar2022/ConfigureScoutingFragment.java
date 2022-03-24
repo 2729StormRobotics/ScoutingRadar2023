@@ -34,7 +34,7 @@ import java.util.Set;
  */
 public class ConfigureScoutingFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private ActivityResultLauncher<String> fileResultLauncher;
+    private ActivityResultLauncher<String[]> fileResultLauncher;
     private Context mContext;
 
     private SharedPreferences mSharedPreferences;
@@ -61,6 +61,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         for (String s : arr) {
             s = s.replace(",", ", ");
             s = s.replace(":", ": ");
+            s = s.replace("_", " ");
             sb.append(s).append("\n");
         }
         return sb.toString();
@@ -71,15 +72,13 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         super.onAttach(context);
         mContext = context;
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+        //                    String path = result.getPath();
+        // Not solid checking at all, but better than nothing?
+        //                    if (path.substring(path.lastIndexOf('.') + 1).equals("ini")) {
+        //                    }
         fileResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                result -> {
-                    String path = result.getPath();
-                    // Not solid checking at all, but better than nothing?
-                    if (path.substring(path.lastIndexOf('.') + 1).equals("ini")) {
-                        processIniFile(result);
-                    }
-                });
+                new ActivityResultContracts.OpenDocument(),
+                this::processIniFile);
     }
 
     @Override
@@ -102,7 +101,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         super.onViewCreated(view, savedInstanceState);
 
         Button uploadButton = view.findViewById(R.id.configure_button_upload);
-        uploadButton.setOnClickListener((v) -> fileResultLauncher.launch("*/*"));
+        uploadButton.setOnClickListener((v) -> fileResultLauncher.launch(new String[]{"*/*"}));
 
         TextView messageTextView = view.findViewById(R.id.configure_text_message);
         // Activate URL within this TextView
