@@ -65,7 +65,7 @@ public class DataUtils {
                              String.valueOf(action.getTimeSeconds()) : action.subAction;
             if (actionMap.containsKey(action.abbreviation)) {
                 actionMap.put(action.abbreviation,
-                        actionMap.get(action.abbreviation) + "," + subData);
+                        actionMap.get(action.abbreviation) + ";" + subData);
             } else {
                 actionMap.put(action.abbreviation, subData);
             }
@@ -96,7 +96,7 @@ public class DataUtils {
                              String.valueOf(action.getTimeSeconds()) : action.subAction;
             if (actionMap.containsKey(action.abbreviation)) {
                 actionMap.put(action.abbreviation,
-                        actionMap.get(action.abbreviation) + "," + subData);
+                        actionMap.get(action.abbreviation) + ";" + subData);
             } else {
                 actionMap.put(action.abbreviation, subData);
             }
@@ -126,7 +126,7 @@ public class DataUtils {
                              String.valueOf(action.getTimeSeconds()) : action.subAction;
             if (actionMap.containsKey(action.abbreviation)) {
                 actionMap.put(action.abbreviation,
-                        actionMap.get(action.abbreviation) + "," + subData);
+                        actionMap.get(action.abbreviation) + ";" + subData);
             } else {
                 actionMap.put(action.abbreviation, subData);
             }
