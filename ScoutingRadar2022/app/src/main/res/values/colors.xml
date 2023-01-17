@@ -20,5 +20,7 @@
     <color name="redWatchPrimaryTextColor">#ffffff</color>
     <color name="redWatchSecondaryTextColor">#ffffff</color>
     <color name="redWatchDangerColor">#dd0000</color>
-
+    <!-- Background Colors that change from a button click -->
+    <color name="backgroundRed">#Ff0000</color>
+    <color name="backgroundBlue">#1e90ff</color>
 </resources>
