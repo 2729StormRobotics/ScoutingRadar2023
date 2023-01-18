@@ -39,8 +39,11 @@
     </string-array>
 
     <string-array name="sub_spinners">
+        <item># of Links: 1,2,3,4,5,6,7,8,9</item>
+        <item>Co-Op Bonus: Yes, No</item>
+        <item># of Bots Docked: 1,2,3</item>
         <item>Driver Skill:1,2,3,4,5</item>
-        <item>Defense Skill:1,2,6,4,5</item>
+        <item>Defense Skill:1,2,3,4,5</item>
     </string-array>
 
     <string-array name="obj_spinners">
