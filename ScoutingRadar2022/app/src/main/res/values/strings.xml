@@ -73,6 +73,7 @@
     <string name="upload_config_file">Choose File…</string>
     <string name="error_reading_file">Error reading file.</string>
     <string name="button_submit">Submit</string>
+    <string name="button_increment">+</string>
     <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
     <string name="scouting_radar_logo">Scouting Radar Logo</string>
     <string name="fab_title_pit">Pit Scout</string>

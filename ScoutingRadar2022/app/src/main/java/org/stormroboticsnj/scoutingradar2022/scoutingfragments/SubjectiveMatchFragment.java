@@ -64,7 +64,8 @@ public class SubjectiveMatchFragment extends Fragment {
     private ToggleGroupWrapper mAllianceToggleGroup;
 
     private Button mSubmitButton;
-
+    private Button mIncButton;
+    private Button mDecButton;
     // ViewModel
     private SubjectiveScoutingViewModel mActionsViewModel;
     // Context
@@ -226,15 +227,62 @@ public class SubjectiveMatchFragment extends Fragment {
         mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
         // Set up first spinner
         mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
-                mAllianceToggleGroup.getToggleGroup().getId());
+                mAllianceToggleGroup.getToggleGroup().getId(), false);
         // Set up the rest of the spinners
         for (int i = 1; i < mSpinnerNames.length; i++) {
             mSpinnerInfos[i] =
-                    setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
+                    setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id, false);
         }
 
         mSubmitButton = setupSubmitButton(constraintSet,
                 mSpinnerInfos[mSpinnerInfos.length - 1].id);
+
+        mIncButton = setupIncDec(constraintSet, mSpinnerInfos[mSpinnerInfos.length-1].id, true, false );
+
+    }
+
+    private Button setupIncDec(ConstraintSet constraintSet, int previousId, boolean inc, boolean dec) {
+        int spinnerId = View.generateViewId();
+        int textId = View.generateViewId();
+        TextView textView = new TextView(mContext);
+
+        // Create the button
+        Button button = new MaterialButton(mContext);
+        // Generate a unique id for the button
+        int buttonId = View.generateViewId();
+        button.setId(buttonId);
+        // Set the text of the button
+        button.setText(getString(R.string.button_increment));
+        // This fragment is the listener for the button
+        button.setOnClickListener(this::onButtonClick);
+        // Add the button to the layout
+        mConstraintLayout.addView(button);
+
+        // Set the constraints for the button
+        constraintSet.clone(mConstraintLayout);
+        // Connect the button to the previous button
+        chainViewsVertically(constraintSet, previousId, buttonId);
+        // Center the button horizontally
+                //centerViewHorizontally(constraintSet, buttonId);
+        // Apply the constraints
+        constraintSet.applyTo(mConstraintLayout);
+
+        constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT,
+                0);
+        constraintSet.connect(textId, ConstraintSet.RIGHT, spinnerId, ConstraintSet.LEFT, 8);
+        constraintSet.connect(spinnerId, ConstraintSet.LEFT, textId, ConstraintSet.RIGHT, 0);
+        constraintSet.connect(spinnerId, ConstraintSet.RIGHT, mConstraintLayoutId,
+                ConstraintSet.RIGHT, 0);
+        constraintSet.connect(textId, ConstraintSet.TOP, spinnerId, ConstraintSet.TOP);
+        constraintSet.connect(textId, ConstraintSet.BOTTOM, spinnerId, ConstraintSet.BOTTOM);
+
+        // Apply the constraints
+        constraintSet.applyTo(mConstraintLayout);
+
+        //textView.setHeight(spinner.getHeight());
+        textView.setGravity(Gravity.CENTER);
+
+        return button;
 
     }
 
@@ -278,7 +326,8 @@ public class SubjectiveMatchFragment extends Fragment {
      * @param previousId    the id of the view that this Spinner should be placed below
      * @return a SpinnerInfo about the created Spinner
      */
-    private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
+    private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId, boolean isInc) {
+
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
         // Generate a unique id for the spinner
