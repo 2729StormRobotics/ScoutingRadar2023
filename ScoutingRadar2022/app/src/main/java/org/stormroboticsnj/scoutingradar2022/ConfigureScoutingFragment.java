@@ -45,6 +45,8 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
     private String mObjAbbreviations = "";
     private String mObjSpinners = "";
     private String mSubSpinners = "";
+    private String mSubButtons = "";
+    private String mSubAbbreviations = "";
     private String mPitSpinners = "";
 
     public ConfigureScoutingFragment() {
@@ -133,6 +135,9 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         mCurrentPrefsTextView.append("\n" + mObjAbbreviations + "\n");
         mCurrentPrefsTextView.append("\nObjective Spinners\n");
         mCurrentPrefsTextView.append(mObjSpinners);
+        mCurrentPrefsTextView.append("\nSubjective Buttons\n");
+        mCurrentPrefsTextView.append(mSubButtons);
+        mCurrentPrefsTextView.append("\n" + mSubAbbreviations + "\n");
         mCurrentPrefsTextView.append("\nSubjective Spinners\n");
         mCurrentPrefsTextView.append(mSubSpinners);
         mCurrentPrefsTextView.append("\nPit Spinners\n");
@@ -178,7 +183,9 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                 Set<String> pitSpinners = new HashSet<>();
                 Set<String> objSpinners = new HashSet<>();
                 String objButtons = "";
+                String subButtons = "";
                 String objAbbreviations = "";
+                String subAbbreviations = "";
 
                 // This warning is because Ini implements Map and the linter doesn't realize that
                 // the constructor builds data
@@ -242,6 +249,18 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     objAbbreviations = section.get("Abbreviations");
                 }
 
+                // Subjective Buttons
+                section = ini.get("subjective_buttons");
+                if (section != null) {
+                    // Given format:
+                    // key:value is [button name]:[button abbreviation]
+                    // But this needs to be ordered
+
+                    subButtons = section.get("Names");
+
+                    subAbbreviations = section.get("Abbreviations");
+                }
+
                 SharedPreferences.Editor e = mSharedPreferences.edit();
                 e.putStringSet(getString(R.string.pref_key_sub_spinner), subSpinners)
                  .putStringSet(getString(R.string.pref_key_pit_spinner), pitSpinners)
@@ -251,8 +270,16 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     e.putString(getString(R.string.pref_key_obj_abbrs), objAbbreviations);
                 }
 
+                if (subAbbreviations != null) {
+                    e.putString(getString(R.string.pref_key_sub_abbrs), subAbbreviations);
+                }
+
                 if (objButtons != null) {
                     e.putString(getString(R.string.pref_key_obj_buttons), objButtons);
+                }
+
+                if (subButtons != null) {
+                    e.putString(getString(R.string.pref_key_sub_buttons), subButtons);
                 }
 
                 e.apply();
@@ -276,6 +303,14 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         } else if (getString(R.string.pref_key_obj_abbrs).equals(key)) {
             mObjAbbreviations = formatPrefString(
                     mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
+                            getString(R.string.obj_abbrs_default)));
+        } else if (getString(R.string.pref_key_sub_buttons).equals(key)) {
+            mSubButtons = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_sub_buttons),
+                            getString(R.string.obj_buttons_default)));
+        } else if (getString(R.string.pref_key_sub_abbrs).equals(key)) {
+            mSubAbbreviations = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_sub_abbrs),
                             getString(R.string.obj_abbrs_default)));
         } else if (getString(R.string.pref_key_obj_spinner).equals(key)) {
             mObjSpinners =
