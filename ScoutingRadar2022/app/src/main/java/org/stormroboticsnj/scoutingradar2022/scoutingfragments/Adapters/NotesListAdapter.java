@@ -37,6 +37,27 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
         holder.textView_title.setText(list.get(position).getTitle());
+        holder.textView_title.setSelected(true);
+
+        holder.textView_notes.setText(list.get(position).getNotes());
+
+        holder.textView_date.setText(list.get(position).getDate());
+        holder.textView_date.setSelected(true);
+
+        holder.notes_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(list.get(holder.getBindingAdapterPosition()));
+            }
+        });
+
+        holder.notes_container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                listener.onLongClick(list.get(holder.getBindingAdapterPosition()), holder.notes_container);
+                return true;
+            }
+        });
     }
 
     @Override
