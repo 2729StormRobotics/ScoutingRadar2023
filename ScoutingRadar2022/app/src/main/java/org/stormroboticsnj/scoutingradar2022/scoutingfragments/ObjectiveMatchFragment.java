@@ -371,21 +371,32 @@ public class ObjectiveMatchFragment extends Fragment {
             // Button Infos saved here
             // Set up the start button
             mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId(),
-                    R.attr.materialButtonStyle);
+                    R.attr.materialButtonStyle, "below,center");
             // Enable the start button
             mButtonInfos[0].button.setEnabled(true);
+
+            //please change this hardcode
+            String[] buttonAlignments = getString(R.string.hard_coded_alignments).split(";");
+
             for (int i = 1; i < mButtonInfos.length - 2; i++) {
+                if (i == 1) {
+                    break;
+                }
                 // Set up the user-defined buttons
                 mButtonInfos[i] =
                         setupNewButton(i, constraintSet, mButtonInfos[i - 1].id,
-                                R.attr.materialButtonStyle);
+                                R.attr.materialButtonStyle, buttonAlignments[i-1]);
             }
 
-            // Set up the user-defined buttons
-            mButtonInfos[mButtonInfos.length - 2] =
-                    setupNewButton(mButtonInfos.length - 2, constraintSet,
-                            mButtonInfos[mButtonInfos.length - 3].id,
-                            R.attr.materialButtonOutlinedStyle);
+            // Set up the undo button
+            mButtonInfos[1] =
+                    setupNewButton(1, constraintSet,
+                            mButtonInfos[0].id,
+                            R.attr.materialButtonOutlinedStyle, "below,center");
+//            mButtonInfos[mButtonInfos.length - 2] =
+//                    setupNewButton(mButtonInfos.length - 2, constraintSet,
+//                            mButtonInfos[mButtonInfos.length - 3].id,
+//                            R.attr.materialButtonOutlinedStyle, "below,center");
         }
 
         if (hasSpinners) {
@@ -410,7 +421,8 @@ public class ObjectiveMatchFragment extends Fragment {
         if (hasSpinners) {
             lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
         } else if (hasButtons) {
-            lastId = mButtonInfos[mButtonInfos.length - 2].id;
+            lastId = mButtonInfos[1].id;
+//            lastId = mButtonInfos[mButtonInfos.length - 2].id;
         } else {
             lastId = mAllianceToggleGroup.getToggleGroup().getId();
         }
@@ -418,7 +430,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set up the submit button
         mButtonInfos[mButtonInfos.length - 1] =
                 setupNewButton(mButtonInfos.length - 1, constraintSet, lastId,
-                        R.attr.materialButtonStyle);
+                        R.attr.materialButtonStyle, "below,center");
 
         // Submit button is enabled if there is no start button
         mButtonInfos[mButtonInfos.length - 1].button.setEnabled(!hasButtons);
@@ -432,7 +444,7 @@ public class ObjectiveMatchFragment extends Fragment {
      * @param previousId    the id of the view that this button should be placed underneath
      * @return a ButtonInfo about the created Button
      */
-    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr) {
+    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr, String alignmentInfo) {
         // Create the button
         Button button = new MaterialButton(mContext, null, styleAttr);
         // Generate a unique id for the button
@@ -450,9 +462,10 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set the constraints for the button
         constraintSet.clone(mConstraintLayout);
         // Connect the button to the previous button
-        chainViewsVertically(constraintSet, previousId, buttonId);
-        // Center the button horizontally
-        centerViewHorizontally(constraintSet, buttonId);
+
+        chainViews(constraintSet, previousId, buttonId, alignmentInfo.split(",")[0]);
+        // Adjust the button's alignment
+        adjustAlignment(constraintSet, buttonId, alignmentInfo.split(",")[1]);
 
         // Apply the constraints
         constraintSet.applyTo(mConstraintLayout);
@@ -493,7 +506,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set the constraints for the spinner
         constraintSet.clone(mConstraintLayout);
         // Connect the spinner to the previous spinner
-        chainViewsVertically(constraintSet, previousId, spinnerId);
+        chainViews(constraintSet, previousId, spinnerId, "below");
 
         constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT,
                 0);
@@ -523,25 +536,56 @@ public class ObjectiveMatchFragment extends Fragment {
      * @param constraintSet a re-usable ConstraintSet object
      * @param viewId        the id of the view to center
      */
-    private void centerViewHorizontally(ConstraintSet constraintSet, int viewId) {
-        constraintSet.connect(viewId, ConstraintSet.LEFT, mConstraintLayoutId,
-                ConstraintSet.LEFT,
-                0);
-        constraintSet.connect(viewId, ConstraintSet.RIGHT, mConstraintLayoutId,
-                ConstraintSet.RIGHT,
-                0);
+    private void adjustAlignment(ConstraintSet constraintSet, int viewId, String alignmentInfo) {
+        switch (alignmentInfo) {
+            case "left":
+                constraintSet.connect(viewId, ConstraintSet.LEFT, mConstraintLayoutId,
+                        ConstraintSet.LEFT,
+                        0);
+                break;
+            case "center":
+                constraintSet.connect(viewId, ConstraintSet.LEFT, mConstraintLayoutId,
+                        ConstraintSet.LEFT,
+                        0);
+                constraintSet.connect(viewId, ConstraintSet.RIGHT, mConstraintLayoutId,
+                        ConstraintSet.RIGHT,
+                        0);
+                break;
+            case "right":
+                constraintSet.connect(viewId, ConstraintSet.RIGHT, mConstraintLayoutId,
+                        ConstraintSet.RIGHT,
+                        0);
+                break;
+
+        }
     }
 
     /**
      * Places a view below another
      *
      * @param constraintSet a re-usable ConstraintSet object
-     * @param topId         the id of the upper view
-     * @param bottomId      the id of the lower view
+     * @param existingId         the id of the upper view
+     * @param toAddId      the id of the lower view
      */
-    private void chainViewsVertically(ConstraintSet constraintSet, int topId, int bottomId) {
-        constraintSet.connect(bottomId, ConstraintSet.TOP, topId, ConstraintSet.BOTTOM,
-                BUTTON_MARGIN);
+    private void chainViews(ConstraintSet constraintSet, int existingId, int toAddId, String alignmentInfo) {
+        switch (alignmentInfo) {
+            case "above":
+                constraintSet.connect(existingId, ConstraintSet.BOTTOM, toAddId, ConstraintSet.TOP,
+                        BUTTON_MARGIN);
+                break;
+            case "below":
+                constraintSet.connect(existingId, ConstraintSet.TOP, toAddId, ConstraintSet.BOTTOM,
+                        BUTTON_MARGIN);
+                break;
+            case "left":
+                constraintSet.connect(existingId, ConstraintSet.RIGHT, toAddId, ConstraintSet.LEFT,
+                        BUTTON_MARGIN);
+                break;
+            case "right":
+                constraintSet.connect(existingId, ConstraintSet.LEFT, toAddId, ConstraintSet.RIGHT,
+                        BUTTON_MARGIN);
+                break;
+        }
     }
 
 

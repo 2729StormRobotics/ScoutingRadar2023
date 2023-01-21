@@ -120,5 +120,6 @@
     <string name="toast_deleting_error">Error Deleting Data.</string>
     <string name="scouting_settings_title">Scouting Settings</string>
     <string name="scouting_settings_key">scoutingsettings</string>
+    <string name="hard_coded_alignments">below,center;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,center;right,center;below,left;right,right</string>
 
 </resources>
