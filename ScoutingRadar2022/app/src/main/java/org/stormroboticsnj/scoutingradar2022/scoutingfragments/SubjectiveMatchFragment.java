@@ -78,8 +78,6 @@ public class SubjectiveMatchFragment extends Fragment {
 
     private Button mSubmitButton;
 
-    private Button mIncButton;
-    private Button mDecButton;
     // ViewModel
     private SubjectiveScoutingViewModel mActionsViewModel;
     // Context
@@ -196,28 +194,7 @@ public class SubjectiveMatchFragment extends Fragment {
             }
         }
 
-        // Get all of the button names
-        String buttonNames =
-                sharedPreferences.getString(getString(R.string.pref_key_sub_buttons), null);
-        if (buttonNames != null) {
-            mButtonNames = buttonNames.replace('_', ' ').split(",");
-            hasButtons = mButtonNames.length > 0;
 
-            // Get all of the button abbreviations
-            String buttonAbbrs =
-                    sharedPreferences.getString(getString(R.string.pref_key_sub_abbrs), null);
-            if (buttonAbbrs != null) {
-                mButtonAbbreviations = buttonAbbrs.split(",");
-                hasButtons = hasButtons && (mButtonNames.length == mButtonAbbreviations.length);
-            }
-        } else {
-            // Preference has never been set; use default options.
-            mButtonNames = getString(R.string.sub_buttons_default).replace('_', ' ').split(",");
-            // Preference has never been set; use default options.
-            mButtonAbbreviations =
-                    getString(R.string.sub_abbrs_default).replace('_', ' ').split(",");
-            hasButtons = true;
-        }
 
     }
 
@@ -267,75 +244,23 @@ public class SubjectiveMatchFragment extends Fragment {
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
 
-        if (hasButtons) {
-            mButtonInfos = new UiUtils.ButtonInfo[mButtonNames.length];
-            if (mButtonInfos.length == 0) {
-                mButtonInfos = new UiUtils.ButtonInfo[1];
-            }
-        } else {
-            mButtonInfos = new UiUtils.ButtonInfo[1];
-        }
-
-        if (hasButtons) {
-
-            // Button Infos saved here
-
-            for (int i = 1; i < mButtonInfos.length - 2; i++) {
-                // Set up the user-defined buttons
-                mButtonInfos[i] =
-                        setupNewButton(i, constraintSet, mButtonInfos[i - 1].id,
-                                R.attr.materialButtonStyle);
-            }
-
-            // Set up the user-defined buttons
-            mButtonInfos[mButtonInfos.length - 2] =
-                    setupNewButton(mButtonInfos.length - 2, constraintSet,
-                            mButtonInfos[mButtonInfos.length - 3].id,
-                            R.attr.materialButtonOutlinedStyle);
-        }
-
-        if (hasSpinners) {
-            // Spinner Infos saved here
-            mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
-            // Spinners
-            mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
-            int lastId = mSpinnerInfos[mSpinnerInfos.length-1].id;
-            // Set up first spinner
-            mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
-                    lastId);
-            // Set up the rest of the spinners
-            for (int i = 1; i < mSpinnerNames.length; i++) {
-                mSpinnerInfos[i] =
-                        setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
-            }
-        }
-
-        // Check which view is the lowest on the screen (most recently created)
-        int lastId;
-        if (hasSpinners) {
-            lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
-        } else if (hasButtons) {
-            lastId = mButtonInfos[mButtonInfos.length - 2].id;
-        } else {
-            lastId = mAllianceToggleGroup.getToggleGroup().getId();
-        }
         // Spinners
         mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
         // Set up first spinner
         mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
                 mAllianceToggleGroup.getToggleGroup().getId());
+
         // Set up the rest of the spinners
         for (int i = 1; i < mSpinnerNames.length; i++) {
             mSpinnerInfos[i] =
                     setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
         }
+
         int submitPrevId = mSpinnerInfos[mSpinnerInfos.length-1].id;
         mSubmitButton = setupSubmitButton(constraintSet,
                 submitPrevId);
 
-        mButtonInfos[mButtonInfos.length - 1] =
-                setupNewButton(mButtonInfos.length - 1, constraintSet, lastId,
-                        R.attr.materialButtonStyle);
+
 
     }
 
