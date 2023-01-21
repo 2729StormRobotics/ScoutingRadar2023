@@ -233,11 +233,11 @@ public class SubjectiveMatchFragment extends Fragment {
             mSpinnerInfos[i] =
                     setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id, false);
         }
-
+        int submitPrevId = mSpinnerInfos[mSpinnerInfos.length-1].id;
         mSubmitButton = setupSubmitButton(constraintSet,
-                mSpinnerInfos[mSpinnerInfos.length - 1].id);
+                submitPrevId);
 
-        mIncButton = setupIncDec(constraintSet, mSpinnerInfos[mSpinnerInfos.length-1].id, true, false );
+        mIncButton = setupIncDec(constraintSet, submitPrevId+ 2, true, false );
 
     }
 
@@ -263,7 +263,7 @@ public class SubjectiveMatchFragment extends Fragment {
         // Connect the button to the previous button
         chainViewsVertically(constraintSet, previousId, buttonId);
         // Center the button horizontally
-                //centerViewHorizontally(constraintSet, buttonId);
+        centerViewHorizontally(constraintSet, buttonId);
         // Apply the constraints
         constraintSet.applyTo(mConstraintLayout);
 

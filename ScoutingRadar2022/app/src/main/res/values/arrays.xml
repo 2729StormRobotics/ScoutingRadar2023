@@ -43,11 +43,10 @@
         <item># of Bots Docked: 1,2,3</item>
         <item>Driver Skill:1,2,3,4,5</item>
         <item>Defense Skill:1,2,3,4,5</item>
+        <item># of Links: 1,2,3,4,5,6,7,8,9</item>
     </string-array>
 
-    <string-array name="sub_incDec">
-        <item># of Links:1,2,3,4,5</item>
-    </string-array>
+
 
     <string-array name="obj_spinners">
         <item>Endgame Position:Low,Mid,High,Traverse</item>
