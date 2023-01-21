@@ -25,12 +25,14 @@ import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -38,7 +40,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
+import org.stormroboticsnj.scoutingradar2022.scoutingfragments.Adapters.NotesListAdapter;
+import org.stormroboticsnj.scoutingradar2022.scoutingfragments.NotesDatabase.RoomDB;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -70,6 +76,12 @@ public class SubjectiveMatchFragment extends Fragment {
     private SubjectiveScoutingViewModel mActionsViewModel;
     // Context
     private Context mContext;
+
+    RecyclerView recyclerView;
+    NotesListAdapter notesListAdapter;
+    List<SubjectiveMatchNotes> subjectiveMatchNotes = new ArrayList<>();
+    RoomDB database;
+
 
     public SubjectiveMatchFragment() {
         // Required empty public constructor
