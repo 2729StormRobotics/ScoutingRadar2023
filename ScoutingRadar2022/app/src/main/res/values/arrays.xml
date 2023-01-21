@@ -55,7 +55,7 @@
     <string-array name="obj_buttons">
         <item>Acquire:AQ</item>
         <item>Lower Hub:LH</item>
-        <item>Upper Hub:UH</item>
+        <item>Louis Hub:UH</item>
         <item>Miss:MS</item>
         <item>Start Climb:SC</item>
         <item>End Climb:EC</item>
