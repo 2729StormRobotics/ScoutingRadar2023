@@ -21,6 +21,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
     List<SubjectiveMatchNotes> list;
     NotesClickListener listener;
 
+    // Document this with Harsh later!!!
     public NotesListAdapter(Context context, List<SubjectiveMatchNotes> list, NotesClickListener listener) {
         this.context = context;
         this.list = list;
