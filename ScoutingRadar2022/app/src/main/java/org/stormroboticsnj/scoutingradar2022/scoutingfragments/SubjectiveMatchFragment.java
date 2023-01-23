@@ -256,9 +256,9 @@ public class SubjectiveMatchFragment extends Fragment {
                     setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
         }
 
-        int submitPrevId = mSpinnerInfos[mSpinnerInfos.length-1].id;
+
         mSubmitButton = setupSubmitButton(constraintSet,
-                submitPrevId);
+                mSpinnerInfos[mSpinnerInfos.length-1].id);
 
 
 
