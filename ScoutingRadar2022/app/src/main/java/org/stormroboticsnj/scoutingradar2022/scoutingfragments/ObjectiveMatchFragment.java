@@ -377,32 +377,28 @@ public class ObjectiveMatchFragment extends Fragment {
 
             //please change this hardcode
             String[] buttonAlignments = getString(R.string.hard_coded_alignments).split(";");
+            int prevCentered = mButtonInfos[0].id;
 
             for (int i = 1; i < mButtonInfos.length - 2; i++) {
-                if (i == 1) {
-                    break;
-                }
                 // Set up the user-defined buttons
                 mButtonInfos[i] =
-                        setupNewButton(i, constraintSet, mButtonInfos[i - 1].id,
+                        setupNewButton(i, constraintSet, prevCentered,
                                 R.attr.materialButtonStyle, buttonAlignments[i-1]);
+                if (buttonAlignments[i-1].split(",")[0].equals("below")) {
+                    prevCentered = mButtonInfos[i].id;
+                }
+
             }
 
             // Set up the undo button
-            mButtonInfos[1] =
-                    setupNewButton(1, constraintSet,
-                            mButtonInfos[0].id,
+            mButtonInfos[mButtonInfos.length - 2] =
+                    setupNewButton(mButtonInfos.length - 2, constraintSet,
+                            mButtonInfos[mButtonInfos.length - 3].id,
                             R.attr.materialButtonOutlinedStyle, "below,center");
-//            mButtonInfos[mButtonInfos.length - 2] =
-//                    setupNewButton(mButtonInfos.length - 2, constraintSet,
-//                            mButtonInfos[mButtonInfos.length - 3].id,
-//                            R.attr.materialButtonOutlinedStyle, "below,center");
         }
 
         if (hasSpinners) {
             // Spinner Infos saved here
-            mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
-            // Spinners
             mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
             int lastId = hasButtons ? mButtonInfos[mButtonInfos.length - 2].id :
                          mChronometer.getId();
@@ -421,8 +417,7 @@ public class ObjectiveMatchFragment extends Fragment {
         if (hasSpinners) {
             lastId = mSpinnerInfos[mSpinnerInfos.length - 1].id;
         } else if (hasButtons) {
-            lastId = mButtonInfos[1].id;
-//            lastId = mButtonInfos[mButtonInfos.length - 2].id;
+            lastId = mButtonInfos[mButtonInfos.length - 2].id;
         } else {
             lastId = mAllianceToggleGroup.getToggleGroup().getId();
         }
@@ -564,25 +559,25 @@ public class ObjectiveMatchFragment extends Fragment {
      * Places a view below another
      *
      * @param constraintSet a re-usable ConstraintSet object
-     * @param existingId         the id of the upper view
+     * @param previousId         the id of the upper view
      * @param toAddId      the id of the lower view
      */
-    private void chainViews(ConstraintSet constraintSet, int existingId, int toAddId, String alignmentInfo) {
+    private void chainViews(ConstraintSet constraintSet, int previousId, int toAddId, String alignmentInfo) {
         switch (alignmentInfo) {
             case "above":
-                constraintSet.connect(existingId, ConstraintSet.BOTTOM, toAddId, ConstraintSet.TOP,
+                constraintSet.connect(toAddId, ConstraintSet.BOTTOM, previousId, ConstraintSet.TOP,
                         BUTTON_MARGIN);
                 break;
             case "below":
-                constraintSet.connect(existingId, ConstraintSet.TOP, toAddId, ConstraintSet.BOTTOM,
+                constraintSet.connect(toAddId, ConstraintSet.TOP, previousId, ConstraintSet.BOTTOM,
                         BUTTON_MARGIN);
                 break;
             case "left":
-                constraintSet.connect(existingId, ConstraintSet.RIGHT, toAddId, ConstraintSet.LEFT,
+                constraintSet.connect(toAddId, ConstraintSet.RIGHT, previousId, ConstraintSet.LEFT,
                         BUTTON_MARGIN);
                 break;
             case "right":
-                constraintSet.connect(existingId, ConstraintSet.LEFT, toAddId, ConstraintSet.RIGHT,
+                constraintSet.connect(toAddId, ConstraintSet.LEFT, previousId, ConstraintSet.RIGHT,
                         BUTTON_MARGIN);
                 break;
         }
