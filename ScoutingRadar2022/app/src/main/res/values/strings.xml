@@ -118,8 +118,8 @@
     <string name="obj_buttons_default">Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
     <string name="obj_abbrs_default">AQ,UH,LH,MS,SC,EC</string>
     <string name="pref_key_sub_abbrs">sub_button_abbreviations_key</string>
-    <string name="sub_buttons_default">Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
-    <string name="sub_abbrs_default">AQ,UH,LH,MS,SC,EC</string>
+    <string name="sub_buttons_default">Gained Link, Lost Link</string>
+    <string name="sub_abbrs_default">lkUP, lkDWN</string>
     <string name="delete_data">Delete Data:</string>
     <string name="toast_data_deleted">Data Deleted.</string>
     <string name="toast_deleting_error">Error Deleting Data.</string>

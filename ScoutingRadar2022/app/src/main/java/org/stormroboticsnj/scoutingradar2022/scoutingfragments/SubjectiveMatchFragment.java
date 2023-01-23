@@ -168,7 +168,7 @@ public class SubjectiveMatchFragment extends Fragment {
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Get all of the spinner contents
-        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_obj_spinner),
+        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_sub_spinner),
                 null);
 
         if (set != null) {
@@ -186,7 +186,7 @@ public class SubjectiveMatchFragment extends Fragment {
             hasSpinners = mSpinnerNames.length > 0;
         } else {
             // Preference has never been set; use default options.
-            String[] arr = getResources().getStringArray(R.array.obj_spinners);
+            String[] arr = getResources().getStringArray(R.array.sub_spinners);
             mSpinnerContents = new String[arr.length][];
             mSpinnerNames = new String[arr.length];
             // Split the spinner contents into arrays
@@ -203,24 +203,24 @@ public class SubjectiveMatchFragment extends Fragment {
 
         // Get all of the button names
         String buttonNames =
-                sharedPreferences.getString(getString(R.string.pref_key_obj_buttons), null);
+                sharedPreferences.getString(getString(R.string.pref_key_sub_buttons), null);
         if (buttonNames != null) {
             mButtonNames = buttonNames.replace('_', ' ').split(",");
             hasButtons = mButtonNames.length > 0;
 
             // Get all of the button abbreviations
             String buttonAbbrs =
-                    sharedPreferences.getString(getString(R.string.pref_key_obj_abbrs), null);
+                    sharedPreferences.getString(getString(R.string.pref_key_sub_abbrs), null);
             if (buttonAbbrs != null) {
                 mButtonAbbreviations = buttonAbbrs.split(",");
                 hasButtons = hasButtons && (mButtonNames.length == mButtonAbbreviations.length);
             }
         } else {
             // Preference has never been set; use default options.
-            mButtonNames = getString(R.string.obj_buttons_default).replace('_', ' ').split(",");
+            mButtonNames = getString(R.string.sub_buttons_default).replace('_', ' ').split(",");
             // Preference has never been set; use default options.
             mButtonAbbreviations =
-                    getString(R.string.obj_abbrs_default).replace('_', ' ').split(",");
+                    getString(R.string.sub_abbrs_default).replace('_', ' ').split(",");
             hasButtons = true;
         }
 
@@ -329,7 +329,7 @@ public class SubjectiveMatchFragment extends Fragment {
 
             // Return to the home fragment using the Navigation Component
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-                      .navigate(R.id.action_objectiveMatchFragment_to_matchRecordFragment);
+                      .navigate(R.id.action_subjectiveMatchFragment_to_matchRecordFragment);
 
         } else {
             // Errors have been found (at least one of the validate() calls returned false)
