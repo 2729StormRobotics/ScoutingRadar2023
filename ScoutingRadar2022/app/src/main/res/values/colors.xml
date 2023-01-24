@@ -20,5 +20,7 @@
     <color name="redWatchPrimaryTextColor">#ffffff</color>
     <color name="redWatchSecondaryTextColor">#ffffff</color>
     <color name="redWatchDangerColor">#dd0000</color>
-
+    <!-- Game Specific Colors -->
+    <color name="coneYellow">#f1c232</color>
+    <color name="cubePurple">#674ea7</color>
 </resources>
