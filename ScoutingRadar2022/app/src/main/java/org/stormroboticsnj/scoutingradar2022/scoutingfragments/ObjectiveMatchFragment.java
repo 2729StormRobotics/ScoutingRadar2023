@@ -6,10 +6,12 @@ import static org.stormroboticsnj.scoutingradar2022.UiUtils.TextInputWrapper;
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.ToggleGroupWrapper;
 import static org.stormroboticsnj.scoutingradar2022.database.DataUtils.Action;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -372,7 +374,7 @@ public class ObjectiveMatchFragment extends Fragment {
             // Button Infos saved here
             // Set up the start button
             mButtonInfos[0] = setupNewButton(0, constraintSet, mChronometer.getId(),
-                    R.attr.materialButtonStyle, "below,center", 0);
+                    R.attr.materialButtonStyle, "below,center", 0, "none");
             // Enable the start button
             mButtonInfos[0].button.setEnabled(true);
 
@@ -391,7 +393,7 @@ public class ObjectiveMatchFragment extends Fragment {
                 // Set up the user-defined buttons
                 mButtonInfos[i] =
                         setupNewButton(i, constraintSet, mButtonInfos[i - prevCenteredDistance].id,
-                                R.attr.materialButtonStyle, buttonAlignments[i], Integer.parseInt(marginSizes[i]));
+                                R.attr.materialButtonStyle, buttonAlignments[i], Integer.parseInt(marginSizes[i]), colorings[i]);
 
             }
         }
@@ -399,7 +401,7 @@ public class ObjectiveMatchFragment extends Fragment {
         if (hasSpinners) {
             // Spinner Infos saved here
             mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
-            int lastId = hasButtons ? mButtonInfos[mButtonInfos.length - 2].id :
+            int lastId = hasButtons ? mButtonInfos[mButtonInfos.length - 3].id :
                          mChronometer.getId();
             // Set up first spinner
             mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
@@ -424,7 +426,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set up the submit button
         mButtonInfos[mButtonInfos.length - 2] =
                 setupNewButton(mButtonInfos.length - 2, constraintSet, lastId,
-                        R.attr.materialButtonStyle, "below,left", 300);
+                        R.attr.materialButtonStyle, "below,left", 300, "none");
 
         // Submit button is enabled if there is no start button
         mButtonInfos[mButtonInfos.length - 2].button.setEnabled(!hasButtons);
@@ -432,7 +434,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set up the undo button
         mButtonInfos[mButtonInfos.length - 1] =
                 setupNewButton(mButtonInfos.length - 1, constraintSet, lastId,
-                        R.attr.materialButtonOutlinedStyle, "below,right", 300);
+                        R.attr.materialButtonOutlinedStyle, "below,right", 300, "none");
     }
 
     /**
@@ -443,7 +445,8 @@ public class ObjectiveMatchFragment extends Fragment {
      * @param previousId    the id of the view that this button should be placed underneath
      * @return a ButtonInfo about the created Button
      */
-    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr, String alignmentInfo, int marginSize) {
+
+    private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr, String alignmentInfo, int marginSize, String color) {
         // Create the button
         Button button = new MaterialButton(mContext, null, styleAttr);
         // Generate a unique id for the button
@@ -455,13 +458,18 @@ public class ObjectiveMatchFragment extends Fragment {
         button.setText(mButtonNames[index]);
         // This fragment is the listener for the button
         button.setOnClickListener(this::onButtonClick);
+        // Change the color of the button
+        if (color.equals("yellow")) {
+            button.setBackgroundColor(getResources().getColor(R.color.coneYellow));
+        }
+        if (color.equals("purple")) {
+            button.setBackgroundColor(getResources().getColor(R.color.cubePurple));
+        }
         // Add the button to the layout
         mConstraintLayout.addView(button);
-
         // Set the constraints for the button
         constraintSet.clone(mConstraintLayout);
         // Connect the button to the previous button
-
         chainViewsVertically(constraintSet, previousId, buttonId);
         // Adjust the button's alignment
         adjustAlignment(constraintSet, buttonId, alignmentInfo.split(",")[1], marginSize);

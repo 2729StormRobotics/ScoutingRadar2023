@@ -21,6 +21,6 @@
     <color name="redWatchSecondaryTextColor">#ffffff</color>
     <color name="redWatchDangerColor">#dd0000</color>
     <!-- Game Specific Colors -->
-    <color name="coneYellow">#f1c232</color>
-    <color name="cubePurple">#674ea7</color>
+    <color name="coneYellow">#FFC107</color>
+    <color name="cubePurple">#673AB7</color>
 </resources>

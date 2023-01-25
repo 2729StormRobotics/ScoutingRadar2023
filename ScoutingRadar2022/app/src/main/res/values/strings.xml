@@ -122,5 +122,5 @@
     <string name="scouting_settings_key">scoutingsettings</string>
     <string name="hard_coded_alignments">below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,left;right,right</string>
     <string name="margin_sizes">"0;0;100;100;100;100;100;100;100;100;100;100;100;50;50;"</string>
-    <string name="colorings">"none;none;coneYellow;cubePurple;coneYellow;cubePurple;coneYellow;cubePurple;coneYellow;none;none;none;none;none;none;"</string>
+    <string name="colorings">"-;-;yellow;purple;yellow;purple;yellow;purple;yellow;purple;-;-;-;-;-;"</string>
 </resources>
