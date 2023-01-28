@@ -145,7 +145,7 @@ public class ExportViewModel extends AndroidViewModel {
                 });
     }
 
-    public void createSubjectiveCsv(ParcelFileDescriptor pfd, String[] spinners) {
+    public void createSubjectiveCsv(ParcelFileDescriptor pfd, String[] buttons, String[] abbreviations, String[] spinners) {
         mSubjectiveRepository
                 .getAllMatches()
                 .subscribeOn(Schedulers.io())
@@ -154,7 +154,7 @@ public class ExportViewModel extends AndroidViewModel {
 
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<SubjectiveMatchData> subjectiveMatchData) {
-                        CSVCreator.createSubjectiveCsv(pfd, spinners, subjectiveMatchData);
+                        CSVCreator.createSubjectiveCsv(pfd, buttons, abbreviations, spinners, subjectiveMatchData);
                     }
 
                     @Override
