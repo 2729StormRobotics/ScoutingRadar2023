@@ -39,13 +39,11 @@ public class CSVCreator {
 
     }
 
-    public static void createSubjectiveCsv(
-            ParcelFileDescriptor pfd,
-            String[] spinners, List<SubjectiveMatchData> data) {
+    public static void createSubjectiveCsv(ParcelFileDescriptor pfd, String[] subButtons, String[] subAbbreviations, String[] subSpinners, List<SubjectiveMatchData> subjectiveMatchData) {
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-            subCsv(fileOutputStream, spinners, data);
+            subCsv(fileOutputStream, subButtons, subAbbreviations, subSpinners, subjectiveMatchData);
 
             // Let the document provider know you're done by closing the stream.
             fileOutputStream.close();
@@ -161,15 +159,16 @@ public class CSVCreator {
     }
 
     private static void subCsv(
-            FileOutputStream output,
-            String[] subSpinners,
-            List<SubjectiveMatchData> dataList) throws IOException {
+            FileOutputStream output, String[] subButtons, String[] subAbbreviations, String[] subSpinners, List<SubjectiveMatchData> dataList) throws IOException {
 
         // Setup CSVWriter
         CSVWriter csvWriter = getCsvWriter(output);
 
         // Create Column Names
         List<String> columnNames = new ArrayList<>();
+
+        // Add all the buttons
+        columnNames.addAll(Arrays.asList(subButtons));
 
         // Add the spinners
         for (String s : subSpinners) {
@@ -185,6 +184,12 @@ public class CSVCreator {
         columnNamesSorted.add("match");
         columnNamesSorted.add("is_red");
 
+        // Map abbreviations to names as
+        Map<String, String> abbreviationsToNames = new HashMap<>();
+        for (int i = 0; i < subButtons.length; i++) {
+            abbreviationsToNames.put(subAbbreviations[i], subButtons[i]);
+        }
+
         Collections.sort(columnNames);
         columnNamesSorted.addAll(columnNames);
 
@@ -196,6 +201,8 @@ public class CSVCreator {
         for (int i = 0; i < columnNames.size(); i++) {
             namesToIndices.put(columnNames.get(i), i);
         }
+
+
 
         // Add the data
         for (SubjectiveMatchData data : dataList) {
@@ -215,8 +222,12 @@ public class CSVCreator {
                     if (in != null) {
                         row[in] = split[1];
                     }
+
                 }
+
+
             }
+
 
             csvWriter.writeNext(row, true);
         }

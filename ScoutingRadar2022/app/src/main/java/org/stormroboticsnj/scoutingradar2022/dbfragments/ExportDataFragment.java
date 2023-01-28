@@ -62,10 +62,12 @@ public class ExportDataFragment extends PermissionsFragment {
     private String[] mObjSpinners;
     private String[] mObjButtons;
     private String[] mSubSpinners;
+    private String[] mSubButtons;
     private String[] mPitSpinners;
     private String mTeamNumber;
     private String mDeviceName;
     private String[] mObjAbbreviations;
+    private String[] mSubAbbreviations;
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -107,9 +109,15 @@ public class ExportDataFragment extends PermissionsFragment {
         mObjButtons =
                 mSharedPreferences.getString(getString(R.string.pref_key_obj_buttons),
                         getString(R.string.obj_buttons_default)).split(",");
+        mSubButtons =
+                mSharedPreferences.getString(getString(R.string.pref_key_sub_buttons),
+                        getString(R.string.sub_buttons_default)).split(",");
         mObjAbbreviations =
                 mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
                         getString(R.string.obj_abbrs_default)).split(",");
+        mSubAbbreviations =
+                mSharedPreferences.getString(getString(R.string.pref_key_sub_abbrs),
+                        getString(R.string.sub_abbrs_default)).split(",");
         mObjSpinners = readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners);
         mSubSpinners = readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners);
         mPitSpinners = readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners);
@@ -231,7 +239,7 @@ public class ExportDataFragment extends PermissionsFragment {
                 mViewModel.createObjectiveCsv(pfd, mObjButtons, mObjAbbreviations, mObjSpinners);
                 break;
             case FILENAME_SUB:
-                mViewModel.createSubjectiveCsv(pfd, mSubSpinners);
+                mViewModel.createSubjectiveCsv(pfd, mSubButtons, mSubAbbreviations, mSubSpinners);
                 break;
             case FILENAME_PIT:
                 mViewModel.createPitCsv(pfd, mPitSpinners);
