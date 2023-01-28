@@ -40,10 +40,11 @@
 
     <string-array name="sub_spinners">
         <item>Co-Op Bonus: Yes, No</item>
-        <item>Engaged: Yes, No</item>
-        <item># of Bots Docked: 1,2,3</item>
         <item>Driver Skill:1,2,3,4,5</item>
         <item>Defense Skill:1,2,3,4,5</item>
+        <item>Engaged: Yes, No</item>
+        <item>Endgame Position: Parked, Docked, Engaged, Tried but failed, Did not try</item>
+        <item># of Bots Docked: 1,2,3</item>
     </string-array>
 
     <string-array name="sub_buttons">
