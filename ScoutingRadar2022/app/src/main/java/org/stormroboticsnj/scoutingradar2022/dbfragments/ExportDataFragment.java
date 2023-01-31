@@ -62,10 +62,12 @@ public class ExportDataFragment extends PermissionsFragment {
     private String[] mObjSpinners;
     private String[] mObjButtons;
     private String[] mSubSpinners;
+    private String[] mSubButtons;
     private String[] mPitSpinners;
     private String mTeamNumber;
     private String mDeviceName;
     private String[] mObjAbbreviations;
+    private String[] mSubAbbreviations;
 
     public ExportDataFragment() {
         // Required empty public constructor
@@ -231,7 +233,7 @@ public class ExportDataFragment extends PermissionsFragment {
                 mViewModel.createObjectiveCsv(pfd, mObjButtons, mObjAbbreviations, mObjSpinners);
                 break;
             case FILENAME_SUB:
-                mViewModel.createSubjectiveCsv(pfd, mSubSpinners);
+                mViewModel.createSubjectiveCsv(pfd, mSubButtons, mSubAbbreviations, mSubSpinners);
                 break;
             case FILENAME_PIT:
                 mViewModel.createPitCsv(pfd, mPitSpinners);
