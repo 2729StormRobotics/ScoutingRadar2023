@@ -40,12 +40,12 @@ public class CSVCreator {
     }
 
     public static void createSubjectiveCsv(
-            ParcelFileDescriptor pfd, String[] buttons, String[] abbreviations,
+            ParcelFileDescriptor pfd,
             String[] spinners, List<SubjectiveMatchData> data) {
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-            subCsv(fileOutputStream, buttons, abbreviations, spinners, data);
+            subCsv(fileOutputStream, spinners, data);
 
             // Let the document provider know you're done by closing the stream.
             fileOutputStream.close();
@@ -162,7 +162,7 @@ public class CSVCreator {
 
     private static void subCsv(
             FileOutputStream output,
-            String[] subButtons, String[] subAbbreviations, String[] subSpinners,
+            String[] subSpinners,
             List<SubjectiveMatchData> dataList) throws IOException {
 
         // Setup CSVWriter
