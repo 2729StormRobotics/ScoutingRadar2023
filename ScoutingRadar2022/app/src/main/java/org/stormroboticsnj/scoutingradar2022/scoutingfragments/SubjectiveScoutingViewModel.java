@@ -1,14 +1,15 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
 import android.app.Application;
+import android.os.SystemClock;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
+import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 
 import java.util.ArrayList;
@@ -17,30 +18,60 @@ import java.util.List;
 
 public class SubjectiveScoutingViewModel extends AndroidViewModel {
 
-    private SubjectiveRepository mSubjectiveRepository;
+    private final MutableLiveData<List<DataUtils.Action>> mActionsLiveData;
     private final List<DataUtils.Action> mActions;
+    private final SubjectiveRepository mRepository;
+    private boolean mIsMatchRunning = false;
+    private long mChronometerBase = -1;
 
-    public SubjectiveScoutingViewModel(
-            @NonNull Application application) {
-        super(application);
-        mSubjectiveRepository = new SubjectiveRepository(application);
+    public SubjectiveScoutingViewModel(Application app) {
+        super(app);
+        mActionsLiveData = new MutableLiveData<>();
         mActions = new ArrayList<>();
+        mActionsLiveData.setValue(Collections.unmodifiableList(mActions));
+        mRepository = new SubjectiveRepository(app);
+    }
+
+    public boolean isMatchRunning() {
+        return mIsMatchRunning;
+    }
+
+    public long getChronometerBase() {
+        if (mChronometerBase == -1) {
+            mChronometerBase = SystemClock.elapsedRealtime();
+            mIsMatchRunning = true;
+        }
+        return mChronometerBase;
+    }
+
+    public LiveData<List<DataUtils.Action>> getActionsLiveData() {
+        return mActionsLiveData;
     }
 
     public void addAction(DataUtils.Action action) {
         mActions.add(action);
+        mActionsLiveData.setValue(Collections.unmodifiableList(mActions));
     }
 
-    public void saveMatch(SubjectiveMatchData matchData) {
-        mSubjectiveRepository.insert(matchData);
+    public void removeLastAction() {
+        if (mActions.size() > 0) {
+            mActions.remove(mActions.size() - 1);
+            mActionsLiveData.setValue(Collections.unmodifiableList(mActions));
+        }
     }
 
+    private void saveMatch(SubjectiveMatchData matchData) {
+        mRepository.insert(matchData);
+    }
 
-    public void processAndSaveMatch( int teamNumber, int matchNumber, boolean isRed) {
+    public void processAndSaveMatch(List<DataUtils.Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
+        mIsMatchRunning = false;
         new Thread(() -> {
             SubjectiveMatchData data =
-                    DataUtils.processSubjectiveData(mActions, teamNumber, matchNumber, isRed);
+                    DataUtils.processSubjectiveData(actions, teamNumber, matchNumber, notes, isRed);
             saveMatch(data);
         }).start();
     }
+
+
 }

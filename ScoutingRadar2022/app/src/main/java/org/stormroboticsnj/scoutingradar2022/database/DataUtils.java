@@ -86,7 +86,7 @@ public class DataUtils {
                 stringBuilder.toString());
     }
 
-    public static SubjectiveMatchData processSubjectiveData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
+    public static SubjectiveMatchData processSubjectiveData(List<Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
         List<Action> actionsCopy = new ArrayList<>(actions);
 
         // Make a map of action names to comma separated timestamps
@@ -110,7 +110,7 @@ public class DataUtils {
         if (stringBuilder.length() > 0) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
-
+        stringBuilder.append("|Notes: ").append(notes);
 
         return new SubjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());

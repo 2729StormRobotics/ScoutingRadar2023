@@ -6,6 +6,7 @@ import static org.stormroboticsnj.scoutingradar2022.UiUtils.TextInputWrapper;
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.ToggleGroupWrapper;
 import static org.stormroboticsnj.scoutingradar2022.database.DataUtils.Action;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -60,7 +61,7 @@ public class SubjectiveMatchFragment extends Fragment {
     private boolean hasButtons;
 
     // ViewModel :)
-    private ObjectiveScoutingViewModel mViewModel;
+    private SubjectiveScoutingViewModel mViewModel;
     // Context :))
     private Context mContext;
 
@@ -88,8 +89,8 @@ public class SubjectiveMatchFragment extends Fragment {
     }
 
     @SuppressWarnings("unused")
-    public static ObjectiveMatchFragment newInstance() {
-        return new ObjectiveMatchFragment();
+    public static SubjectiveMatchFragment newInstance() {
+        return new SubjectiveMatchFragment();
     }
 
     @Override
@@ -104,35 +105,36 @@ public class SubjectiveMatchFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_objective_match, container, false);
+        View v = inflater.inflate(R.layout.fragment_subjective_match, container, false);
 
         // Set up members
-        mConstraintLayout = v.findViewById(R.id.layout_obj_main);
+        mConstraintLayout = v.findViewById(R.id.layout_sub_main);
         mConstraintLayoutId = mConstraintLayout.getId();
-        mChronometer = v.findViewById(R.id.objective_chronometer);
-        mActionsListView = v.findViewById(R.id.objective_text_actions);
+        mChronometer = v.findViewById(R.id.subjective_chronometer);
+        mActionsListView = v.findViewById(R.id.subjective_text_actions);
 
         // Form members
-        mRedButton = v.findViewById(R.id.objective_button_red);
-        mBlueButton = v.findViewById(R.id.objective_button_blue);
-        mToggleErrorText = v.findViewById(R.id.objective_text_alliance_error);
+        mRedButton = v.findViewById(R.id.subjective_button_red);
+        mBlueButton = v.findViewById(R.id.subjective_button_blue);
+        mToggleErrorText = v.findViewById(R.id.subjective_text_alliance_error);
 
         // TextInputLayouts go in a wrapper so we can handle their Watchers (avoids scary crashes)
         mTeamNumTextInput =
-                new TextInputWrapper(v.findViewById(R.id.objective_text_input_team_number));
+                new TextInputWrapper(v.findViewById(R.id.subjective_text_input_team_number));
         mMatchNumTextInput =
-                new TextInputWrapper(v.findViewById(R.id.objective_text_input_match_number));
+                new TextInputWrapper(v.findViewById(R.id.subjective_text_input_match_number));
         mNotesTextInput =
-                new TextInputWrapper(v.findViewById(R.id.objective_text_input_notes));
+                new TextInputWrapper(v.findViewById(R.id.subjective_text_input_notes));
 
         // Toggle Groups also go in a wrapper because multiple watchers causes problems
         mAllianceToggleGroup =
-                new ToggleGroupWrapper(v.findViewById(R.id.objective_togglegroup_alliance));
+                new ToggleGroupWrapper(v.findViewById(R.id.subjective_togglegroup_alliance));
 
         return v;
     }
@@ -149,7 +151,7 @@ public class SubjectiveMatchFragment extends Fragment {
         generateUI();
 
         // Set up the ViewModel
-        mViewModel = new ViewModelProvider(this).get(ObjectiveScoutingViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(SubjectiveScoutingViewModel.class);
         // Subscribe to the ViewModel's changes in the ActionsList.
         subscribeToActions();
 

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".scoutingfragments.SubjectiveMatchFragment"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollview">
-
+        android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".scoutingfagments.SubjectiveMatchFragment"
-                android:id="@+id/layout_sub_main">
+                android:id="@+id/layout_sub_main"
+                android:paddingBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +28,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
+                                android:id="@+id/subjective_edit_team_number"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -44,13 +44,14 @@
                         android:layout_margin="16dp"
                         app:counterMaxLength="3"
                         app:counterEnabled="true"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/subjective_edit_match_number"
                                 android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,6 +101,47 @@
                         app:layout_constraintTop_toBottomOf="@id/subjective_togglegroup_alliance"
                         app:layout_constraintVertical_bias="0.0" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subjective_togglegroup_alliance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/notes"
+                        android:id="@+id/subjective_text_input_notes"
+                        android:layout_margin="16dp"
+
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/subjective_edit_notes"
+                                android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                        android:id="@+id/subjective_text_actions"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subjective_text_input_notes" />
+
+                <Chronometer
+                        android:id="@+id/subjective_chronometer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/subjective_text_actions" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
