@@ -25,6 +25,7 @@ import org.ini4j.Profile;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -174,9 +175,9 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         new Thread(() -> {
             try {
                 // Place to save the new info
-                Set<String> subSpinners = new HashSet<>();
-                Set<String> pitSpinners = new HashSet<>();
-                Set<String> objSpinners = new HashSet<>();
+                HashSet<String> subSpinners = new LinkedHashSet<>();
+                HashSet<String> pitSpinners = new LinkedHashSet<>();
+                HashSet<String> objSpinners = new LinkedHashSet<>();
                 String objButtons = "";
                 String objAbbreviations = "";
 
@@ -193,6 +194,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     Set<String> keys = section.keySet();
                     for (String s : keys) {
                         // Replace underscores with spaces to display cleanly
+
                         String name = s.replace('_', ' ');
                         String values = section.get(s);
 

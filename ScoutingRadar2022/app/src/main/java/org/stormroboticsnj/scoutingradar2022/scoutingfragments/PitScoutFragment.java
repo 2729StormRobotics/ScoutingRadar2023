@@ -241,8 +241,6 @@ public class PitScoutFragment extends Fragment {
 
         // Set the constraints for the spinner
         constraintSet.clone(mConstraintLayout);
-        // Connect the spinner to the previous spinner
-        chainViewsVertically(constraintSet, previousId, spinnerId);
 
         constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT,
                 0);
@@ -252,6 +250,9 @@ public class PitScoutFragment extends Fragment {
                 ConstraintSet.RIGHT, 0);
         constraintSet.connect(textId, ConstraintSet.TOP, spinnerId, ConstraintSet.TOP);
         constraintSet.connect(textId, ConstraintSet.BOTTOM, spinnerId, ConstraintSet.BOTTOM);
+
+        // Connect the spinner to the previous spinner
+        chainViewsVertically(constraintSet, previousId, spinnerId);
 
         // Apply the constraints
         constraintSet.applyTo(mConstraintLayout);
