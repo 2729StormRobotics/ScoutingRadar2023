@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveMatchData;
 import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
-import org.stormroboticsnj.scoutingradar2022.database.subjective.SubjectiveRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;

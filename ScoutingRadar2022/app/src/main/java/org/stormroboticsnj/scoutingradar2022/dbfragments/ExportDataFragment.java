@@ -289,6 +289,8 @@ public class ExportDataFragment extends PermissionsFragment {
                     mTextView.append("\n Objective data loaded...");
                     bluetoothServer.setObjectiveData(data);
                 });
+                mTextView.setText(R.string.data_loaded_for_exporting);
+                mTextView.setVisibility(View.VISIBLE);
                 mViewModel.getSubjectiveLiveData().observe(this, (data) -> {
                     mTextView.append("\n Subjective data loaded...");
                     bluetoothServer.setSubjectiveData(data);

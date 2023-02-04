@@ -48,7 +48,7 @@ public class ExportViewModel extends AndroidViewModel {
 
         mObjectiveLiveData = Transformations.map(mObjectiveRepository.getLiveMatches(),
                 DataUtils::compressData);
-        mSubjectiveLiveData = Transformations.map(mSubjectiveRepository.getDataList(),
+        mSubjectiveLiveData = Transformations.map(mSubjectiveRepository.getLiveMatches(),
                 DataUtils::compressData);
         mPitScoutData =
                 Transformations.map(mPitRepository.getDataList(), DataUtils::compressData);

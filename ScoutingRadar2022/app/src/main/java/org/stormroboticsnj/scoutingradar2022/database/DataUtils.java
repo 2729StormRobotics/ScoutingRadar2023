@@ -89,6 +89,9 @@ public class DataUtils {
     public static SubjectiveMatchData processSubjectiveData(List<Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
         List<Action> actionsCopy = new ArrayList<>(actions);
 
+        // Sort actions chronologically
+        //noinspection ComparatorCombinators
+        Collections.sort(actionsCopy, (o1, o2) -> o1.getTimeSeconds() - o2.getTimeSeconds());
         // Make a map of action names to comma separated timestamps
         HashMap<String, String> actionMap = new HashMap<>();
         for (Action action : actionsCopy) {

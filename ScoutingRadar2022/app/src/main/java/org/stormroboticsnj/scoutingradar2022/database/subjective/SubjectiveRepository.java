@@ -23,7 +23,7 @@ public class SubjectiveRepository {
         mDataList = mDao.getLiveMatches();
     }
 
-    public LiveData<List<SubjectiveMatchData>> getDataList() {
+    public LiveData<List<SubjectiveMatchData>> getLiveMatches() {
         return mDataList;
     }
 
