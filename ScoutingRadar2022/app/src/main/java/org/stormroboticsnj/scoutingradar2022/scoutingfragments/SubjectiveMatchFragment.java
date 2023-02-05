@@ -25,20 +25,28 @@ import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.stormroboticsnj.scoutingradar2022.R;
+import org.stormroboticsnj.scoutingradar2022.UiUtils;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
+import org.stormroboticsnj.scoutingradar2022.scoutingfragments.Adapters.NotesListAdapter;
+import org.stormroboticsnj.scoutingradar2022.scoutingfragments.NotesDatabase.RoomDB;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -46,9 +54,14 @@ public class SubjectiveMatchFragment extends Fragment {
 
     private static final int BUTTON_MARGIN = 8;
 
+    private UiUtils.ButtonInfo[] mButtonInfos;
     private SpinnerInfo[] mSpinnerInfos;
     private String[] mSpinnerNames;
     private String[][] mSpinnerContents;
+    private String[] mButtonAbbreviations;
+    private String[] mButtonNames;
+    private boolean hasSpinners;
+    private boolean hasButtons;
 
     // ConstraintLayout
     private ConstraintLayout mConstraintLayout;
@@ -69,6 +82,12 @@ public class SubjectiveMatchFragment extends Fragment {
     private SubjectiveScoutingViewModel mActionsViewModel;
     // Context
     private Context mContext;
+
+    RecyclerView recyclerView;
+    NotesListAdapter notesListAdapter;
+    List<SubjectiveMatchNotes> subjectiveMatchNotes = new ArrayList<>();
+    RoomDB database;
+    FloatingActionButton fab_add;
 
     public SubjectiveMatchFragment() {
         // Required empty public constructor
@@ -175,6 +194,8 @@ public class SubjectiveMatchFragment extends Fragment {
             }
         }
 
+
+
     }
 
     /**
@@ -222,19 +243,108 @@ public class SubjectiveMatchFragment extends Fragment {
     public void generateUI() {
         // Reusable ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
+
         // Spinners
         mSpinnerInfos = new SpinnerInfo[mSpinnerNames.length];
         // Set up first spinner
         mSpinnerInfos[0] = setupNewSpinner(0, constraintSet,
                 mAllianceToggleGroup.getToggleGroup().getId());
+
         // Set up the rest of the spinners
         for (int i = 1; i < mSpinnerNames.length; i++) {
             mSpinnerInfos[i] =
                     setupNewSpinner(i, constraintSet, mSpinnerInfos[i - 1].id);
         }
 
+
         mSubmitButton = setupSubmitButton(constraintSet,
-                mSpinnerInfos[mSpinnerInfos.length - 1].id);
+                mSpinnerInfos[mSpinnerInfos.length-1].id);
+
+
+
+    }
+
+    /**
+     * Creates and constrains a MaterialButton
+     *
+     * @param index         the index of the button, used for mButtonNames and mButtonAbbreviations
+     * @param constraintSet a re-usable ConstraintSet object
+     * @param previousId    the id of the view that this button should be placed underneath
+     * @return a ButtonInfo about the created Button
+     */
+    private UiUtils.ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr) {
+        // Create the button
+        Button button = new MaterialButton(mContext, null, styleAttr);
+        // Generate a unique id for the button
+        int buttonId = View.generateViewId();
+        button.setId(buttonId);
+        // Button is disabled by default
+        button.setEnabled(false);
+        // Set the text of the button
+        button.setText(mButtonNames[index]);
+        // This fragment is the listener for the button
+        button.setOnClickListener(this::onButtonClick);
+        // Add the button to the layout
+        mConstraintLayout.addView(button);
+
+        // Set the constraints for the button
+        constraintSet.clone(mConstraintLayout);
+        // Connect the button to the previous button
+        chainViewsVertically(constraintSet, previousId, buttonId);
+        // Center the button horizontally
+        centerViewHorizontally(constraintSet, buttonId);
+
+        // Apply the constraints
+        constraintSet.applyTo(mConstraintLayout);
+
+        // Return the button info
+        return new UiUtils.ButtonInfo(mButtonNames[index], mButtonAbbreviations[index], buttonId,
+                button);
+    }
+
+    // May delete
+    private Button setupIncDec(ConstraintSet constraintSet, int previousId, boolean inc, boolean dec) {
+        int spinnerId = View.generateViewId();
+        int textId = View.generateViewId();
+        TextView textView = new TextView(mContext);
+
+        // Create the button
+        Button button = new MaterialButton(mContext);
+        // Generate a unique id for the button
+        int buttonId = View.generateViewId();
+        button.setId(buttonId);
+        // Set the text of the button
+        button.setText(getString(R.string.button_increment));
+        // This fragment is the listener for the button
+        button.setOnClickListener(this::onButtonClick);
+        // Add the button to the layout
+        mConstraintLayout.addView(button);
+
+        // Set the constraints for the button
+        constraintSet.clone(mConstraintLayout);
+        // Connect the button to the previous button
+        chainViewsVertically(constraintSet, previousId, buttonId);
+        // Center the button horizontally
+        centerViewHorizontally(constraintSet, buttonId);
+        // Apply the constraints
+        constraintSet.applyTo(mConstraintLayout);
+
+        constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT,
+                0);
+        constraintSet.connect(textId, ConstraintSet.RIGHT, spinnerId, ConstraintSet.LEFT, 8);
+        constraintSet.connect(spinnerId, ConstraintSet.LEFT, textId, ConstraintSet.RIGHT, 0);
+        constraintSet.connect(spinnerId, ConstraintSet.RIGHT, mConstraintLayoutId,
+                ConstraintSet.RIGHT, 0);
+        constraintSet.connect(textId, ConstraintSet.TOP, spinnerId, ConstraintSet.TOP);
+        constraintSet.connect(textId, ConstraintSet.BOTTOM, spinnerId, ConstraintSet.BOTTOM);
+
+        // Apply the constraints
+        constraintSet.applyTo(mConstraintLayout);
+
+        //textView.setHeight(spinner.getHeight());
+        textView.setGravity(Gravity.CENTER);
+
+        return button;
 
     }
 
@@ -279,6 +389,7 @@ public class SubjectiveMatchFragment extends Fragment {
      * @return a SpinnerInfo about the created Spinner
      */
     private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
+
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
         // Generate a unique id for the spinner

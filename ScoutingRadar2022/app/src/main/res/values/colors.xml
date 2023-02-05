@@ -23,4 +23,5 @@
     <!-- Background Colors that change from a button click -->
     <color name="backgroundRed">#Ff0000</color>
     <color name="backgroundBlue">#1e90ff</color>
+    <color name="backgroundWhite">#FFFFFF</color>
 </resources>
