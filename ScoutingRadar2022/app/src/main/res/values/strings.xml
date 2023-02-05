@@ -66,7 +66,6 @@
 
     <string name="pref_key_pit_spinner">pit_spinner_key</string>
     <string name="pref_key_sub_spinner">sub_spinner_key</string>
-    <string name="pref_key_sub_buttons">sub_buttons_2_key</string>
     <string name="pref_key_obj_spinner">obj_spinner_key</string>
     <string name="pref_key_obj_buttons">obj_buttons_2_key</string>
 
@@ -74,7 +73,6 @@
     <string name="upload_config_file">Choose File…</string>
     <string name="error_reading_file">Error reading file.</string>
     <string name="button_submit">Submit</string>
-    <string name="button_increment">+</string>
     <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
     <string name="scouting_radar_logo">Scouting Radar Logo</string>
     <string name="fab_title_pit">Pit Scout</string>
@@ -117,9 +115,6 @@
     <string name="pref_key_obj_abbrs">obj_button_abbreviations_key</string>
     <string name="obj_buttons_default">Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
     <string name="obj_abbrs_default">AQ,UH,LH,MS,SC,EC</string>
-    <string name="pref_key_sub_abbrs">sub_button_abbreviations_key</string>
-    <string name="sub_buttons_default">Acquire,Upper_Hub,Lower_Hub,Miss,Start_Climb,End_Climb</string>
-    <string name="sub_abbrs_default">AQ,UH,LH,MS,SC,EC</string>
     <string name="delete_data">Delete Data:</string>
     <string name="toast_data_deleted">Data Deleted.</string>
     <string name="toast_deleting_error">Error Deleting Data.</string>
