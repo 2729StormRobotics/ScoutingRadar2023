@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -24,6 +27,7 @@ import org.ini4j.Ini;
 import org.ini4j.Profile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -195,21 +199,37 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     // Given format:
                     // key:value is [spinner name]:[spinner option],[spinner option], ... [spinner option]
                     Set<String> keys = section.keySet();
+                    ArrayList<Integer> subSpinnerOrder = new ArrayList<>();
 
                     for (String s : keys) {
                         // Replace underscores with spaces to display cleanly
-                        String order = s.substring(0);
+                        String order = s.substring(0, 1);
                         String name = s.replace('_', ' ');
                         String values = section.get(s);
 
                         // Store in the same aforementioned format
                         subSpinners.add(name + ":" + values);
+                        subSpinnerOrder.add(Integer.parseInt(order));
+
+                    }
+
+                    ArrayList<String> subSpinnersAL = new ArrayList<>(subSpinners);
+                    String tempVal;
+                    for (int i = 0; i < subSpinnersAL.size(); i++) {
+
+                        for (int j = 0; j < subSpinnersAL.size(); j++) {
+                            if (subSpinnerOrder.get(j) < subSpinnerOrder.get(i)) {
+                                tempVal = subSpinnersAL.get(j);
+                                subSpinnersAL.set(j, subSpinnersAL.get(i));
+                                subSpinnersAL.set(i, tempVal);
+                            }
+
+                        }
+                    }
+
+                    subSpinners = new LinkedHashSet<>(subSpinnersAL);
 
 
-                    } //for (int i = 0; i < subSpinners.size(); i++) {
-//
-//
-//                    }
                 }
 
                 section = ini.get("pit");
