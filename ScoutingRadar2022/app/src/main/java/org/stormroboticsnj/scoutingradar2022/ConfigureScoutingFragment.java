@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -20,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -27,6 +29,7 @@ import org.ini4j.Ini;
 import org.ini4j.Profile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -163,6 +166,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         return s.replace(",", ", ").replace('_', ' ');
     }
 
+
     private String[] readPrefs(int prefKey, int defaultArray) {
         // Get all of the spinner contents
         Set<String> set = mSharedPreferences.getStringSet(getString(prefKey),
@@ -171,10 +175,39 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         if (set != null) {
             // Convert to array
             prefArray = set.toArray(new String[0]);
+            String[] sortedPrefArray = new String[prefArray.length];
+
+//            for (int i = 0; i < sortedPrefArray.length; i++) {
+//                String iIndex = prefArray[i];
+//                int iVal = Integer.parseInt(iIndex.substring(0, 1));
+//
+//                for (int j = 0; j < sortedPrefArray.length; j++) {
+//
+//                }
+//            }
+
+//            String tempVal;
+//            for (int i = 0; i < prefArray.length; i++){
+//                String iIndex = prefArray[i];
+//                int iVal = Integer.parseInt(iIndex.substring(0, 1));
+//
+//                for (int j = 0; j < prefArray.length; j++) {
+//                    String jIndex = prefArray[j];
+//                    int jVal = Integer.parseInt(jIndex.substring(0, 1));
+//
+//                    if (iVal < jVal) {
+//                        tempVal = prefArray[j];
+//                        prefArray[j] = iIndex;
+//                        prefArray[i] = tempVal;
+//                    }
+//
+//                }
+//            }
         } else {
             // Preference has never been set; use default options.
             prefArray = getResources().getStringArray(defaultArray);
         }
+
         return prefArray;
     }
 
@@ -182,9 +215,9 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         new Thread(() -> {
             try {
                 // Place to save the new info
-                HashSet<String> subSpinners = new LinkedHashSet<>();
-                HashSet<String> pitSpinners = new LinkedHashSet<>();
-                HashSet<String> objSpinners = new LinkedHashSet<>();
+                LinkedHashSet<String> subSpinners = new LinkedHashSet<>();
+                LinkedHashSet<String> pitSpinners = new LinkedHashSet<>();
+                LinkedHashSet<String> objSpinners = new LinkedHashSet<>();
                 String objButtons = "";
                 String objAbbreviations = "";
 
@@ -213,21 +246,21 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
 
                     }
 
-                    ArrayList<String> subSpinnersAL = new ArrayList<>(subSpinners);
-                    String tempVal;
-                    for (int i = 0; i < subSpinnersAL.size(); i++) {
+//                    ArrayList<String> subSpinnersAL = new ArrayList<>(subSpinners);
+//                    String tempVal;
+//                    for (int i = 0; i < subSpinnersAL.size(); i++) {
+//
+//                        for (int j = 0; j < subSpinnersAL.size(); j++) {
+//                            if (subSpinnerOrder.get(j) < subSpinnerOrder.get(i)) {
+//                                tempVal = subSpinnersAL.get(j);
+//                                subSpinnersAL.set(j, subSpinnersAL.get(i));
+//                                subSpinnersAL.set(i, tempVal);
+//                            }
+//
+//                        }
+//                    }
 
-                        for (int j = 0; j < subSpinnersAL.size(); j++) {
-                            if (subSpinnerOrder.get(j) < subSpinnerOrder.get(i)) {
-                                tempVal = subSpinnersAL.get(j);
-                                subSpinnersAL.set(j, subSpinnersAL.get(i));
-                                subSpinnersAL.set(i, tempVal);
-                            }
-
-                        }
-                    }
-
-                    subSpinners = new LinkedHashSet<>(subSpinnersAL);
+//                    subSpinners = new LinkedHashSet<>(subSpinnersAL);
 
 
                 }
