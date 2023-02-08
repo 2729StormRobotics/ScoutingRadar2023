@@ -39,6 +39,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -161,6 +163,23 @@ public class SubjectiveMatchFragment extends Fragment {
                 mSpinnerNames[i] = split[0];
                 i++;
             }
+            Arrays.sort(mSpinnerNames);
+            Arrays.sort(mSpinnerContents, new Comparator<String[]>() {
+                @Override
+                public int compare(String[] first, String[] second) {
+                    return String.valueOf(first[0]).compareTo(
+                            String.valueOf(second[0])
+                    );
+                }
+            });
+
+            for (int j = 0; j < mSpinnerContents.length; j++) {
+                String toBeReplaced = mSpinnerContents[j][0].substring(0,2);
+                mSpinnerContents[j][0] = mSpinnerContents[j][0].replace(toBeReplaced, "");
+
+            }
+
+
         } else {
             String[] arr = getResources().getStringArray(R.array.sub_spinners);
             mSpinnerContents = new String[arr.length][];

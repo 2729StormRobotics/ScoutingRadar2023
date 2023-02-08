@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.sql.Array;
 import java.util.ArrayList;
 
@@ -177,32 +176,12 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
             prefArray = set.toArray(new String[0]);
             String[] sortedPrefArray = new String[prefArray.length];
 
-//            for (int i = 0; i < sortedPrefArray.length; i++) {
-//                String iIndex = prefArray[i];
-//                int iVal = Integer.parseInt(iIndex.substring(0, 1));
-//
-//                for (int j = 0; j < sortedPrefArray.length; j++) {
-//
-//                }
-//            }
+                for (int i = 0; i < prefArray.length; i++){
+                    sortedPrefArray[i] = prefArray[i];
+                }
 
-//            String tempVal;
-//            for (int i = 0; i < prefArray.length; i++){
-//                String iIndex = prefArray[i];
-//                int iVal = Integer.parseInt(iIndex.substring(0, 1));
+                Arrays.sort(prefArray);
 //
-//                for (int j = 0; j < prefArray.length; j++) {
-//                    String jIndex = prefArray[j];
-//                    int jVal = Integer.parseInt(jIndex.substring(0, 1));
-//
-//                    if (iVal < jVal) {
-//                        tempVal = prefArray[j];
-//                        prefArray[j] = iIndex;
-//                        prefArray[i] = tempVal;
-//                    }
-//
-//                }
-//            }
         } else {
             // Preference has never been set; use default options.
             prefArray = getResources().getStringArray(defaultArray);
@@ -245,22 +224,6 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                         subSpinnerOrder.add(Integer.parseInt(order));
 
                     }
-
-//                    ArrayList<String> subSpinnersAL = new ArrayList<>(subSpinners);
-//                    String tempVal;
-//                    for (int i = 0; i < subSpinnersAL.size(); i++) {
-//
-//                        for (int j = 0; j < subSpinnersAL.size(); j++) {
-//                            if (subSpinnerOrder.get(j) < subSpinnerOrder.get(i)) {
-//                                tempVal = subSpinnersAL.get(j);
-//                                subSpinnersAL.set(j, subSpinnersAL.get(i));
-//                                subSpinnersAL.set(i, tempVal);
-//                            }
-//
-//                        }
-//                    }
-
-//                    subSpinners = new LinkedHashSet<>(subSpinnersAL);
 
 
                 }
