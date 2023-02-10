@@ -294,71 +294,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         }).start();
     }
 
-//    private String mapToString(Map<String, String> map) {
-//        StringBuilder result = new StringBuilder();
-//        for (Map.Entry<String, String> entry : map.entrySet()) {
-//            result.append(entry.getKey()).append(":").append(entry.getValue()).append(",");
-//        }
-//        return result.length() > 0 ? result.substring(0, result.length() - 1) : "";
-//    }
-//private void processIniFile(Uri input) {
-//    new Thread(() -> {
-//        try {
-//// Place to save the new info
-//            HashMap<String, String> subSpinners = new LinkedHashMap<>();
-//            HashMap<String, String> pitSpinners = new LinkedHashMap<>();
-//            HashMap<String, String> objSpinners = new LinkedHashMap<>();
-//            String objButtons = "";
-//            String objAbbreviations = "";
-//            // This warning is because Ini implements Map and the linter doesn't realize that
-//            // the constructor builds data
-//            @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-//            Ini ini = new Ini(mContext.getContentResolver().openInputStream(input));
-//
-//            // Loop through all the keys in the ini file
-//            for (String key : ini.keySet()) {
-//                String name = key.replace('_', ' ');
-//                String value = ini.get("subjective", key);
-//
-//                // Distribute the keys to the respective maps based on their prefix
-//                if (key.startsWith("subjective")) {
-//                    subSpinners.put(name, value);
-//                } else if (key.startsWith("pit")) {
-//                    pitSpinners.put(name, value);
-//                } else if (key.startsWith("objective_spinner")) {
-//                    objSpinners.put(name, value);
-//                } else if (key.startsWith("objective_buttons")) {
-//                    if (key.endsWith("Names")) {
-//                        objButtons = value;
-//                    } else if (key.endsWith("Abbreviations")) {
-//                        objAbbreviations = value;
-//                    }
-//                }
-//            }
-//
-//            SharedPreferences.Editor e = mSharedPreferences.edit();
-//            e.putString(getString(R.string.pref_key_sub_spinner), mapToString(subSpinners))
-//             .putString(getString(R.string.pref_key_pit_spinner), mapToString(pitSpinners))
-//             .putString(getString(R.string.pref_key_obj_spinner), mapToString(objSpinners));
-//
-//            if (objAbbreviations != null) {
-//                e.putString(getString(R.string.pref_key_obj_abbrs), objAbbreviations);
-//            }
-//
-//            if (objButtons != null) {
-//                e.putString(getString(R.string.pref_key_obj_buttons), objButtons);
-//            }
-//
-//            e.apply();
-//        } catch (IOException e) {
-//            MainActivity a = (MainActivity) getActivity();
-//            if (a != null) {
-//                a.runOnUiThread(() -> Toast.makeText(a, getString(R.string.error_reading_file),
-//                        Toast.LENGTH_LONG).show());
-//            }
-//            Log.e("Configure", "Error reading file", e);
-//        }
-//    }).start();
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

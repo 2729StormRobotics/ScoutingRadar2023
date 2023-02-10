@@ -2,6 +2,8 @@ package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
 
+import static java.lang.Integer.parseInt;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +35,8 @@ import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.UiUtils;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -114,6 +118,47 @@ public class PitScoutFragment extends Fragment {
                 SPINNER_NAMES[i] = split[0];
                 i++;
             }
+
+            //Arrays.sort(SPINNER_NAMES);
+
+            String temp;
+            for (int j = 0; j < SPINNER_NAMES.length; j++) {
+                for (int k = 0; k < SPINNER_NAMES.length; k++) {
+                    String stringJ = SPINNER_NAMES[j].substring(0,2);
+                    if (stringJ.contains(".")){
+                        stringJ = stringJ.replace(".", "");
+                    }
+                    int intJ = Integer.valueOf(parseInt(stringJ));
+
+                    String stringK = SPINNER_NAMES[k].substring(0,2);
+                    if (stringK.contains(".")){
+                        stringK = stringK.replace(".", "");
+                    }
+                    int intK = Integer.valueOf(parseInt(stringK));
+
+                    if (intJ < intK) {
+                        temp = SPINNER_NAMES[j];
+                        SPINNER_NAMES[j] = SPINNER_NAMES[k];
+                        SPINNER_NAMES[k] = temp;
+                    }
+                }
+            }
+
+            Arrays.sort(SPINNER_CONTENTS, new Comparator<String[]>() {
+                @Override
+                public int compare(String[] first, String[] second) {
+                    return String.valueOf(first[0]).compareTo(
+                            String.valueOf(second[0])
+                    );
+                }
+            });
+
+            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0,2);
+                SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+
+            }
+
         } else {
             String[] arr = getResources().getStringArray(R.array.pit_spinners);
             SPINNER_CONTENTS = new String[arr.length][];
@@ -179,7 +224,7 @@ public class PitScoutFragment extends Fragment {
             }
 
             mActionsViewModel.processAndSaveData(
-                    Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
+                    parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
                            .getText()
