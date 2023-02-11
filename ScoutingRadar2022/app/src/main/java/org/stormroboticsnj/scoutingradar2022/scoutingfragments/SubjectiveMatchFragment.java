@@ -163,7 +163,10 @@ public class SubjectiveMatchFragment extends Fragment {
                 mSpinnerNames[i] = split[0];
                 i++;
             }
+            // Sorts the mSpinnerNames array with the sort method
             Arrays.sort(mSpinnerNames);
+            // Sorts the mSpinnerContents array with the sort method
+            // but we add a compare method because it's a 2D array
             Arrays.sort(mSpinnerContents, new Comparator<String[]>() {
                 @Override
                 public int compare(String[] first, String[] second) {
@@ -172,7 +175,7 @@ public class SubjectiveMatchFragment extends Fragment {
                     );
                 }
             });
-
+            // Replaces the numbers in the mSpinnerContents array
             for (int j = 0; j < mSpinnerContents.length; j++) {
                 String toBeReplaced = mSpinnerContents[j][0].substring(0,2);
                 mSpinnerContents[j][0] = mSpinnerContents[j][0].replace(toBeReplaced, "");

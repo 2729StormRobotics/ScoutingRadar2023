@@ -119,6 +119,10 @@ public class PitScoutFragment extends Fragment {
                 i++;
             }
 
+
+            // Uses bubble sort algorithm to sort the spinner names
+            // Orders it using the ordering number at the beginning
+            // Also going to get rid of periods
             String temp;
             for (int j = 0; j < SPINNER_NAMES.length; j++) {
                 for (int k = 0; k < SPINNER_NAMES.length; k++) {
@@ -142,6 +146,9 @@ public class PitScoutFragment extends Fragment {
                 }
             }
 
+            // Uses bubble sort algorithm to sort the spinner contents
+            // Orders it using the ordering number at the beginning
+            // Also going to get rid of periods
             String[] temp2;
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
                 for (int k = 0; k < SPINNER_CONTENTS.length; k++) {
@@ -165,10 +172,12 @@ public class PitScoutFragment extends Fragment {
                     }
                 }
             }
+            // Replaces the 1s and dots in the contents with ""
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
                 String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0, 1);
                 if (!(toBeReplaced.contains("1"))) {
                     SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+
                 }
 
             }
