@@ -23,6 +23,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             String string = sharedPreferences.getString(key, "");
             if (getString(R.string.pref_value_dark_dark).equals(string)) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
             } else if (getString(R.string.pref_value_dark_light).equals(string)) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             } else if (getString(R.string.pref_value_dark_system).equals(string)) {

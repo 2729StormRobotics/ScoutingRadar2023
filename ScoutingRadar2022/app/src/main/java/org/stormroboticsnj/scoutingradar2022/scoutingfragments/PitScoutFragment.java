@@ -6,6 +6,8 @@ import static java.lang.Integer.parseInt;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -181,14 +183,6 @@ public class PitScoutFragment extends Fragment {
                 }
 
             }
-//            Arrays.sort(SPINNER_CONTENTS, new Comparator<String[]>() {
-//                @Override
-//                public int compare(String[] first, String[] second) {
-//                    return String.valueOf(first[0]).compareTo(
-//                            String.valueOf(second[0])
-//                    );
-//                }
-//            });
 
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
                 String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0,2);
@@ -313,6 +307,8 @@ public class PitScoutFragment extends Fragment {
         int textId = View.generateViewId();
         textView.setId(textId);
         textView.setText(SPINNER_NAMES[index]);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setTextSize(2, 20);
         // Create the adapter for the spinner
         spinner.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, SPINNER_CONTENTS[index]));
