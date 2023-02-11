@@ -119,8 +119,6 @@ public class PitScoutFragment extends Fragment {
                 i++;
             }
 
-            //Arrays.sort(SPINNER_NAMES);
-
             String temp;
             for (int j = 0; j < SPINNER_NAMES.length; j++) {
                 for (int k = 0; k < SPINNER_NAMES.length; k++) {
@@ -144,14 +142,44 @@ public class PitScoutFragment extends Fragment {
                 }
             }
 
-            Arrays.sort(SPINNER_CONTENTS, new Comparator<String[]>() {
-                @Override
-                public int compare(String[] first, String[] second) {
-                    return String.valueOf(first[0]).compareTo(
-                            String.valueOf(second[0])
-                    );
+            String[] temp2;
+            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+                for (int k = 0; k < SPINNER_CONTENTS.length; k++) {
+                    String stringJ = SPINNER_CONTENTS[j][0].substring(0,2);
+                    if (stringJ.contains(".")){
+                        stringJ = stringJ.replace(".", "");
+                    }
+                    int intJ = Integer.valueOf(parseInt(stringJ));
+
+                    String stringK = SPINNER_CONTENTS[k][0].substring(0,2);
+                    if (stringK.contains(".")){
+                        stringK = stringK.replace(".", "");
+                    }
+                    int intK = Integer.valueOf(parseInt(stringK));
+
+                    if (intJ < intK) {
+                        temp2 = SPINNER_CONTENTS[j];
+                        SPINNER_CONTENTS[j] = SPINNER_CONTENTS[k];
+                        SPINNER_CONTENTS[k] = temp2;
+
+                    }
                 }
-            });
+            }
+            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0, 1);
+                if (!(toBeReplaced.contains("1"))) {
+                    SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+                }
+
+            }
+//            Arrays.sort(SPINNER_CONTENTS, new Comparator<String[]>() {
+//                @Override
+//                public int compare(String[] first, String[] second) {
+//                    return String.valueOf(first[0]).compareTo(
+//                            String.valueOf(second[0])
+//                    );
+//                }
+//            });
 
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
                 String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0,2);
