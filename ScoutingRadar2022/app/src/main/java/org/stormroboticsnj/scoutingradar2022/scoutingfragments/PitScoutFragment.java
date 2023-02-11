@@ -31,6 +31,7 @@ import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.stormroboticsnj.scoutingradar2022.R;
@@ -294,7 +295,9 @@ public class PitScoutFragment extends Fragment {
 
         return button;
     }
-
+//    private TextInputEditText setupNewTextbox() {
+//
+//    }
     private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
