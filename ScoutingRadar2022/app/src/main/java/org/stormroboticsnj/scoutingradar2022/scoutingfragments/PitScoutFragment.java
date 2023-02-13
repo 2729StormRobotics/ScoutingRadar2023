@@ -4,6 +4,7 @@ import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
 
 import static java.lang.Integer.parseInt;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -59,6 +60,7 @@ public class PitScoutFragment extends Fragment {
     // Actions List TextView
     private UiUtils.TextInputWrapper mTeamNumTextInput;
     private UiUtils.TextInputWrapper mNotesTextInput;
+    private UiUtils.TextInputWrapper mMotorInfoTextInput;
     private int mConstraintLayoutId;
     private Button mSubmitButton;
 
@@ -80,6 +82,7 @@ public class PitScoutFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -92,6 +95,8 @@ public class PitScoutFragment extends Fragment {
         mTeamNumTextInput =
                 new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_team_num));
         mNotesTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_notes));
+
+        mMotorInfoTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo));
 
         return v;
     }
@@ -219,7 +224,7 @@ public class PitScoutFragment extends Fragment {
         mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
         // Set up first spinner
         mSpinnerInfos[0] = mSpinnerInfos[0] =
-                setupNewSpinner(0, constraintSet, mNotesTextInput.getInputLayout().getId());
+                setupNewSpinner(0, constraintSet, mMotorInfoTextInput.getInputLayout().getId());
         // Set up the rest of the spinners
         for (int i = 1; i < SPINNER_NAMES.length; i++) {
             mSpinnerInfos[i] =
@@ -260,7 +265,10 @@ public class PitScoutFragment extends Fragment {
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
                            .getText()
-                           .toString());
+                           .toString(),
+                    Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO NOTES EDIT TEXT").getText().toString()
+
+            );
 
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                       .navigate(R.id.action_pitScoutFragment_to_matchRecordFragment);
