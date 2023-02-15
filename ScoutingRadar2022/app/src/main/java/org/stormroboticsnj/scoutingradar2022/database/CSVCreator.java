@@ -250,6 +250,7 @@ public class CSVCreator {
         columnNamesSorted.addAll(columnNames);
 
         columnNamesSorted.add("Notes");
+        columnNamesSorted.add("Motor Info");
 
         columnNames = columnNamesSorted;
 

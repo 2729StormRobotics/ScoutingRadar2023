@@ -141,7 +141,7 @@ public class DataUtils {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
         stringBuilder.append("|Notes: ").append(notes);
-        stringBuilder.append("|Motor Info:").append(motorInfo);
+        stringBuilder.append("|Motor Info: ").append(motorInfo);
         return new PitScoutData(teamNumber, stringBuilder.toString());
     }
 
