@@ -266,7 +266,9 @@ public class PitScoutFragment extends Fragment {
                     Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
                            .getText()
                            .toString(),
-                    Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO NOTES EDIT TEXT").getText().toString()
+                    Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO MOTOR INFO EDIT TEXT")
+                           .getText()
+                           .toString()
 
             );
 
