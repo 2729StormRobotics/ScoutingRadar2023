@@ -2,8 +2,13 @@ package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
 
+import static java.lang.Integer.parseInt;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -27,12 +32,15 @@ import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.UiUtils;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -52,6 +60,7 @@ public class PitScoutFragment extends Fragment {
     // Actions List TextView
     private UiUtils.TextInputWrapper mTeamNumTextInput;
     private UiUtils.TextInputWrapper mNotesTextInput;
+    private UiUtils.TextInputWrapper mMotorInfoTextInput;
     private int mConstraintLayoutId;
     private Button mSubmitButton;
 
@@ -73,6 +82,7 @@ public class PitScoutFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -85,6 +95,8 @@ public class PitScoutFragment extends Fragment {
         mTeamNumTextInput =
                 new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_team_num));
         mNotesTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_notes));
+
+        mMotorInfoTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo));
 
         return v;
     }
@@ -114,6 +126,76 @@ public class PitScoutFragment extends Fragment {
                 SPINNER_NAMES[i] = split[0];
                 i++;
             }
+
+
+            // Uses bubble sort algorithm to sort the spinner names
+            // Orders it using the ordering number at the beginning
+            // Also going to get rid of periods
+            String temp;
+            for (int j = 0; j < SPINNER_NAMES.length; j++) {
+                for (int k = 0; k < SPINNER_NAMES.length; k++) {
+                    String stringJ = SPINNER_NAMES[j].substring(0,2);
+                    if (stringJ.contains(".")){
+                        stringJ = stringJ.replace(".", "");
+                    }
+                    int intJ = Integer.valueOf(parseInt(stringJ));
+
+                    String stringK = SPINNER_NAMES[k].substring(0,2);
+                    if (stringK.contains(".")){
+                        stringK = stringK.replace(".", "");
+                    }
+                    int intK = Integer.valueOf(parseInt(stringK));
+
+                    if (intJ < intK) {
+                        temp = SPINNER_NAMES[j];
+                        SPINNER_NAMES[j] = SPINNER_NAMES[k];
+                        SPINNER_NAMES[k] = temp;
+                    }
+                }
+            }
+
+            // Uses bubble sort algorithm to sort the spinner contents
+            // Orders it using the ordering number at the beginning
+            // Also going to get rid of periods
+            String[] temp2;
+            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+                for (int k = 0; k < SPINNER_CONTENTS.length; k++) {
+                    String stringJ = SPINNER_CONTENTS[j][0].substring(0,2);
+                    if (stringJ.contains(".")){
+                        stringJ = stringJ.replace(".", "");
+                    }
+                    int intJ = Integer.valueOf(parseInt(stringJ));
+
+                    String stringK = SPINNER_CONTENTS[k][0].substring(0,2);
+                    if (stringK.contains(".")){
+                        stringK = stringK.replace(".", "");
+                    }
+                    int intK = Integer.valueOf(parseInt(stringK));
+
+                    if (intJ < intK) {
+                        temp2 = SPINNER_CONTENTS[j];
+                        SPINNER_CONTENTS[j] = SPINNER_CONTENTS[k];
+                        SPINNER_CONTENTS[k] = temp2;
+
+                    }
+                }
+            }
+            // Replaces the 1s and dots in the contents with ""
+            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0, 1);
+                if (!(toBeReplaced.contains("1"))) {
+                    SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+
+                }
+
+            }
+
+            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0,2);
+                SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+
+            }
+
         } else {
             String[] arr = getResources().getStringArray(R.array.pit_spinners);
             SPINNER_CONTENTS = new String[arr.length][];
@@ -142,7 +224,7 @@ public class PitScoutFragment extends Fragment {
         mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
         // Set up first spinner
         mSpinnerInfos[0] = mSpinnerInfos[0] =
-                setupNewSpinner(0, constraintSet, mNotesTextInput.getInputLayout().getId());
+                setupNewSpinner(0, constraintSet, mMotorInfoTextInput.getInputLayout().getId());
         // Set up the rest of the spinners
         for (int i = 1; i < SPINNER_NAMES.length; i++) {
             mSpinnerInfos[i] =
@@ -179,11 +261,16 @@ public class PitScoutFragment extends Fragment {
             }
 
             mActionsViewModel.processAndSaveData(
-                    Integer.parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
+                    parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
                     Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
                            .getText()
-                           .toString());
+                           .toString(),
+                    Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO MOTOR INFO EDIT TEXT")
+                           .getText()
+                           .toString()
+
+            );
 
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                       .navigate(R.id.action_pitScoutFragment_to_matchRecordFragment);
@@ -218,7 +305,9 @@ public class PitScoutFragment extends Fragment {
 
         return button;
     }
-
+//    private TextInputEditText setupNewTextbox() {
+//
+//    }
     private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {
         // Create the spinner
         Spinner spinner = new Spinner(mContext);
@@ -231,6 +320,8 @@ public class PitScoutFragment extends Fragment {
         int textId = View.generateViewId();
         textView.setId(textId);
         textView.setText(SPINNER_NAMES[index]);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setTextSize(2, 20);
         // Create the adapter for the spinner
         spinner.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, SPINNER_CONTENTS[index]));
@@ -241,8 +332,6 @@ public class PitScoutFragment extends Fragment {
 
         // Set the constraints for the spinner
         constraintSet.clone(mConstraintLayout);
-        // Connect the spinner to the previous spinner
-        chainViewsVertically(constraintSet, previousId, spinnerId);
 
         constraintSet.connect(textId, ConstraintSet.LEFT, mConstraintLayoutId, ConstraintSet.LEFT,
                 0);
@@ -252,6 +341,9 @@ public class PitScoutFragment extends Fragment {
                 ConstraintSet.RIGHT, 0);
         constraintSet.connect(textId, ConstraintSet.TOP, spinnerId, ConstraintSet.TOP);
         constraintSet.connect(textId, ConstraintSet.BOTTOM, spinnerId, ConstraintSet.BOTTOM);
+
+        // Connect the spinner to the previous spinner
+        chainViewsVertically(constraintSet, previousId, spinnerId);
 
         // Apply the constraints
         constraintSet.applyTo(mConstraintLayout);

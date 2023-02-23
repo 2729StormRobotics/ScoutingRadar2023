@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layout_obj_main"
-            android:paddingBottom="16dp">
+            android:paddingBottom="8dp">
 
         <com.google.android.material.textfield.TextInputLayout
                 app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/team_number"
                 android:id="@+id/objective_text_input_team_number"
-                android:layout_margin="16dp"
+                android:layout_margin="4dp"
                 app:counterMaxLength="4"
                 app:counterEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -27,10 +27,10 @@
                 >
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
                     android:id="@+id/objective_edit_team_number"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:layout_height="45dp"
+                    android:layout_width="match_parent" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/match_number"
                 android:id="@+id/objective_text_input_match_number"
-                android:layout_margin="16dp"
+                android:layout_margin="4dp"
                 app:counterMaxLength="3"
                 app:counterEnabled="true"
 
@@ -50,7 +50,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:id="@+id/objective_edit_match_number"
                     android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -60,9 +60,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="0dp"
+                android:layout_marginBottom="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -142,6 +142,54 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/objective_text_actions" />
+
+        <TextView
+                android:id="@+id/textView"
+                android:layout_height="355dp"
+                android:layout_marginTop="32dp"
+                android:layout_width="150dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/chargePrimaryTextColor"
+                android:textSize="@dimen/text_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/objective_chronometer"
+                app:layout_constraintVertical_bias="0.333" />
+
+        <TextView
+                android:id="@+id/textView2"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="80dp"
+                android:text="CONE"
+                android:textAlignment="center"
+                android:textColor="@color/chargePrimaryTextColor"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_margin"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintHorizontal_bias="0.695"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
+
+        <TextView
+                android:id="@+id/textView3"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="80dp"
+                android:text="CUBE"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="@color/chargePrimaryTextColor"
+                android:textSize="@dimen/text_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.404"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

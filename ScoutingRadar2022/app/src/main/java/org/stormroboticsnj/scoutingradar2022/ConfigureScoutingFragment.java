@@ -3,6 +3,7 @@ package org.stormroboticsnj.scoutingradar2022;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -12,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.sql.Array;
+import java.util.ArrayList;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -24,7 +28,13 @@ import org.ini4j.Ini;
 import org.ini4j.Profile;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -155,6 +165,7 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         return s.replace(",", ", ").replace('_', ' ');
     }
 
+
     private String[] readPrefs(int prefKey, int defaultArray) {
         // Get all of the spinner contents
         Set<String> set = mSharedPreferences.getStringSet(getString(prefKey),
@@ -163,10 +174,19 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         if (set != null) {
             // Convert to array
             prefArray = set.toArray(new String[0]);
+            String[] sortedPrefArray = new String[prefArray.length];
+
+                for (int i = 0; i < prefArray.length; i++){
+                    sortedPrefArray[i] = prefArray[i];
+                }
+
+                Arrays.sort(prefArray);
+//
         } else {
             // Preference has never been set; use default options.
             prefArray = getResources().getStringArray(defaultArray);
         }
+
         return prefArray;
     }
 
@@ -174,9 +194,9 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         new Thread(() -> {
             try {
                 // Place to save the new info
-                Set<String> subSpinners = new HashSet<>();
-                Set<String> pitSpinners = new HashSet<>();
-                Set<String> objSpinners = new HashSet<>();
+                LinkedHashSet<String> subSpinners = new LinkedHashSet<>();
+                LinkedHashSet<String> pitSpinners = new LinkedHashSet<>();
+                LinkedHashSet<String> objSpinners = new LinkedHashSet<>();
                 String objButtons = "";
                 String objAbbreviations = "";
 
@@ -191,14 +211,21 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     // Given format:
                     // key:value is [spinner name]:[spinner option],[spinner option], ... [spinner option]
                     Set<String> keys = section.keySet();
+                    ArrayList<Integer> subSpinnerOrder = new ArrayList<>();
+
                     for (String s : keys) {
                         // Replace underscores with spaces to display cleanly
+                        String order = s.substring(0, 1);
                         String name = s.replace('_', ' ');
                         String values = section.get(s);
 
                         // Store in the same aforementioned format
                         subSpinners.add(name + ":" + values);
+                        subSpinnerOrder.add(Integer.parseInt(order));
+
                     }
+
+
                 }
 
                 section = ini.get("pit");
@@ -266,6 +293,8 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
             }
         }).start();
     }
+
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

@@ -95,7 +95,7 @@ public class CSVCreator {
         columnNames.add("is_red");
 
         // Add all the buttons
-        columnNames.addAll(Arrays.asList(objectiveButtons));
+        columnNames.addAll(Arrays.asList(objectiveAbbreviations));
 
         // Add all the spinner names, but sorted alphabetically first
         // We need to do this because when we are not guaranteed an order for the spinners, at least
@@ -250,6 +250,7 @@ public class CSVCreator {
         columnNamesSorted.addAll(columnNames);
 
         columnNamesSorted.add("Notes");
+        columnNamesSorted.add("Motor_Info");
 
         columnNames = columnNamesSorted;
 

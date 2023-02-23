@@ -1,5 +1,6 @@
 package org.stormroboticsnj.scoutingradar2022.scoutingfragments;
 
+import static android.graphics.Color.rgb;
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.SpinnerInfo;
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.TextInputWrapper;
 import static org.stormroboticsnj.scoutingradar2022.UiUtils.ToggleGroupWrapper;
@@ -8,6 +9,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.ColorSpace;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
@@ -39,6 +44,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.stormroboticsnj.scoutingradar2022.R;
 import org.stormroboticsnj.scoutingradar2022.database.DataUtils;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -161,6 +168,26 @@ public class SubjectiveMatchFragment extends Fragment {
                 mSpinnerNames[i] = split[0];
                 i++;
             }
+            // Sorts the mSpinnerNames array with the sort method
+            Arrays.sort(mSpinnerNames);
+            // Sorts the mSpinnerContents array with the sort method
+            // but we add a compare method because it's a 2D array
+            Arrays.sort(mSpinnerContents, new Comparator<String[]>() {
+                @Override
+                public int compare(String[] first, String[] second) {
+                    return String.valueOf(first[0]).compareTo(
+                            String.valueOf(second[0])
+                    );
+                }
+            });
+            // Replaces the numbers in the mSpinnerContents array
+            for (int j = 0; j < mSpinnerContents.length; j++) {
+                String toBeReplaced = mSpinnerContents[j][0].substring(0,2);
+                mSpinnerContents[j][0] = mSpinnerContents[j][0].replace(toBeReplaced, "");
+
+            }
+
+
         } else {
             String[] arr = getResources().getStringArray(R.array.sub_spinners);
             mSpinnerContents = new String[arr.length][];
@@ -290,6 +317,9 @@ public class SubjectiveMatchFragment extends Fragment {
         int textId = View.generateViewId();
         textView.setId(textId);
         textView.setText(mSpinnerNames[index]);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setTextSize(2, 20);
+
         // Create the adapter for the spinner
         spinner.setAdapter(new ArrayAdapter<>(mContext,
                 android.R.layout.simple_spinner_dropdown_item, mSpinnerContents[index]));
