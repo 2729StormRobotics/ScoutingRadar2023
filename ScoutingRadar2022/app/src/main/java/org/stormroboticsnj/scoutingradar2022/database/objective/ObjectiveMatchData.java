@@ -32,6 +32,12 @@ public class ObjectiveMatchData {
     public ObjectiveMatchData() {}
 
     @Ignore
+    public ObjectiveMatchData(int teamNum) {
+        this.teamNum = teamNum;
+
+    }
+
+    @Ignore
     public ObjectiveMatchData(int teamNum, int matchNum) {
         this.teamNum = teamNum;
         this.matchNum = matchNum;

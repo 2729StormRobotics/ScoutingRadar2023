@@ -84,6 +84,8 @@ public class DataUtils {
 
         return new ObjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());
+                new AllMatchData(teamNumber,matchNumber);
+
     }
 
     public static SubjectiveMatchData processSubjectiveData(List<Action> actions, int teamNumber, int matchNumber, boolean isRed) {
@@ -114,6 +116,7 @@ public class DataUtils {
 
         return new SubjectiveMatchData(teamNumber, matchNumber, isRed,
                 stringBuilder.toString());
+        new AllMatchData(teamNumber,matchNumber);
     }
 
     public static PitScoutData processPitData(List<Action> actions, String notes, String motorInfo, int teamNumber) {
@@ -143,6 +146,7 @@ public class DataUtils {
         stringBuilder.append("|Notes: ").append(notes);
         stringBuilder.append("|Motor Info: ").append(motorInfo);
         return new PitScoutData(teamNumber, stringBuilder.toString());
+        new AllMatchData(teamNumber);
     }
 
     public static class Action {
