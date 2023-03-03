@@ -30,8 +30,8 @@
     <string name="error_no_matchnum">Match Number is required</string>
     <string name="error_notnumber_matchnum">Match Number must be a number</string>
     <string name="error_toolong_matchnum">Match Number must be 1–3 digits</string>
-    <string name="red">Red</string>
-    <string name="blue">Blue</string>
+    <string name="red">Red 🔥️</string>
+    <string name="blue">Blue 🧊</string>
     <string name="error_alliance_missing">Alliance is required.</string>
     <string name="empty" />
 
@@ -121,7 +121,7 @@
     <string name="toast_deleting_error">Error Deleting Data.</string>
     <string name="scouting_settings_title">Scouting Settings</string>
     <string name="scouting_settings_key">scoutingsettings</string>
-    <string name="hard_coded_alignments">below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,left;right,right;below,center</string>
-    <string name="margin_sizes">"0;0;100;100;100;100;100;100;100;100;100;100;100;50;100;100;100"</string>
-    <string name="colorings">"-;-;yellow;purple;yellow;purple;yellow;purple;yellow;purple;-;-;-;-;-;-;-;-;-;-;-;-;-;-;"</string>
+    <string name="hard_coded_alignments">below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,left;right,right;below,right</string>
+    <string name="margin_sizes">"0;0;100;100;100;100;100;100;100;100;100;100;100;50;100;100;100;100;100;100;100;100;"</string>
+    <string name="colorings">"-;-;yellow;purple;yellow;purple;yellow;purple;yellow;purple;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;"</string>
 </resources>
