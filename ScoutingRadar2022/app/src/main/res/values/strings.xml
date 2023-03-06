@@ -122,6 +122,6 @@
     <string name="scouting_settings_title">Scouting Settings</string>
     <string name="scouting_settings_key">scoutingsettings</string>
     <string name="hard_coded_alignments">below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,left;right,right;below,right</string>
-    <string name="margin_sizes">"0;0;100;100;100;100;100;100;100;100;100;100;100;50;100;100;100;100;100;100;100;100;"</string>
+    <string name="margin_sizes">"0;0;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;100;"</string>
     <string name="colorings">"-;-;yellow;purple;yellow;purple;yellow;purple;yellow;purple;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;"</string>
 </resources>

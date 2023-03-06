@@ -7,6 +7,7 @@ import static org.stormroboticsnj.scoutingradar2022.UiUtils.ToggleGroupWrapper;
 import static org.stormroboticsnj.scoutingradar2022.database.DataUtils.Action;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -14,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -42,6 +44,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.stormroboticsnj.scoutingradar2022.MainActivity;
 import org.stormroboticsnj.scoutingradar2022.R;
 
 import java.util.Arrays;
@@ -61,6 +64,8 @@ public class ObjectiveMatchFragment extends Fragment {
     private String[] mButtonAbbreviations;
     private boolean hasSpinners;
     private boolean hasButtons;
+
+    public boolean isPhone;
 
     // ViewModel :)
     private ObjectiveScoutingViewModel mViewModel;
@@ -102,9 +107,23 @@ public class ObjectiveMatchFragment extends Fragment {
         mContext = context;
     }
 
+
+//    public Context getApplicationContext() {
+//        return mBase.getApplicationContext();
+//    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TelephonyManager manager = (TelephonyManager) mContext.getApplicationContext().getSystemService(
+                Context.TELEPHONY_SERVICE);
+        if (Objects.requireNonNull(manager).getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+            isPhone = false;
+        } else {
+            isPhone = true;
+        }
     }
 
     @Override
@@ -446,7 +465,10 @@ public class ObjectiveMatchFragment extends Fragment {
      * @return a ButtonInfo about the created Button
      */
 
+
+
     private ButtonInfo setupNewButton(int index, ConstraintSet constraintSet, int previousId, int styleAttr, String alignmentInfo, int marginSize, String color) {
+
         // Create the button
         Button button = new MaterialButton(mContext, null, styleAttr);
         // Generate a unique id for the button
@@ -471,6 +493,10 @@ public class ObjectiveMatchFragment extends Fragment {
         constraintSet.clone(mConstraintLayout);
         // Connect the button to the previous button
         chainViewsVertically(constraintSet, previousId, buttonId);
+        // Change marginSize if it's a phone or tablet
+        if (isPhone == true) {
+            marginSize -= 60;
+        }
         // Adjust the button's alignment
         adjustAlignment(constraintSet, buttonId, alignmentInfo.split(",")[1], marginSize);
 
