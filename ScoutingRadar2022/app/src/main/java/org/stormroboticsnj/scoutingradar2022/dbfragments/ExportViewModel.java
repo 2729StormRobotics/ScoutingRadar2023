@@ -61,7 +61,7 @@ public class ExportViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .map(DataUtils::compressData)
                 .map((arr) -> (new BarcodeEncoder()).encodeBitmap(
-                        "OBJ" + Base64.encodeToString(arr, Base64.DEFAULT),
+                        "OBJ" + Base64.encodeToString(arr, Base64.NO_WRAP),
                         BarcodeFormat.QR_CODE, size, size));
     }
 
