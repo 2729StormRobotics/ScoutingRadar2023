@@ -30,8 +30,8 @@
     <string name="error_no_matchnum">Match Number is required</string>
     <string name="error_notnumber_matchnum">Match Number must be a number</string>
     <string name="error_toolong_matchnum">Match Number must be 1–3 digits</string>
-    <string name="red">Red 🔥️</string>
-    <string name="blue">Blue 🧊</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
     <string name="error_alliance_missing">Alliance is required.</string>
     <string name="empty" />
 
