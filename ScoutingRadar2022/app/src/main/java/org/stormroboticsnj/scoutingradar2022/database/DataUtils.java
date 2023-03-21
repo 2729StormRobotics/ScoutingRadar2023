@@ -116,7 +116,7 @@ public class DataUtils {
                 stringBuilder.toString());
     }
 
-    public static PitScoutData processPitData(List<Action> actions, String notes, String motorInfo, int teamNumber) {
+    public static PitScoutData processPitData(List<Action> actions, String motorInfo, String motorInfo2, String motorInfo3,int teamNumber) {
         List<Action> actionsCopy = new ArrayList<>(actions);
 
         // Make a map of action names to comma separated timestamps
@@ -140,8 +140,9 @@ public class DataUtils {
         if (stringBuilder.length() > 0) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
-        stringBuilder.append("|Notes: ").append(notes);
-        stringBuilder.append("|Motor Info: ").append(motorInfo);
+        stringBuilder.append("|Notes: ").append(motorInfo3);
+        stringBuilder.append("|Motor Info: ").append(motorInfo + ", " + motorInfo2);
+//        stringBuilder.append("|Motor Info2:").append(motorInfo2);
         return new PitScoutData(teamNumber, stringBuilder.toString());
     }
 

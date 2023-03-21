@@ -59,8 +59,9 @@ public class PitScoutFragment extends Fragment {
     private ConstraintLayout mConstraintLayout;
     // Actions List TextView
     private UiUtils.TextInputWrapper mTeamNumTextInput;
-    private UiUtils.TextInputWrapper mNotesTextInput;
     private UiUtils.TextInputWrapper mMotorInfoTextInput;
+    private UiUtils.TextInputWrapper mMotorInfoTextInput2;
+    private UiUtils.TextInputWrapper mMotorInfoTextInput3;
     private int mConstraintLayoutId;
     private Button mSubmitButton;
 
@@ -94,9 +95,11 @@ public class PitScoutFragment extends Fragment {
 
         mTeamNumTextInput =
                 new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_team_num));
-        mNotesTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_notes));
 
         mMotorInfoTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo));
+        mMotorInfoTextInput2 = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo2));
+        mMotorInfoTextInput3 = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo3));
+
 
         return v;
     }
@@ -224,7 +227,7 @@ public class PitScoutFragment extends Fragment {
         mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
         // Set up first spinner
         mSpinnerInfos[0] = mSpinnerInfos[0] =
-                setupNewSpinner(0, constraintSet, mMotorInfoTextInput.getInputLayout().getId());
+                setupNewSpinner(0, constraintSet, mMotorInfoTextInput3.getInputLayout().getId());
         // Set up the rest of the spinners
         for (int i = 1; i < SPINNER_NAMES.length; i++) {
             mSpinnerInfos[i] =
@@ -263,12 +266,16 @@ public class PitScoutFragment extends Fragment {
             mActionsViewModel.processAndSaveData(
                     parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
-                    Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
-                           .getText()
-                           .toString(),
+
                     Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO MOTOR INFO EDIT TEXT")
                            .getText()
-                           .toString()
+                           .toString(),
+                    Objects.requireNonNull(mMotorInfoTextInput2.getEditText(), "NO MOTOR INFO EDIT TEXT 2")
+                            .getText()
+                            .toString(),
+                    Objects.requireNonNull(mMotorInfoTextInput3.getEditText(), "NO MOTOR INFO EDIT TEXT 3")
+                            .getText()
+                            .toString()
 
             );
 
