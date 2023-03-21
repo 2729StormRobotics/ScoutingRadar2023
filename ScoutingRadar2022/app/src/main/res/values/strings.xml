@@ -46,7 +46,11 @@
     <string name="start_bluetooth_scan">Start Bluetooth Scan</string>
     <string name="stop_bluetooth_scan">Stop Bluetooth Scan</string>
     <string name="notes">Notes</string>
-    <string name="motorInfo">Length, Width, Min Height, Max Height, Weight</string>
+    <string name="motorInfo">Width with Bumpers</string>
+    <string name="motorInfo2">Weight</string>
+    <string name="motorInfo3">Auto Path: numGamePiece/where + where(opt.)/mobility?/balance?</string>
+
+
 
     <string name="pref_key_dark">dark_mode_key</string>
     <string name="pref_value_dark_dark">dark</string>
@@ -121,7 +125,7 @@
     <string name="toast_deleting_error">Error Deleting Data.</string>
     <string name="scouting_settings_title">Scouting Settings</string>
     <string name="scouting_settings_key">scoutingsettings</string>
-    <string name="hard_coded_alignments">below,center;below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,center;</string>
-    <string name="margin_sizes">"0;0;0;100;100;100;100;100;100;100;100;"</string>
-    <string name="colorings">"-;-;-;yellow;purple;yellow;purple;-;-;-;-;"</string>
+    <string name="hard_coded_alignments">below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,left;right,right;right,center;right,right;below,left;right,right;below,right</string>
+    <string name="margin_sizes">"0;0;100;100;100;100;100;100;100;100;100;100;100;50;100;100;100;100;100;100;100;100;"</string>
+    <string name="colorings">"-;-;yellow;purple;yellow;purple;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;-;"</string>
 </resources>
