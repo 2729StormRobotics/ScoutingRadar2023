@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="pit_text_something" type="id" />
-    <item name="pit_text_input_motorInfo2" type="id"/>
-
 </resources>

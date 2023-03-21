@@ -61,8 +61,6 @@ public class PitScoutFragment extends Fragment {
     private UiUtils.TextInputWrapper mTeamNumTextInput;
     private UiUtils.TextInputWrapper mNotesTextInput;
     private UiUtils.TextInputWrapper mMotorInfoTextInput;
-
-    private UiUtils.TextInputWrapper mMotorInfo2TextInput;
     private int mConstraintLayoutId;
     private Button mSubmitButton;
 
@@ -99,8 +97,6 @@ public class PitScoutFragment extends Fragment {
         mNotesTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_notes));
 
         mMotorInfoTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo));
-
-        mMotorInfo2TextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo2));
 
         return v;
     }
@@ -228,7 +224,7 @@ public class PitScoutFragment extends Fragment {
         mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
         // Set up first spinner
         mSpinnerInfos[0] = mSpinnerInfos[0] =
-                setupNewSpinner(0, constraintSet, mMotorInfo2TextInput.getInputLayout().getId());
+                setupNewSpinner(0, constraintSet, mMotorInfoTextInput.getInputLayout().getId());
         // Set up the rest of the spinners
         for (int i = 1; i < SPINNER_NAMES.length; i++) {
             mSpinnerInfos[i] =
@@ -272,10 +268,7 @@ public class PitScoutFragment extends Fragment {
                            .toString(),
                     Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO MOTOR INFO EDIT TEXT")
                            .getText()
-                           .toString(),
-                    Objects.requireNonNull(mMotorInfo2TextInput.getEditText(), "NO MOTOR INFO 2 EDIT TEXT")
-                            .getText()
-                            .toString()
+                           .toString()
 
             );
 
