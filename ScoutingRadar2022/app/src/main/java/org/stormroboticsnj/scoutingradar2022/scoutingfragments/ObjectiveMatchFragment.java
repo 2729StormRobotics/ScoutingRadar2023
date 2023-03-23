@@ -44,6 +44,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.stormroboticsnj.scoutingradar2022.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -171,12 +172,13 @@ public class ObjectiveMatchFragment extends Fragment {
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Get all of the spinner contents
-        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_obj_spinner),
-                null);
-
+        Object[] array = sharedPreferences.getStringSet(
+                getString(R.string.pref_key_obj_spinner),
+                null).toArray();
+        String[] set = Arrays.copyOf(array, array.length, String[].class);
         if (set != null) {
-            mSpinnerContents = new String[set.size()][];
-            mSpinnerNames = new String[set.size()];
+            mSpinnerContents = new String[set.length][];
+            mSpinnerNames = new String[set.length];
             // Split the spinner contents into arrays
             int i = 0;
             for (String s : set) {
@@ -457,8 +459,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set the text of the button
         button.setText(mButtonNames[index]);
         // This fragment is the listener for the button
-        button.setOnClickListener(this::onButtonClick);
-        // Change the color of the button
+        button.setOnClickListener(this::onButtonClick);        // Change the color of the button
         if (color.equals("yellow")) {
             button.setBackgroundColor(getResources().getColor(R.color.coneYellow));
         }
