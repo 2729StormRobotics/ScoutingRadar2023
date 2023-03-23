@@ -22,11 +22,11 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences pref = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        String themeName = pref.getString(getString(R.string.pref_key_team), getString(R.string.pref_value_team_charge));
-        if (themeName.equals(getString(R.string.pref_value_team_charge))) {
-            setTheme(R.style.Theme_ScoutingRadar2022_Charge);
-        } else {
+        String themeName = pref.getString(getString(R.string.pref_key_team), getString(R.string.pref_value_team_redwatch));
+        if (themeName.equals(getString(R.string.pref_value_team_redwatch))) {
             setTheme(R.style.Theme_ScoutingRadar2022_RedWatch);
+        } else {
+            setTheme(R.style.Theme_ScoutingRadar2022_Charge);
         }
 
         super.onCreate(savedInstanceState);

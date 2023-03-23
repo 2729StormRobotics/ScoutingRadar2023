@@ -45,12 +45,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.stormroboticsnj.scoutingradar2022.R;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
 public class ObjectiveMatchFragment extends Fragment {
 
-    private static final int BUTTON_MARGIN = 8;
+    private static final int BUTTON_MARGIN = 30;
 
     private ButtonInfo[] mButtonInfos;
     private SpinnerInfo[] mSpinnerInfos;
@@ -185,7 +186,24 @@ public class ObjectiveMatchFragment extends Fragment {
                 mSpinnerNames[i] = split[0];
                 i++;
             }
+            // Sorts the mSpinnerNames array with the sort method
+            Arrays.sort(mSpinnerNames);
+            // Sorts the mSpinnerContents array with the sort method
+            // but we add a compare method because it's a 2D array
+            Arrays.sort(mSpinnerContents, new Comparator<String[]>() {
+                @Override
+                public int compare(String[] first, String[] second) {
+                    return String.valueOf(first[0]).compareTo(
+                            String.valueOf(second[0])
+                    );
+                }
+            });
+            // Replaces the numbers in the mSpinnerContents array
+            for (int j = 0; j < mSpinnerContents.length; j++) {
+                String toBeReplaced = mSpinnerContents[j][0].substring(0,2);
+                mSpinnerContents[j][0] = mSpinnerContents[j][0].replace(toBeReplaced, "");
 
+            }
             hasSpinners = mSpinnerNames.length > 0;
         } else {
             // Preference has never been set; use default options.
@@ -234,8 +252,8 @@ public class ObjectiveMatchFragment extends Fragment {
             String[] buttonAbbreviationsCopy = new String[mButtonAbbreviations.length + 3];
 
             buttonNamesCopy[0] = "Start";
-            buttonNamesCopy[buttonNamesCopy.length - 1] = "Submit";
-            buttonNamesCopy[buttonNamesCopy.length - 2] = "Undo";
+            buttonNamesCopy[buttonNamesCopy.length - 1] = "Submit \uD83D\uDC4D";
+            buttonNamesCopy[buttonNamesCopy.length - 2] = "Undo ↶";
 
             buttonAbbreviationsCopy[0] = "START";
             buttonAbbreviationsCopy[buttonAbbreviationsCopy.length - 1] = "SUBMIT";
