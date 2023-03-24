@@ -196,7 +196,6 @@ public class PitScoutFragment extends Fragment {
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
                 String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0,2);
                 SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
-
             }
 
         } else {

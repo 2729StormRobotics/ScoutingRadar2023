@@ -183,7 +183,6 @@ public class SubjectiveMatchFragment extends Fragment {
             // Replaces the numbers in the mSpinnerContents array
             for (int j = 0; j < mSpinnerContents.length; j++) {
                 String toBeReplaced = mSpinnerContents[j][0].substring(0,2);
-                mSpinnerNames[j] = mSpinnerNames[j].replace(toBeReplaced, "");
                 mSpinnerContents[j][0] = mSpinnerContents[j][0].replace(toBeReplaced, "");
 
             }
