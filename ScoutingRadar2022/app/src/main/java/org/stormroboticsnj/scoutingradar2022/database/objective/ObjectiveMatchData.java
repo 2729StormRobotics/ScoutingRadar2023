@@ -7,6 +7,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 //defines the table and the identifier for each row
 @Entity(tableName = "objective_matches", primaryKeys = {"team_num", "match_num"})
 
@@ -56,15 +58,31 @@ public class ObjectiveMatchData {
 
     @Nullable
     public static ObjectiveMatchData valueOf(String string) {
-        String[] values = string.split(";");
-        if (values.length == 4) {
+
+        String[] values = string.split(";", 4);
+
+        String index3 = values[3];
+        String[] newValues = index3.split("\\|");
+
+        int valueLength = values.length;
+        int newValueLength = newValues.length;
+//        values = ArrayUtils.removeElement(values, index3);
+
+
+        String[] combinedArrays = new String[valueLength + newValueLength];
+        System.arraycopy(values, 0, combinedArrays,0,valueLength);
+        System.arraycopy(newValues, 0, combinedArrays,valueLength,newValueLength);
+
+//        newValues.split("|");
+//        values = string.split("|");
+//        if (values.length == 4) {
             try {
                 return new ObjectiveMatchData(Integer.parseInt(values[0]),
                         Integer.parseInt(values[1]), Integer.parseInt(values[2]) == 1, values[3]);
             } catch (NumberFormatException e){
                 Log.e("Objective Match Data", "Non number team number", e);
             }
-        }
+//        }
         return null;
     }
 

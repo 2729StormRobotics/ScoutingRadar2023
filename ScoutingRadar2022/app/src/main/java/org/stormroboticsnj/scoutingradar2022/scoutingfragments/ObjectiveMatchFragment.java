@@ -446,7 +446,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set up the submit button
         mButtonInfos[mButtonInfos.length - 2] =
                 setupNewButton(mButtonInfos.length - 2, constraintSet, lastId,
-                        R.attr.materialButtonStyle, "below,left", 300, "none");
+                        R.attr.materialButtonStyle, "below,left", 250, "none");
 
         // Submit button is enabled if there is no start button
         mButtonInfos[mButtonInfos.length - 2].button.setEnabled(!hasButtons);
@@ -454,7 +454,7 @@ public class ObjectiveMatchFragment extends Fragment {
         // Set up the undo button
         mButtonInfos[mButtonInfos.length - 1] =
                 setupNewButton(mButtonInfos.length - 1, constraintSet, lastId,
-                        R.attr.materialButtonOutlinedStyle, "below,right", 300, "none");
+                        R.attr.materialButtonOutlinedStyle, "below,right", 250, "none");
     }
 
     /**
