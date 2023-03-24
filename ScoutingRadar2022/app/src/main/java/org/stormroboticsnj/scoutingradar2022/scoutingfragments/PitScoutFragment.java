@@ -59,9 +59,8 @@ public class PitScoutFragment extends Fragment {
     private ConstraintLayout mConstraintLayout;
     // Actions List TextView
     private UiUtils.TextInputWrapper mTeamNumTextInput;
+    private UiUtils.TextInputWrapper mNotesTextInput;
     private UiUtils.TextInputWrapper mMotorInfoTextInput;
-    private UiUtils.TextInputWrapper mMotorInfoTextInput2;
-    private UiUtils.TextInputWrapper mMotorInfoTextInput3;
     private int mConstraintLayoutId;
     private Button mSubmitButton;
 
@@ -95,11 +94,10 @@ public class PitScoutFragment extends Fragment {
 
         mTeamNumTextInput =
                 new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_team_num));
+        mNotesTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_notes));
 
-        mMotorInfoTextInput = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo));
-        mMotorInfoTextInput2 = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo2));
-        mMotorInfoTextInput3 = new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo3));
-
+        mMotorInfoTextInput =
+                new UiUtils.TextInputWrapper(v.findViewById(R.id.pit_text_input_motorInfo));
 
         return v;
     }
@@ -137,14 +135,14 @@ public class PitScoutFragment extends Fragment {
             String temp;
             for (int j = 0; j < SPINNER_NAMES.length; j++) {
                 for (int k = 0; k < SPINNER_NAMES.length; k++) {
-                    String stringJ = SPINNER_NAMES[j].substring(0,2);
-                    if (stringJ.contains(".")){
+                    String stringJ = SPINNER_NAMES[j].substring(0, 2);
+                    if (stringJ.contains(".")) {
                         stringJ = stringJ.replace(".", "");
                     }
                     int intJ = Integer.valueOf(parseInt(stringJ));
 
-                    String stringK = SPINNER_NAMES[k].substring(0,2);
-                    if (stringK.contains(".")){
+                    String stringK = SPINNER_NAMES[k].substring(0, 2);
+                    if (stringK.contains(".")) {
                         stringK = stringK.replace(".", "");
                     }
                     int intK = Integer.valueOf(parseInt(stringK));
@@ -163,14 +161,14 @@ public class PitScoutFragment extends Fragment {
             String[] temp2;
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
                 for (int k = 0; k < SPINNER_CONTENTS.length; k++) {
-                    String stringJ = SPINNER_CONTENTS[j][0].substring(0,2);
-                    if (stringJ.contains(".")){
+                    String stringJ = SPINNER_CONTENTS[j][0].substring(0, 2);
+                    if (stringJ.contains(".")) {
                         stringJ = stringJ.replace(".", "");
                     }
                     int intJ = Integer.valueOf(parseInt(stringJ));
 
-                    String stringK = SPINNER_CONTENTS[k][0].substring(0,2);
-                    if (stringK.contains(".")){
+                    String stringK = SPINNER_CONTENTS[k][0].substring(0, 2);
+                    if (stringK.contains(".")) {
                         stringK = stringK.replace(".", "");
                     }
                     int intK = Integer.valueOf(parseInt(stringK));
@@ -183,19 +181,23 @@ public class PitScoutFragment extends Fragment {
                     }
                 }
             }
-            // Replaces the 1s and dots in the contents with ""
+//            // Replaces the 1s and dots in the contents with ""
+//            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
+//                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0, 1);
+//                if (!(toBeReplaced.contains("1"))) {
+//                    SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+//                }
+//
+//            }
+
             for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
-                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0, 1);
-                if (!(toBeReplaced.contains("1"))) {
-                    SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
-
-                }
-
-            }
-
-            for (int j = 0; j < SPINNER_CONTENTS.length; j++) {
-                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0,2);
-                SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
+                String toBeReplaced = SPINNER_CONTENTS[j][0].substring(0, 2);
+//                SPINNER_NAMES[j] = SPINNER_NAMES[j].replace(toBeReplaced, "");
+                SPINNER_NAMES[j] = SPINNER_NAMES[j].substring(
+                        SPINNER_NAMES[j].indexOf(".") + 2);
+                SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].substring(
+                        SPINNER_CONTENTS[j][0].indexOf(".") + 2);
+//                SPINNER_CONTENTS[j][0] = SPINNER_CONTENTS[j][0].replace(toBeReplaced, "");
 
             }
 
@@ -227,7 +229,7 @@ public class PitScoutFragment extends Fragment {
         mSpinnerInfos = new SpinnerInfo[SPINNER_NAMES.length];
         // Set up first spinner
         mSpinnerInfos[0] = mSpinnerInfos[0] =
-                setupNewSpinner(0, constraintSet, mMotorInfoTextInput3.getInputLayout().getId());
+                setupNewSpinner(0, constraintSet, mMotorInfoTextInput.getInputLayout().getId());
         // Set up the rest of the spinners
         for (int i = 1; i < SPINNER_NAMES.length; i++) {
             mSpinnerInfos[i] =
@@ -266,16 +268,13 @@ public class PitScoutFragment extends Fragment {
             mActionsViewModel.processAndSaveData(
                     parseInt(Objects.requireNonNull(mTeamNumTextInput.getEditText(),
                             "NO TEAM NUM EDIT TEXT").getText().toString()),
-
-                    Objects.requireNonNull(mMotorInfoTextInput.getEditText(), "NO MOTOR INFO EDIT TEXT")
+                    Objects.requireNonNull(mNotesTextInput.getEditText(), "NO NOTES EDIT TEXT")
                            .getText()
                            .toString(),
-                    Objects.requireNonNull(mMotorInfoTextInput2.getEditText(), "NO MOTOR INFO EDIT TEXT 2")
-                            .getText()
-                            .toString(),
-                    Objects.requireNonNull(mMotorInfoTextInput3.getEditText(), "NO MOTOR INFO EDIT TEXT 3")
-                            .getText()
-                            .toString()
+                    Objects.requireNonNull(mMotorInfoTextInput.getEditText(),
+                                   "NO MOTOR INFO EDIT TEXT")
+                           .getText()
+                           .toString()
 
             );
 
@@ -312,7 +311,8 @@ public class PitScoutFragment extends Fragment {
 
         return button;
     }
-//    private TextInputEditText setupNewTextbox() {
+
+    //    private TextInputEditText setupNewTextbox() {
 //
 //    }
     private SpinnerInfo setupNewSpinner(int index, ConstraintSet constraintSet, int previousId) {

@@ -33,6 +33,24 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
+        <com.google.android.material.textfield.TextInputLayout
+                android:hint="@string/notes"
+                android:id="@+id/pit_text_input_notes"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.812"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pit_text_input_team_num"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pit_edit_notes"
+                    android:inputType="textMultiLine"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
                 android:hint="@string/motorInfo"
@@ -43,7 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.812"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pit_text_input_team_num"
+                app:layout_constraintTop_toBottomOf="@id/pit_text_input_notes"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/pit_edit_motorInfo"
@@ -51,45 +69,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-                android:hint="@string/motorInfo2"
-                android:id="@+id/pit_text_input_motorInfo2"
-                android:layout_width="match_parent"
-                android:layout_margin="16dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.812"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pit_text_input_motorInfo"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/pit_edit_motorInfo2"
-                    android:inputType="textMultiLine"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-                android:hint="@string/motorInfo3"
-                android:id="@+id/pit_text_input_motorInfo3"
-                android:layout_width="match_parent"
-                android:layout_margin="16dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.812"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pit_text_input_motorInfo2"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/pit_edit_motorInfo3"
-                    android:inputType="textMultiLine"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

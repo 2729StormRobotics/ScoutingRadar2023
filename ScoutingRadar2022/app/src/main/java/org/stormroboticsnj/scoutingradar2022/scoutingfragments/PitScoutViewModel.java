@@ -36,10 +36,10 @@ public class PitScoutViewModel extends AndroidViewModel {
         mSubjectiveRepository.insert(data);
     }
 
-    public void processAndSaveData(int teamNumber, String motorInfo, String motorInfo2, String motorInfo3) {
+    public void processAndSaveData(int teamNumber, String notes, String motorInfo) {
         new Thread(() -> {
             PitScoutData data =
-                    DataUtils.processPitData(mActions, motorInfo,motorInfo2, motorInfo3, teamNumber);
+                    DataUtils.processPitData(mActions, notes, motorInfo, teamNumber);
             saveMatch(data);
         }).start();
     }
