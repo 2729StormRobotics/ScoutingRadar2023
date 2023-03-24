@@ -46,6 +46,7 @@ import org.stormroboticsnj.scoutingradar2022.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -186,6 +187,23 @@ public class ObjectiveMatchFragment extends Fragment {
                 mSpinnerContents[i] = split[1].split(",");
                 mSpinnerNames[i] = split[0];
                 i++;
+            }
+            // Sorts the mSpinnerNames array with the sort method
+            Arrays.sort(mSpinnerNames);
+            // Sorts the mSpinnerContents array with the sort method
+            // but we add a compare method because it's a 2D array
+            Arrays.sort(mSpinnerContents, new Comparator<String[]>() {
+                public int compare(String[] first, String[] second) {
+                    return String.valueOf(first[0]).compareTo(
+                            String.valueOf(second[0])
+                    );
+                }
+            });
+            // Replaces the numbers in the mSpinnerContents array
+            for (int j = 0; j < mSpinnerContents.length; j++) {
+                String toBeReplaced = mSpinnerContents[j][0].substring(0,2);
+                mSpinnerNames[j] = mSpinnerNames[j].replace(toBeReplaced, "");
+                mSpinnerContents[j][0] = mSpinnerContents[j][0].replace(toBeReplaced, "");
             }
 
             hasSpinners = mSpinnerNames.length > 0;

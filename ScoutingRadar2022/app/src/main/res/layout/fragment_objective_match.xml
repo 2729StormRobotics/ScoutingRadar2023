@@ -29,7 +29,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/objective_edit_team_number"
                     android:inputType="number"
-                    android:layout_height="45dp"
+                    android:layout_height="60dp"
                     android:layout_width="match_parent" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,7 +50,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="60dp"
                     android:id="@+id/objective_edit_match_number"
                     android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -163,13 +163,13 @@
                 android:id="@+id/textView2"
                 android:layout_height="40dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="48dp"
                 android:layout_width="80dp"
                 android:text="CONE"
                 android:textAlignment="center"
                 android:textColor="@color/chargePrimaryTextColor"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_margin"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/textView"
                 app:layout_constraintHorizontal_bias="0.695"
                 app:layout_constraintStart_toStartOf="parent"
@@ -179,13 +179,13 @@
                 android:id="@+id/textView3"
                 android:layout_height="40dp"
                 android:layout_marginEnd="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="48dp"
                 android:layout_width="80dp"
                 android:text="CUBE"
-                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textColor="@color/chargePrimaryTextColor"
                 android:textSize="@dimen/text_margin"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.404"
                 app:layout_constraintStart_toEndOf="@+id/textView"
