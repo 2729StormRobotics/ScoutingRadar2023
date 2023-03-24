@@ -15,7 +15,7 @@ android {
         applicationId "org.stormroboticsnj.scoutingradar2022"
         minSdk 19
         targetSdk 32
-        versionCode 7
+        versionCode 9
         versionName "1.4"
         multiDexEnabled true
 
