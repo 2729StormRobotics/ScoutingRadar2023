@@ -1,0 +1,42 @@
+# Scouting Radar Configuration File
+
+# There are four sections in this file: [objective_buttons], [objective_spinners], [subjective], and [pit].
+
+[objective_buttons]
+Names=Left Community,Pin,  Ground Pickup  , Ground Pickup  ,   Substation Pickup   ,  Substation Pickup   ,Low,Mid,High
+Abbreviations=LC,PIN,GCO,GCU,SCO,SCU,GL,GM,GH
+
+# Objective Spinners are the drop-down menus that appear during Objective Scouting.
+# The key is the name of the spinner/drop-down, and the value is a list of comma-separated options for the spinner.
+[objective_spinners]
+1. Docked = 1. None,Auto,Endgame,Auto & Endgame
+2. Engaged = 2. None,Auto,Endgame,Auto & Endgame
+3. Alliance_Links = 3. 0,1,2,3,4,5,6,7,8,9
+4. Technical_Issues = 4. No,Yes
+
+# Subjective is the drop-down menus that appear during Subjective Scouting.
+[subjective]
+1. Driver_Skill = 1. 1,2,3,4,5
+2. Defense_Skill = 2. 1,2,3,4,5
+3. Teamwork_Skill = 3. 1,2,3,4,5
+4. Parking_Skill = 4. 1,2,3,4,5
+5. Engaging_Skill = 5. 1,2,3,4,5
+6. Co-Op_Bonus = 6. Yes, No
+
+# Pit is the drop-down menus that appear during Pit Scouting.
+[pit]   
+1. Driver_Age = 1. 1,2,3,4
+2. Drivetrain = 2. Tank,Swerve,Mecanum,Other
+3. Game_Pieces = 3. Cone,Cube,Both
+4. Pickup_Preference_1 = 4. Ground,Shelf,Chute,Drop,N/A
+5. Pickup_Preference_2 = 5. Ground,Shelf,Chute,Drop,N/A
+6. Pickup_Preference_3 = 6. Ground,Shelf,Chute,Drop,N/A
+7. Pickup_Preference_4 = 7. Ground,Shelf,Chute,Drop,N/A
+8. Scoring_Preference_1 = 8. Low,Mid,High,N/A
+9. Scoring_Preference_2 = 9. Low,Mid,High,N/A
+10. Scoring_Preference_3 = 10. Low,Mid,High,N/A
+11. Auto_Object_Preference = 11. Cube,Cone
+12. Docking = 12. Auto,Endgame,Both,Neither
+13. Engaging = 13. Auto,Endgame,Both,Neither
+14. Primary_Motor_Type_for_DriveTrain = 14. Falcon,Neo,CIM
+15. Number_of_DriveTrain_Motors = 15. 2,3,4,5,6,7,8
