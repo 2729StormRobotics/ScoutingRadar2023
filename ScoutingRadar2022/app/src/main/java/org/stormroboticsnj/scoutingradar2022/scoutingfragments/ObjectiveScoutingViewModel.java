@@ -63,11 +63,11 @@ public class ObjectiveScoutingViewModel extends AndroidViewModel {
         mRepository.insert(matchData);
     }
 
-    public void processAndSaveMatch(List<DataUtils.Action> actions, int teamNumber, int matchNumber, String initials, String notes, boolean isRed) {
+    public void processAndSaveMatch(List<DataUtils.Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
         mIsMatchRunning = false;
         new Thread(() -> {
             ObjectiveMatchData data =
-                    DataUtils.processObjectiveMatchData(actions, teamNumber, matchNumber, initials, notes, isRed);
+                    DataUtils.processObjectiveMatchData(actions, teamNumber, matchNumber, notes, isRed);
             saveMatch(data);
         }).start();
     }
