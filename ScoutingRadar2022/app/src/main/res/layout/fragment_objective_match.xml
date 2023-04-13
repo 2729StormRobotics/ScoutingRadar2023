@@ -55,27 +55,7 @@
                     android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/objective_text_input_match_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/user_initial"
-                android:id="@+id/objective_text_input_user_initial"
-                android:layout_margin="4dp"
-                app:counterMaxLength="4"
-                app:counterEnabled="true"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 
-                >
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/objective_edit_user_initial"
-                    android:inputType="textMultiLine"
-                    android:layout_height="60dp"
-                    android:layout_width="match_parent" />
-        </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -89,7 +69,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/objective_text_input_user_initial"
+                app:layout_constraintTop_toBottomOf="@id/objective_text_input_match_number"
                 app:selectionRequired="true"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"

@@ -85,7 +85,6 @@ public class ObjectiveMatchFragment extends Fragment {
     private TextInputWrapper mMatchNumTextInput;
     private TextInputWrapper mNotesTextInput;
 
-    private TextInputWrapper mInitialTextInput;
 
     private ToggleGroupWrapper mAllianceToggleGroup;
     private MaterialButton mRedButton;
@@ -146,8 +145,7 @@ public class ObjectiveMatchFragment extends Fragment {
                 new TextInputWrapper(v.findViewById(R.id.objective_text_input_match_number));
         mNotesTextInput =
                 new TextInputWrapper(v.findViewById(R.id.objective_text_input_notes));
-        mInitialTextInput =
-                new TextInputWrapper((v.findViewById(R.id.objective_text_input_user_initial)));
+
 
         // Toggle Groups also go in a wrapper because multiple watchers causes problems
         mAllianceToggleGroup =
@@ -266,8 +264,8 @@ public class ObjectiveMatchFragment extends Fragment {
             String[] buttonAbbreviationsCopy = new String[mButtonAbbreviations.length + 3];
 
             buttonNamesCopy[0] = "Start";
-            buttonNamesCopy[buttonNamesCopy.length - 1] = "Submit 👍";
-            buttonNamesCopy[buttonNamesCopy.length - 2] = "Undo ↶";
+            buttonNamesCopy[buttonNamesCopy.length - 1] = "Submit";
+            buttonNamesCopy[buttonNamesCopy.length - 2] = "Undo";
 
             buttonAbbreviationsCopy[0] = "START";
             buttonAbbreviationsCopy[buttonAbbreviationsCopy.length - 1] = "SUBMIT";
@@ -357,7 +355,6 @@ public class ObjectiveMatchFragment extends Fragment {
                             "Action list is null"),
                     Integer.parseInt(mTeamNumTextInput.getEditText().getText().toString()),
                     Integer.parseInt(mMatchNumTextInput.getEditText().getText().toString()),
-                    mInitialTextInput.getEditText().getText().toString(),
                     mNotesTextInput.getEditText().getText().toString(),
                     // isRed boolean: check if the checked button == red
                     mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() ==

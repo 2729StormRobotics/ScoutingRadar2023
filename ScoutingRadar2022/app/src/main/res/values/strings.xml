@@ -31,8 +31,8 @@
     <string name="error_no_matchnum">Match Number is required</string>
     <string name="error_notnumber_matchnum">Match Number must be a number</string>
     <string name="error_toolong_matchnum">Match Number must be 1–3 digits</string>
-    <string name="red">Red 👺</string>
-    <string name="blue">Blue 🥶</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
     <string name="error_alliance_missing">Alliance is required.</string>
     <string name="empty" />
 
@@ -78,7 +78,7 @@
     <string name="configure_scouting">Configure Scouting</string>
     <string name="upload_config_file">Choose File…</string>
     <string name="error_reading_file">Error reading file.</string>
-    <string name="button_submit">Submit 👍</string>
+    <string name="button_submit">Submit</string>
     <string name="home_welcome">Welcome to Scouting Radar. To get started, use the options menu on the top right to import a scouting configuration. To start scouting, use the + button below. For more information, visit our website.</string>
     <string name="scouting_radar_logo">Scouting Radar Logo</string>
     <string name="fab_title_pit">Pit Scout</string>
