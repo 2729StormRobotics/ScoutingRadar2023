@@ -34,8 +34,21 @@
 
     <!-- Scouting Fields -->
     <string-array name="pit_spinners">
-        <item>Driver Age:1,2,3,4</item>
-        <item>Drivetrain:Tank,Swerve,Mecanum,Other</item>
+        <item>1. Driver_Age:1,2,3,4</item>
+        <item>2. Drivetrain:Tank,Swerve,Mecanum,Other</item>
+        <item>3. Game_Pieces:Cone,Cube,Both</item>
+        <item>4. Pickup_Preference_1:Ground,Shelf,Chute,Drop,N/A</item>
+        <item>5. Pickup_Preference_2:Ground,Shelf,Chute,Drop,N/A</item>
+        <item>6. Pickup_Preference_3:Ground,Shelf,Chute,Drop,N/A</item>
+        <item>7. Pickup_Preference_4:Ground,Shelf,Chute,Drop,N/A</item>
+        <item>8. Scoring_Preference_1:Low,Mid,High,N/A</item>
+        <item>9. Scoring_Preference_2:Low,Mid,High,N/A</item>
+        <item>10. Scoring_Preference_3:Low,Mid,High,N/A</item>
+        <item>11. Auto_Object_Preference:Cube,Cone</item>
+        <item>12. Docking:Auto,Endgame,Both,Neither</item>
+        <item>13. Engaging:Auto,Endgame,Both,Neither</item>
+        <item>14. Primary_Motor_Type_for_DriveTrain:Falcon,Neo,CIM</item>
+        <item>15. Number_of_DriveTrain_Motors:2,3,4,5,6,7,8</item>
     </string-array>
 
     <string-array name="sub_spinners">
@@ -44,16 +57,22 @@
     </string-array>
 
     <string-array name="obj_spinners">
-        <item>Endgame Position:Low,Mid,High,Traverse</item>
+        <item>Docked:None,Auto,Endgame,Auto &amp; Endgame</item>
+        <item>Engaged:None,Auto,Endgame,Auto &amp; Endgame</item>
+        <item>Alliance Links:0,1,2,3,4,5,6,7,8,9</item>
+        <item>Technical Issues:No,Yes</item>
     </string-array>
 
     <string-array name="obj_buttons">
-        <item>Acquire:AQ</item>
-        <item>Lower Hub:LH</item>
-        <item>Upper Hub:UH</item>
-        <item>Miss:MS</item>
-        <item>Start Climb:SC</item>
-        <item>End Climb:EC</item>
+        <item>Left Community:LC</item>
+        <item>Pin:PIN</item>
+        <item>Ground Pickup:GCO</item>
+        <item>Ground Pickup:GCU</item>
+        <item>Substation Pickup:SCO</item>
+        <item>Substation Pickup:SCU</item>
+        <item>Low:GL</item>
+        <item>Mid:GM</item>
+        <item>High:GH</item>
     </string-array>
 
 </resources>

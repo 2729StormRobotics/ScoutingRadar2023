@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -64,6 +65,8 @@ public class ObjectiveMatchFragment extends Fragment {
     private boolean hasSpinners;
     private boolean hasButtons;
 
+    private boolean isPhone;
+
     // ViewModel :)
     private ObjectiveScoutingViewModel mViewModel;
     // Context :))
@@ -81,6 +84,8 @@ public class ObjectiveMatchFragment extends Fragment {
     private TextInputWrapper mTeamNumTextInput;
     private TextInputWrapper mMatchNumTextInput;
     private TextInputWrapper mNotesTextInput;
+
+    private TextInputWrapper mInitialTextInput;
 
     private ToggleGroupWrapper mAllianceToggleGroup;
     private MaterialButton mRedButton;
@@ -107,6 +112,13 @@ public class ObjectiveMatchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TelephonyManager manager =
+                (TelephonyManager) mContext.getApplicationContext().
+                                           getSystemService(Context.TELEPHONY_SERVICE);
+
+        if (Objects.requireNonNull(manager).getPhoneType()
+            == TelephonyManager.PHONE_TYPE_NONE) {isPhone = false;}
+        else {isPhone = true;}
     }
 
     @Override
@@ -134,6 +146,8 @@ public class ObjectiveMatchFragment extends Fragment {
                 new TextInputWrapper(v.findViewById(R.id.objective_text_input_match_number));
         mNotesTextInput =
                 new TextInputWrapper(v.findViewById(R.id.objective_text_input_notes));
+        mInitialTextInput =
+                new TextInputWrapper((v.findViewById(R.id.objective_text_input_user_initial)));
 
         // Toggle Groups also go in a wrapper because multiple watchers causes problems
         mAllianceToggleGroup =
@@ -173,13 +187,12 @@ public class ObjectiveMatchFragment extends Fragment {
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         // Get all of the spinner contents
-        Object[] array = sharedPreferences.getStringSet(
-                getString(R.string.pref_key_obj_spinner),
-                null).toArray();
-        String[] set = Arrays.copyOf(array, array.length, String[].class);
+        Set<String> set = sharedPreferences.getStringSet(getString(R.string.pref_key_obj_spinner),
+                null);
+
         if (set != null) {
-            mSpinnerContents = new String[set.length][];
-            mSpinnerNames = new String[set.length];
+            mSpinnerContents = new String[set.size()][];
+            mSpinnerNames = new String[set.size()];
             // Split the spinner contents into arrays
             int i = 0;
             for (String s : set) {
@@ -253,8 +266,8 @@ public class ObjectiveMatchFragment extends Fragment {
             String[] buttonAbbreviationsCopy = new String[mButtonAbbreviations.length + 3];
 
             buttonNamesCopy[0] = "Start";
-            buttonNamesCopy[buttonNamesCopy.length - 1] = "Submit";
-            buttonNamesCopy[buttonNamesCopy.length - 2] = "Undo";
+            buttonNamesCopy[buttonNamesCopy.length - 1] = "Submit 👍";
+            buttonNamesCopy[buttonNamesCopy.length - 2] = "Undo ↶";
 
             buttonAbbreviationsCopy[0] = "START";
             buttonAbbreviationsCopy[buttonAbbreviationsCopy.length - 1] = "SUBMIT";
@@ -344,6 +357,7 @@ public class ObjectiveMatchFragment extends Fragment {
                             "Action list is null"),
                     Integer.parseInt(mTeamNumTextInput.getEditText().getText().toString()),
                     Integer.parseInt(mMatchNumTextInput.getEditText().getText().toString()),
+                    mInitialTextInput.getEditText().getText().toString(),
                     mNotesTextInput.getEditText().getText().toString(),
                     // isRed boolean: check if the checked button == red
                     mAllianceToggleGroup.getToggleGroup().getCheckedButtonId() ==
@@ -489,6 +503,8 @@ public class ObjectiveMatchFragment extends Fragment {
         constraintSet.clone(mConstraintLayout);
         // Connect the button to the previous button
         chainViewsVertically(constraintSet, previousId, buttonId);
+        // Change marginSize if it's a phone or tablet
+        if (isPhone) {marginSize-=100;}
         // Adjust the button's alignment
         adjustAlignment(constraintSet, buttonId, alignmentInfo.split(",")[1], marginSize);
 

@@ -52,7 +52,7 @@ public class DataUtils {
         return (new String(outStream.toByteArray(), StandardCharsets.UTF_8)).split("!");
     }
 
-    public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, String notes, boolean isRed) {
+    public static ObjectiveMatchData processObjectiveMatchData(List<Action> actions, int teamNumber, int matchNumber, String initials, String notes, boolean isRed) {
         List<Action> actionsCopy = new ArrayList<>(actions);
 
         // Sort actions chronologically
