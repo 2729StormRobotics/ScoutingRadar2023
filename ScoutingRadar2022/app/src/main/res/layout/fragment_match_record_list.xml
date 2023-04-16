@@ -51,16 +51,31 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/record_recycler"
-            app:layout_constraintTop_toBottomOf="@id/record_text_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            tools:listitem="@layout/fragment_match_record"
+            android:layout_height="177dp"
+            android:layout_width="379dp"
             android:padding="16dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/record_text_title"
+            app:layout_constraintVertical_bias="0.034"
+            tools:listitem="@layout/fragment_match_record" />
 
+    <TextView
+            android:id="@+id/pit_record_text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/record_recycler"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"
+            android:textAppearance="?textAppearanceOverline"
+            android:textSize="16sp"
+            android:text="@string/pit_recycler_title" />
 
     <com.leinardi.android.speeddial.SpeedDialView
             android:layout_width="wrap_content"
@@ -71,6 +86,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:sdMainFabClosedSrc="@drawable/ic_baseline_add_24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pit_record_recycler"
+            android:layout_height="177dp"
+            android:layout_width="379dp"
+            android:padding="16dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pit_record_text_title"
+            app:layout_constraintVertical_bias="0.018"
+            tools:listitem="@layout/fragment_match_record" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
