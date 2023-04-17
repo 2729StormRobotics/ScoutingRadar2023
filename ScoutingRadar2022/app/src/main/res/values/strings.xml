@@ -21,6 +21,7 @@
     <string name="settings">Settings</string>
 
     <string name="recycler_title">Previously Scouted Matches (Objective)</string>
+    <string name="pit_recycler_title">Previously Scouted Teams (Pit)</string>
     <string name="team_number">Team Number</string>
     <string name="match_number">Match Number</string>
     <string name="user_initial">User Initials</string>
