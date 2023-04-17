@@ -47,23 +47,43 @@ public class MatchRecordFragment extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_match_record_list, container, false);
 
-        // Get the recycler view
-        RecyclerView recyclerView = view.findViewById(R.id.record_recycler);
-        // Create the adapter
-        final MatchRecordRecyclerViewAdapter adapter =
-                new MatchRecordRecyclerViewAdapter(new MatchRecordRecyclerViewAdapter.RecordDiff());
-        // Set up the recycler view with the adapter
-        Context context = view.getContext();
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(adapter);
+        // For the Objective Match Record
+            // Get the recycler view
+            RecyclerView recyclerView = view.findViewById(R.id.record_recycler);
+            // Create the adapter
+            final MatchRecordRecyclerViewAdapter adapter =
+                    new MatchRecordRecyclerViewAdapter(new MatchRecordRecyclerViewAdapter.RecordDiff());
+            // Set up the recycler view with the adapter
+            Context context = view.getContext();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(adapter);
 
-        // Create the ViewModel
-        MatchViewModel mMatchViewModel = new ViewModelProvider(this).get(MatchViewModel.class);
+            // Create the ViewModel
+            MatchViewModel mMatchViewModel = new ViewModelProvider(this).get(MatchViewModel.class);
 
-        // Connect the viewModel and thus the database with the adapter and thus the recycler view
-        mMatchViewModel.getDataList().observe(getViewLifecycleOwner(), adapter::submitList);
+            // Connect the viewModel and thus the database with the adapter and thus the recycler view
+            mMatchViewModel.getDataList().observe(getViewLifecycleOwner(), adapter::submitList);
+
+
+        // For the Pit Match Record
+            // Get the recycler view
+            RecyclerView recyclerViewPit = view.findViewById(R.id.pit_record_recycler);
+            // Create the adapter
+            final PitRecordRecyclerViewAdapter adapterPit =
+                    new PitRecordRecyclerViewAdapter(new PitRecordRecyclerViewAdapter.RecordDiff());
+            // Set up the recycler view with the adapter
+            Context contextPit = view.getContext();
+            recyclerViewPit.setLayoutManager(new LinearLayoutManager(contextPit));
+            recyclerViewPit.setAdapter(adapterPit);
+
+            // Create the ViewModel
+            PitTeamViewModel mPitTeamViewModel = new ViewModelProvider(this).get(PitTeamViewModel.class);
+
+            // Connect the viewModel and thus the database with the adapter and thus the recycler view
+            mPitTeamViewModel.getDataList().observe(getViewLifecycleOwner(), adapterPit::submitList);
 
 
         // Setting up SpeedDialView
