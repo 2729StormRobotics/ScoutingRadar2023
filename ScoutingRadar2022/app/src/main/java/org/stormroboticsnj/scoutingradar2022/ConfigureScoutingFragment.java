@@ -53,6 +53,10 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
     // Cache current configuration
     private String mObjButtons = "";
     private String mObjAbbreviations = "";
+    private String mObjAttachments = "";
+    private String mObjAlignments = "";
+    private String mObjMargins = "";
+    private String mObjColors = "";
     private String mObjSpinners = "";
     private String mSubSpinners = "";
     private String mPitSpinners = "";
@@ -141,6 +145,10 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         mCurrentPrefsTextView.append("\nObjective Buttons\n");
         mCurrentPrefsTextView.append(mObjButtons);
         mCurrentPrefsTextView.append("\n" + mObjAbbreviations + "\n");
+        mCurrentPrefsTextView.append("\n" + mObjAttachments + "\n");
+        mCurrentPrefsTextView.append("\n" + mObjAlignments + "\n");
+        mCurrentPrefsTextView.append("\n" + mObjMargins + "\n");
+        mCurrentPrefsTextView.append("\n" + mObjColors + "\n");
         mCurrentPrefsTextView.append("\nObjective Spinners\n");
         mCurrentPrefsTextView.append(mObjSpinners);
         mCurrentPrefsTextView.append("\nSubjective Spinners\n");
@@ -156,6 +164,18 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
         mObjAbbreviations = formatPrefString(
                 mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
                         getString(R.string.obj_abbrs_default)));
+        mObjAttachments = formatPrefString(
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_atts),
+                        getString(R.string.obj_atts_default)));
+        mObjAlignments = formatPrefString(
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_alis),
+                        getString(R.string.obj_alis_default)));
+        mObjMargins = formatPrefString(
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_mars),
+                        getString(R.string.obj_mars_default)));
+        mObjColors = formatPrefString(
+                mSharedPreferences.getString(getString(R.string.pref_key_obj_cols),
+                        getString(R.string.obj_cols_default)));
         mObjSpinners = formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));
         mSubSpinners = formatArray(readPrefs(R.string.pref_key_sub_spinner, R.array.sub_spinners));
         mPitSpinners = formatArray(readPrefs(R.string.pref_key_pit_spinner, R.array.pit_spinners));
@@ -199,6 +219,10 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                 LinkedHashSet<String> objSpinners = new LinkedHashSet<>();
                 String objButtons = "";
                 String objAbbreviations = "";
+                String objAttachments = "";
+                String objAlignments = "";
+                String objMargins = "";
+                String objColors = "";
 
                 // This warning is because Ini implements Map and the linter doesn't realize that
                 // the constructor builds data
@@ -267,6 +291,14 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
                     objButtons = section.get("Names");
 
                     objAbbreviations = section.get("Abbreviations");
+
+                    objAttachments = section.get("Attachments");
+
+                    objAlignments = section.get("Alignments");
+
+                    objMargins = section.get("Margins");
+
+                    objColors = section.get("Colors");
                 }
 
                 SharedPreferences.Editor e = mSharedPreferences.edit();
@@ -280,6 +312,22 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
 
                 if (objButtons != null) {
                     e.putString(getString(R.string.pref_key_obj_buttons), objButtons);
+                }
+
+                if (objAttachments != null) {
+                    e.putString(getString(R.string.pref_key_obj_atts), objAttachments);
+                }
+
+                if (objAlignments != null) {
+                    e.putString(getString(R.string.pref_key_obj_alis), objAlignments);
+                }
+
+                if (objMargins != null) {
+                    e.putString(getString(R.string.pref_key_obj_mars), objMargins);
+                }
+
+                if (objColors != null) {
+                    e.putString(getString(R.string.pref_key_obj_cols), objColors);
                 }
 
                 e.apply();
@@ -306,6 +354,22 @@ public class ConfigureScoutingFragment extends Fragment implements SharedPrefere
             mObjAbbreviations = formatPrefString(
                     mSharedPreferences.getString(getString(R.string.pref_key_obj_abbrs),
                             getString(R.string.obj_abbrs_default)));
+        } else if (getString(R.string.pref_key_obj_atts).equals(key)) {
+            mObjButtons = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_obj_atts),
+                            getString(R.string.obj_atts_default)));
+        } else if (getString(R.string.pref_key_obj_alis).equals(key)) {
+            mObjButtons = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_obj_alis),
+                            getString(R.string.obj_alis_default)));
+        } else if (getString(R.string.pref_key_obj_mars).equals(key)) {
+            mObjButtons = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_obj_mars),
+                            getString(R.string.obj_mars_default)));
+        } else if (getString(R.string.pref_key_obj_cols).equals(key)) {
+            mObjButtons = formatPrefString(
+                    mSharedPreferences.getString(getString(R.string.pref_key_obj_cols),
+                            getString(R.string.obj_cols_default)));
         } else if (getString(R.string.pref_key_obj_spinner).equals(key)) {
             mObjSpinners =
                     formatArray(readPrefs(R.string.pref_key_obj_spinner, R.array.obj_spinners));

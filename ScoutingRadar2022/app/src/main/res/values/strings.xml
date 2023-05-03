@@ -119,8 +119,16 @@
     <string name="pit_space">"Pit "</string>
     <string name="data_recieved_name">"\nData received from "</string>
     <string name="pref_key_obj_abbrs">obj_button_abbreviations_key</string>
+    <string name="pref_key_obj_atts">obj_button_attachments_key</string>
+    <string name="pref_key_obj_alis">obj_button_alignments_key</string>
+    <string name="pref_key_obj_mars">obj_button_margins_key</string>
+    <string name="pref_key_obj_cols">obj_button_colors_key</string>
     <string name="obj_buttons_default">Left Community,Pin,Ground Pickup,Ground Pickup,Substation Pickup,Substation Pickup,Low,Mid,High</string>
     <string name="obj_abbrs_default">LC,PIN,GCO,GCU,SCO,SCU,GL,GM,GH</string>
+    <string name="obj_atts_default">below,below,below,below,right,below,right,below,right,right,below</string>
+    <string name="obj_alis_default">center,center,center,left,right,left,right,left,center,right,center</string>
+    <string name="obj_mars_default">0,0,0,100,100,100,100,100,100,100,100</string>
+    <string name="obj_cols_default">-,-,-,#FFC107,#673AB7,#FFC107,#673AB7,-,-,-,-</string>
     <string name="delete_data">Delete Data:</string>
     <string name="toast_data_deleted">Data Deleted.</string>
     <string name="toast_deleting_error">Error Deleting Data.</string>
@@ -129,4 +137,5 @@
     <string name="hard_coded_alignments">below,center;below,center;below,center;below,left;right,right;below,left;right,right;below,left;right,center;right,right;below,center;</string>
     <string name="margin_sizes">"0;0;0;100;100;100;100;100;100;100;100;"</string>
     <string name="colorings">"-;-;-;yellow;purple;yellow;purple;-;-;-;-;"</string>
+
 </resources>
